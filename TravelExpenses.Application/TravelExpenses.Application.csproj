@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelExpenses.Common\TravelExpenses.Common.csproj" />
+    <ProjectReference Include="..\TravelExpenses.Core\TravelExpenses.Domain.csproj" />
+    <ProjectReference Include="..\TravelExpenses.Persistence\TravelExpenses.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Features\" />
+  </ItemGroup>
+
+</Project>
