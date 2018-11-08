@@ -33,5 +33,11 @@ namespace TravelExpenses.Application.Exceptions
         }
 
         public IDictionary<string, string[]> Failures { get; }
+
+        public override string ToString()
+        {
+            var flattenedFailures = Failures.SelectMany(x => x.Value);
+            return string.Join(" - ", flattenedFailures);
+        }
     }
 }

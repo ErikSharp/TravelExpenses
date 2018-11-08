@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Application.Infrastructure;
+using TravelExpenses.WebAPI.Extensions;
 
 namespace TravelExpenses.WebAPI
 {
@@ -78,16 +79,18 @@ namespace TravelExpenses.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {            
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
+            
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
             app.UseMvc();
