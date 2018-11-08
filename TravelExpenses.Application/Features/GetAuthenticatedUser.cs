@@ -18,10 +18,14 @@ namespace TravelExpenses.Application.Features
 {
     public class UserIn
     {
-        //[EmailAddress]
-        public string Email { get; set; }
-        //[StringLength(50, MinimumLength = 6, ErrorMessage = "The password must be between 6 and 50 characters")]
-        public string Password { get; set; }
+        public UserIn(string email, string password)
+        {
+            Email = email;
+            Password = password;
+        }
+
+        public string Email { get; private set; }
+        public string Password { get; private set; }
     }
 
     public class UserOut
@@ -33,7 +37,12 @@ namespace TravelExpenses.Application.Features
 
     public class GetAuthenticatedUser : IRequest<UserOut>
     {
-        public UserIn LoginDetails { get; set; }
+        public GetAuthenticatedUser(UserIn loginDetails)
+        {
+            LoginDetails = loginDetails;
+        }
+
+        public UserIn LoginDetails { get; private set; }
     }
 
     public class GetAuthenticateUserHandler : IRequestHandler<GetAuthenticatedUser, UserOut>
@@ -100,9 +109,11 @@ namespace TravelExpenses.Application.Features
     {
         public GetAuthenticatedUserValidator()
         {
-            RuleFor(x => x.LoginDetails).NotNull();
-            RuleFor(x => x.LoginDetails.Email).EmailAddress();
-            RuleFor(x => x.LoginDetails.Password).MinimumLength(6).MaximumLength(50);            
+            RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
+            {
+                RuleFor(x => x.LoginDetails.Email).EmailAddress();
+                RuleFor(x => x.LoginDetails.Password).MinimumLength(6).MaximumLength(50);
+            });                        
         }
     }
 }
