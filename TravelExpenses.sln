@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{62037FFB-BB2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48D68870-6F68-40D7-8C93-A80AD2C081D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Common", "TravelExpenses.Common\TravelExpenses.Common.csproj", "{34D41A84-4798-4C72-B2E7-EA9345915A7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Common", "TravelExpenses.Common\TravelExpenses.Common.csproj", "{34D41A84-4798-4C72-B2E7-EA9345915A7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Domain", "TravelExpenses.Core\TravelExpenses.Domain.csproj", "{B2DC4BC9-59BC-4B29-9AC8-5D04ED3CF476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Domain", "TravelExpenses.Core\TravelExpenses.Domain.csproj", "{B2DC4BC9-59BC-4B29-9AC8-5D04ED3CF476}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Application", "TravelExpenses.Application\TravelExpenses.Application.csproj", "{91605E64-FC1C-4612-8573-AEA506DCF18F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Application", "TravelExpenses.Application\TravelExpenses.Application.csproj", "{91605E64-FC1C-4612-8573-AEA506DCF18F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EAB73220-2F84-4474-A231-0D7DCF98F97D}"
 EndProject
@@ -24,13 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C71A3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D8CDDD41-6265-4F74-84E2-014D3721A4FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Infrastructure", "TravelExpenses.Infrastructure\TravelExpenses.Infrastructure.csproj", "{A2BE3E7B-C078-4A1F-8251-58A5316CB15D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Infrastructure", "TravelExpenses.Infrastructure\TravelExpenses.Infrastructure.csproj", "{A2BE3E7B-C078-4A1F-8251-58A5316CB15D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Persistence", "TravelExpenses.Persistence\TravelExpenses.Persistence.csproj", "{AB2D4AC7-58E6-44FA-B032-E2D7919C6188}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Persistence", "TravelExpenses.Persistence\TravelExpenses.Persistence.csproj", "{AB2D4AC7-58E6-44FA-B032-E2D7919C6188}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{25ABCAA8-DD1C-4697-9E9D-9A209DB16FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.WebAPI", "TravelExpenses.WebAPI\TravelExpenses.WebAPI.csproj", "{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.WebAPI", "TravelExpenses.WebAPI\TravelExpenses.WebAPI.csproj", "{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Application.Tests", "TravelExpenses.Application.Tests\TravelExpenses.Application.Tests.csproj", "{051C2158-253F-45EC-B561-83B11EF923F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{051C2158-253F-45EC-B561-83B11EF923F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{051C2158-253F-45EC-B561-83B11EF923F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{051C2158-253F-45EC-B561-83B11EF923F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{051C2158-253F-45EC-B561-83B11EF923F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{AB2D4AC7-58E6-44FA-B032-E2D7919C6188} = {D8CDDD41-6265-4F74-84E2-014D3721A4FA}
 		{25ABCAA8-DD1C-4697-9E9D-9A209DB16FA2} = {62037FFB-BB20-4451-8596-112634B88080}
 		{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77} = {25ABCAA8-DD1C-4697-9E9D-9A209DB16FA2}
+		{051C2158-253F-45EC-B561-83B11EF923F3} = {48D68870-6F68-40D7-8C93-A80AD2C081D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11A23A0A-206A-4827-BBE8-CE44979FDDCE}
