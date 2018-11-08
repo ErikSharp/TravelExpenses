@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
+using TravelExpenses.Application.Infrastructure;
 
 namespace TravelExpenses.WebAPI
 {
@@ -33,8 +35,14 @@ namespace TravelExpenses.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(AuthenticateUserHandler).GetTypeInfo().Assembly);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddMediatR(typeof(GetAuthenticateUserHandler).GetTypeInfo().Assembly);
+
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAuthenticatedUserValidator>());
+
             services.AddAutoMapper();
 
             //configure strongly typed settings objects
@@ -60,6 +68,12 @@ namespace TravelExpenses.WebAPI
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            // We are having FluentValidation do the validations
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
             });
         }
 

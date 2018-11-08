@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -30,12 +31,12 @@ namespace TravelExpenses.Application.Features
         public string Token { get; set; }
     }
 
-    public class AuthenticateUser : IRequest<UserOut>
+    public class GetAuthenticatedUser : IRequest<UserOut>
     {
         public UserIn LoginDetails { get; set; }
     }
 
-    public class AuthenticateUserHandler : IRequestHandler<AuthenticateUser, UserOut>
+    public class GetAuthenticateUserHandler : IRequestHandler<GetAuthenticatedUser, UserOut>
     {
         private readonly AppSettings appSettings;
         private readonly IMapper mapper;
@@ -51,7 +52,7 @@ namespace TravelExpenses.Application.Features
             }
         };
 
-        public AuthenticateUserHandler(
+        public GetAuthenticateUserHandler(
             IOptions<AppSettings> appSettings,
             IMapper mapper)
         {
@@ -59,7 +60,7 @@ namespace TravelExpenses.Application.Features
             this.mapper = mapper;
         }
 
-        public async Task<UserOut> Handle(AuthenticateUser request, CancellationToken cancellationToken)
+        public async Task<UserOut> Handle(GetAuthenticatedUser request, CancellationToken cancellationToken)
         {
             var user = await Task<User>.FromResult(_users.SingleOrDefault(x => x.Email == request.LoginDetails.Email));
 
@@ -92,6 +93,16 @@ namespace TravelExpenses.Application.Features
             userOut.Token = tokenHandler.WriteToken(token);
 
             return userOut;
+        }
+    }
+
+    public class GetAuthenticatedUserValidator : AbstractValidator<GetAuthenticatedUser>
+    {
+        public GetAuthenticatedUserValidator()
+        {
+            RuleFor(x => x.LoginDetails).NotNull();
+            RuleFor(x => x.LoginDetails.Email).EmailAddress();
+            RuleFor(x => x.LoginDetails.Password).MinimumLength(6).MaximumLength(50);            
         }
     }
 }

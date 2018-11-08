@@ -12,12 +12,12 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="Exceptions\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="BCrypt.Net-Next.StrongName" Version="3.1.0" />
+    <PackageReference Include="FluentValidation" Version="8.0.100" />
     <PackageReference Include="MediatR" Version="5.1.0" />
   </ItemGroup>
 
