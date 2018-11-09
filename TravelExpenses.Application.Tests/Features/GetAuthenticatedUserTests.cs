@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Options;
 using Moq;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,10 +46,10 @@ namespace TravelExpenses.Application.Tests.Features
         private void RunValidator(UserIn loginDetails, string propertyName)
         {
             var validator = new GetAuthenticatedUserValidator();
-            var result = validator.Validate(new GetAuthenticatedUser(loginDetails));
+            var validation = validator.Validate(new GetAuthenticatedUser(loginDetails));
 
-            Assert.Equal(1, result.Errors.Count);
-            Assert.Equal(propertyName, result.Errors.Single().PropertyName);
+            validation.Errors.Count.ShouldBe(1);
+            validation.Errors.Single().PropertyName.ShouldBe(propertyName);
         }
 
         [Fact]
@@ -66,14 +67,15 @@ namespace TravelExpenses.Application.Tests.Features
                 optionsMock.Object,
                 mapper);
 
-            var result = await sut.Handle(
+            var authenticatedUser = await sut.Handle(
                 new GetAuthenticatedUser(loginDetails), 
                 CancellationToken.None);
 
-            Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
-            Assert.Equal(loginDetails.Email, result.Email);
-            Assert.NotEmpty(result.Token);
+            authenticatedUser.ShouldNotBeNull();
+            authenticatedUser.Id.ShouldBe(1);
+            authenticatedUser.Email.ShouldBe(loginDetails.Email);
+            authenticatedUser.Token.ShouldNotBeNull();
+            authenticatedUser.Token.ShouldNotBe("");
         }
     }
 }
