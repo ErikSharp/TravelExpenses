@@ -111,8 +111,8 @@ namespace TravelExpenses.Application.Features
         {
             RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
             {
-                RuleFor(x => x.LoginDetails.Email).EmailAddress();
-                RuleFor(x => x.LoginDetails.Password).MinimumLength(6).MaximumLength(50);
+                RuleFor(x => x.LoginDetails.Email).NotNull().EmailAddress();
+                RuleFor(x => x.LoginDetails.Password).NotNull().Length(6, 50);
             });                        
         }
     }
