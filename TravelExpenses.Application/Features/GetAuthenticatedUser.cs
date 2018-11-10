@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TravelExpenses.Application.Helpers;
+using TravelExpenses.Common;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
@@ -54,15 +55,18 @@ namespace TravelExpenses.Application.Features
             private readonly AppSettings appSettings;
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
+            private readonly IDateTime dateTime;
 
             public Handler(
                 IOptions<AppSettings> appSettings,
                 TravelExpensesContext context,
-                IMapper mapper)
+                IMapper mapper,
+                IDateTime dateTime)
             {                
                 this.appSettings = appSettings.Value;
                 this.context = context;
                 this.mapper = mapper;
+                this.dateTime = dateTime;
             }
 
             public async Task<UserOut> Handle(Query request, CancellationToken cancellationToken)
@@ -89,7 +93,7 @@ namespace TravelExpenses.Application.Features
                     {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddDays(7),
+                    Expires = dateTime.UtcNow.AddDays(7),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);

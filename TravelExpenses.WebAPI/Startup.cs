@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Application.Infrastructure;
+using TravelExpenses.Common;
+using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
 using TravelExpenses.WebAPI.Extensions;
 
@@ -32,6 +34,8 @@ namespace TravelExpenses.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IDateTime, MachineDateTime>();
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly);
 
