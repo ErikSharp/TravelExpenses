@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Domain.Entities;
+using TravelExpenses.Persistence;
 
 namespace TravelExpenses.Application.Features
 {
@@ -50,30 +52,22 @@ namespace TravelExpenses.Application.Features
         public class Handler : IRequestHandler<Query, UserOut>
         {
             private readonly AppSettings appSettings;
+            private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
-
-            // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-            private List<User> _users = new List<User>
-            {
-                new User
-                {
-                    Id = 1,
-                    Email = "erik.sharp@hadleyshope.com",
-                    PasswordHash = "$2y$12$yVYkJsR7a4Wj3wRzCD9Pn.DvDGWY3Dzx2AwisSqailn3Pyu.X.zWi" //password
-                }
-            };
 
             public Handler(
                 IOptions<AppSettings> appSettings,
+                TravelExpensesContext context,
                 IMapper mapper)
-            {
+            {                
                 this.appSettings = appSettings.Value;
+                this.context = context;
                 this.mapper = mapper;
             }
 
             public async Task<UserOut> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await Task<User>.FromResult(_users.SingleOrDefault(x => x.Email == request.LoginDetails.Email));
+                var user = await context.Users.SingleOrDefaultAsync(x => x.Email == request.LoginDetails.Email);
 
                 // return null if user not found
                 if (user == null)

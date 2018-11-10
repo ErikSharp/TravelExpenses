@@ -6,6 +6,10 @@ using TravelExpenses.Domain.Entities;
 
 namespace TravelExpenses.Persistence
 {
+    /// <summary>
+    /// We don't have to create a partial class as this is code first
+    /// and the context is created manually
+    /// </summary>
     public class TravelExpensesContext : DbContext
     {
         public TravelExpensesContext(DbContextOptions<TravelExpensesContext> options)
@@ -17,6 +21,10 @@ namespace TravelExpenses.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //This is a global query filter that will run everytime that we query User
+            modelBuilder.Entity<User>()
+                .HasQueryFilter(u => u.Disabled == false);
+
             modelBuilder.HasDefaultSchema("app");
 
             modelBuilder.Entity<User>(entity =>
