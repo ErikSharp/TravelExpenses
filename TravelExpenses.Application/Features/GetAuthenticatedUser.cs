@@ -16,104 +16,116 @@ using TravelExpenses.Domain.Entities;
 
 namespace TravelExpenses.Application.Features
 {
-    public class UserIn
+    public class GetAuthenticatedUser
     {
-        public UserIn(string email, string password)
+        public class UserIn
         {
-            Email = email;
-            Password = password;
-        }
-
-        public string Email { get; private set; }
-        public string Password { get; private set; }
-    }
-
-    public class UserOut
-    {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
-    }
-
-    public class GetAuthenticatedUser : IRequest<UserOut>
-    {
-        public GetAuthenticatedUser(UserIn loginDetails)
-        {
-            LoginDetails = loginDetails;
-        }
-
-        public UserIn LoginDetails { get; private set; }
-    }
-
-    public class GetAuthenticateUserHandler : IRequestHandler<GetAuthenticatedUser, UserOut>
-    {
-        private readonly AppSettings appSettings;
-        private readonly IMapper mapper;
-
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
-        {
-            new User
+            public UserIn(string email, string password)
             {
-                Id = 1,
-                Email = "erik.sharp@hadleyshope.com",
-                PasswordHash = "$2y$12$yVYkJsR7a4Wj3wRzCD9Pn.DvDGWY3Dzx2AwisSqailn3Pyu.X.zWi" //password
+                Email = email;
+                Password = password;
             }
-        };
 
-        public GetAuthenticateUserHandler(
-            IOptions<AppSettings> appSettings,
-            IMapper mapper)
-        {
-            this.appSettings = appSettings.Value;
-            this.mapper = mapper;
+            public string Email { get; private set; }
+            public string Password { get; private set; }
         }
 
-        public async Task<UserOut> Handle(GetAuthenticatedUser request, CancellationToken cancellationToken)
+        public class UserOut
         {
-            var user = await Task<User>.FromResult(_users.SingleOrDefault(x => x.Email == request.LoginDetails.Email));
+            public int Id { get; set; }
+            public string Email { get; set; }
+            public string Token { get; set; }
+        }
 
-            // return null if user not found
-            if (user == null)
-                return null;
-
-            bool passMatchesHash =
-                BCrypt.Net.BCrypt.Verify(request.LoginDetails.Password, user.PasswordHash);
-
-            // return null when wrong password
-            if (!passMatchesHash)
-                return null;
-
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
+        public class Query : IRequest<UserOut>
+        {
+            public Query(UserIn loginDetails)
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                LoginDetails = loginDetails;
+            }
+
+            public UserIn LoginDetails { get; private set; }
+        }
+
+        public class Handler : IRequestHandler<Query, UserOut>
+        {
+            private readonly AppSettings appSettings;
+            private readonly IMapper mapper;
+
+            // users hardcoded for simplicity, store in a db with hashed passwords in production applications
+            private List<User> _users = new List<User>
+            {
+                new User
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    Id = 1,
+                    Email = "erik.sharp@hadleyshope.com",
+                    PasswordHash = "$2y$12$yVYkJsR7a4Wj3wRzCD9Pn.DvDGWY3Dzx2AwisSqailn3Pyu.X.zWi" //password
+                }
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var userOut = mapper.Map<UserOut>(user);
-            userOut.Token = tokenHandler.WriteToken(token);
-
-            return userOut;
-        }
-    }
-
-    public class GetAuthenticatedUserValidator : AbstractValidator<GetAuthenticatedUser>
-    {
-        public GetAuthenticatedUserValidator()
-        {
-            RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
+            public Handler(
+                IOptions<AppSettings> appSettings,
+                IMapper mapper)
             {
-                RuleFor(x => x.LoginDetails.Email).NotNull().EmailAddress();
-                RuleFor(x => x.LoginDetails.Password).NotNull().Length(6, 50);
-            });                        
+                this.appSettings = appSettings.Value;
+                this.mapper = mapper;
+            }
+
+            public async Task<UserOut> Handle(Query request, CancellationToken cancellationToken)
+            {
+                var user = await Task<User>.FromResult(_users.SingleOrDefault(x => x.Email == request.LoginDetails.Email));
+
+                // return null if user not found
+                if (user == null)
+                    return null;
+
+                bool passMatchesHash =
+                    BCrypt.Net.BCrypt.Verify(request.LoginDetails.Password, user.PasswordHash);
+
+                // return null when wrong password
+                if (!passMatchesHash)
+                    return null;
+
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                var userOut = mapper.Map<UserOut>(user);
+                userOut.Token = tokenHandler.WriteToken(token);
+
+                return userOut;
+            }
+        }
+
+        public class Validator : AbstractValidator<Query>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
+                {
+                    RuleFor(x => x.LoginDetails.Email).NotNull().EmailAddress();
+                    RuleFor(x => x.LoginDetails.Password).NotNull().Length(6, 50);
+                });
+            }
+        }
+
+        public class AutoMapperProfile : Profile
+        {
+            public AutoMapperProfile()
+            {
+                CreateMap<UserIn, User>();
+                CreateMap<User, UserOut>();
+            }
         }
     }
 }

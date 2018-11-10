@@ -33,12 +33,12 @@ namespace TravelExpenses.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddMediatR(typeof(GetAuthenticateUserHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly);
 
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAuthenticatedUserValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAuthenticatedUser.Validator>());
 
             var connection = @"Server=(localdb)\mssqllocaldb;Database=TravelExpenses;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<TravelExpensesContext>

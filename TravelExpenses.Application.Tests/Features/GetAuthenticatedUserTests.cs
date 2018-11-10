@@ -11,6 +11,7 @@ using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Domain.Entities;
 using Xunit;
+using static TravelExpenses.Application.Features.GetAuthenticatedUser;
 
 namespace TravelExpenses.Application.Tests.Features
 {
@@ -45,8 +46,8 @@ namespace TravelExpenses.Application.Tests.Features
 
         private void RunValidator(UserIn loginDetails, string propertyName)
         {
-            var validator = new GetAuthenticatedUserValidator();
-            var validation = validator.Validate(new GetAuthenticatedUser(loginDetails));
+            var validator = new Validator();
+            var validation = validator.Validate(new Query(loginDetails));
 
             validation.Errors.Count.ShouldBe(1);
             validation.Errors.Single().PropertyName.ShouldBe(propertyName);
@@ -63,12 +64,12 @@ namespace TravelExpenses.Application.Tests.Features
             var optionsMock = new Mock<IOptions<AppSettings>>();
             optionsMock.Setup(opt => opt.Value).Returns(new AppSettings { Secret = Guid.NewGuid().ToString() });
 
-            var sut = new GetAuthenticateUserHandler(
+            var sut = new Handler(
                 optionsMock.Object,
                 mapper);
 
             var authenticatedUser = await sut.Handle(
-                new GetAuthenticatedUser(loginDetails), 
+                new Query(loginDetails), 
                 CancellationToken.None);
 
             authenticatedUser.ShouldNotBeNull();
