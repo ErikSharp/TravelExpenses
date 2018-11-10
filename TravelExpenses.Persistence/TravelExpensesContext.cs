@@ -17,6 +17,8 @@ namespace TravelExpenses.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("app");
+
             modelBuilder.Entity<User>(entity =>
             {
                 //https://7php.com/the-maximum-length-limit-of-an-email-address-is-254-not-320/
