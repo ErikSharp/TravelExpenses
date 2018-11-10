@@ -10,5 +10,6 @@ namespace TravelExpenses.Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public DateTime Created { get; set; }
+        public bool Disabled { get; set; }
     }
 }
