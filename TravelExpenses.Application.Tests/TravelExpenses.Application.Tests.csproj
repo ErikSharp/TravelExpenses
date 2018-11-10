@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TravelExpenses.Application\TravelExpenses.Application.csproj" />
+    <ProjectReference Include="..\TravelExpenses.Infrastructure\TravelExpenses.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

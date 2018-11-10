@@ -4,13 +4,11 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Domain.Entities;
+using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
 using Xunit;
 using static TravelExpenses.Application.Features.GetAuthenticatedUser;
@@ -87,7 +85,8 @@ namespace TravelExpenses.Application.Tests.Features
                 var sut = new Handler(
                     optionsMock.Object,
                     context,
-                    mapper);
+                    mapper,
+                    new MachineDateTime());
 
                 var authenticatedUser = await sut.Handle(
                     new Query(loginDetails),
@@ -134,7 +133,8 @@ namespace TravelExpenses.Application.Tests.Features
                 var sut = new Handler(
                     optionsMock.Object,
                     context,
-                    mapper);
+                    mapper,
+                    new MachineDateTime());
 
                 var authenticatedUser = await sut.Handle(
                     new Query(loginDetails),
