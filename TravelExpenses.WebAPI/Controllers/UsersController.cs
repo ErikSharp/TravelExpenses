@@ -22,7 +22,7 @@ namespace TravelExpenses.WebAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("authenticate")]
+        [HttpGet("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody]GetAuthenticatedUser.UserIn userParam)
         {
             var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam));
