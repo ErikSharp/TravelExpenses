@@ -32,7 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.WebAPI", "TravelExpenses.WebAPI\TravelExpenses.WebAPI.csproj", "{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.Application.Tests", "TravelExpenses.Application.Tests\TravelExpenses.Application.Tests.csproj", "{051C2158-253F-45EC-B561-83B11EF923F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExpenses.Application.Tests", "TravelExpenses.Application.Tests\TravelExpenses.Application.Tests.csproj", "{051C2158-253F-45EC-B561-83B11EF923F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{0D8AD45A-016D-48EE-9CA3-003686B64749}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
