@@ -73,6 +73,7 @@ namespace TravelExpenses.Application.Features
             {
                 var user = await context.Users.SingleOrDefaultAsync(x => x.Email == request.LoginDetails.Email);
 
+                Thread.Sleep(700);
                 // return null if user not found
                 if (user == null)
                     return null;

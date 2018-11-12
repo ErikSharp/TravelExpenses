@@ -45,6 +45,7 @@ namespace TravelExpenses.WebAPI
             services.AddTransient<IDateTime, MachineDateTime>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly);
 
