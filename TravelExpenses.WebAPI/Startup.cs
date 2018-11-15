@@ -22,6 +22,7 @@ using TravelExpenses.Common;
 using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
 using TravelExpenses.WebAPI.Extensions;
+using TravelExpenses.WebAPI.Middleware;
 
 namespace TravelExpenses.WebAPI
 {
@@ -30,6 +31,7 @@ namespace TravelExpenses.WebAPI
         public Startup(IConfiguration configuration)
         {
             Log.Logger = new LoggerConfiguration()
+                .Enrich.With(new ThreadIdEnricher())
                 .ReadFrom
                 .Configuration(configuration)
                 .CreateLogger();
