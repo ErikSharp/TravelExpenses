@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Shouldly;
 using System;
 using System.Linq;
 using System.Threading;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Helpers;
+using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
@@ -72,28 +75,19 @@ namespace TravelExpenses.Application.Tests.Features
                 context.SaveChanges();
             }
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserOut>());
-            var mapper = config.CreateMapper();
-            var loginDetails = new UserIn(
-                "erik.sharp@hadleyshope.com",
-                "password");
-            var optionsMock = new Mock<IOptions<AppSettings>>();
-            optionsMock.Setup(opt => opt.Value).Returns(new AppSettings { Secret = Guid.NewGuid().ToString() });
-
             using (var context = new TravelExpensesContext(options))
             {
-                var sut = new Handler(
-                    optionsMock.Object,
-                    context,
-                    mapper,
-                    new MachineDateTime());
+                var loginDetails = new UserIn(
+                    "erik.sharp@hadleyshope.com",
+                    "password");
+
+                var sut = CreateHandler(loginDetails, context);
 
                 var authenticatedUser = await sut.Handle(
                     new Query(loginDetails),
                     CancellationToken.None);
 
                 authenticatedUser.ShouldNotBeNull();
-                authenticatedUser.Id.ShouldBe(1);
                 authenticatedUser.Email.ShouldBe(loginDetails.Email);
                 authenticatedUser.Token.ShouldNotBeNull();
                 authenticatedUser.Token.ShouldNotBe("");
@@ -120,21 +114,13 @@ namespace TravelExpenses.Application.Tests.Features
                 context.SaveChanges();
             }
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserOut>());
-            var mapper = config.CreateMapper();
-            var loginDetails = new UserIn(
-                "erik.sharp@hadleyshope.com",
-                "password");
-            var optionsMock = new Mock<IOptions<AppSettings>>();
-            optionsMock.Setup(opt => opt.Value).Returns(new AppSettings { Secret = Guid.NewGuid().ToString() });
-
             using (var context = new TravelExpensesContext(options))
             {
-                var sut = new Handler(
-                    optionsMock.Object,
-                    context,
-                    mapper,
-                    new MachineDateTime());
+                var loginDetails = new UserIn(
+                    "erik.sharp@hadleyshope.com",
+                    "password");
+
+                var sut = CreateHandler(loginDetails, context);
 
                 var authenticatedUser = await sut.Handle(
                     new Query(loginDetails),
@@ -142,6 +128,25 @@ namespace TravelExpenses.Application.Tests.Features
 
                 authenticatedUser.ShouldBeNull();
             }
+        }
+
+        private Handler CreateHandler(UserIn loginDetails, TravelExpensesContext context)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserOut>());
+            var mapper = config.CreateMapper();
+
+            var tokenGenerator = new Mock<ITokenGenerator>();
+            tokenGenerator.Setup(tg => tg.CreateTokenString(It.IsAny<User>())).Returns("token");
+            
+            var loggerMock = new Mock<ILogger>();
+            var loggerFactoryMock = new Mock<ILoggerFactory>();
+            loggerFactoryMock.Setup(fac => fac.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
+
+            return new Handler(
+                context,
+                mapper,
+                tokenGenerator.Object,
+                loggerFactoryMock.Object);
         }
     }
 }

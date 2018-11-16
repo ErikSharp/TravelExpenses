@@ -18,6 +18,7 @@ using Serilog;
 using TravelExpenses.Application.Features;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Application.Infrastructure;
+using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Common;
 using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
@@ -45,6 +46,7 @@ namespace TravelExpenses.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IDateTime, MachineDateTime>();
+            services.AddTransient<ITokenGenerator, TokenGenerator>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));

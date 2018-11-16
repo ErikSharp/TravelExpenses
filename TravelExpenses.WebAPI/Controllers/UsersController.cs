@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features;
 
 namespace TravelExpenses.WebAPI.Controllers
@@ -23,7 +24,7 @@ namespace TravelExpenses.WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody]GetAuthenticatedUser.UserIn userParam)
+        public async Task<IActionResult> Authenticate([FromBody]UserIn userParam)
         {
             var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam));
 
@@ -33,6 +34,17 @@ namespace TravelExpenses.WebAPI.Controllers
             }
 
             return Ok(authenticatedUser);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody]UserIn userParam)
+        {
+            var authenticatedUser = await mediator.Send(new CreateUser.Command(userParam));
+
+            return Created(
+                new Uri(Request.Path, UriKind.Relative), 
+                authenticatedUser);
         }
     }
 }

@@ -29,11 +29,18 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (ValidationException ex)
             {
-                _logger.LogError($"ValidationException: {ex.ToString()}");
+                _logger.LogInformation($"ValidationException: {ex.ToString()}");
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     $"{ex.GetType().Name}: {ex.ToString()}");
+            }
+            catch (UserAlreadyExistsException ex)
+            {
+                await HandleExceptionAsync(
+                    httpContext,
+                    HttpStatusCode.Conflict,
+                    ex.Message);
             }
             catch (Exception ex)
             {
