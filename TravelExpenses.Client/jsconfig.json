@@ -1,0 +1,4 @@
+{
+  // this is for the vetur extension
+  "include": ["./src/**/*"]
+}
