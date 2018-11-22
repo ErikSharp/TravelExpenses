@@ -9,6 +9,7 @@ dotnet-outdated
 - Client
   - [ ] Create Login page
   - [ ] Create registration page
+  - [x] Build to wwwroot
 - Server
   - [x] Add integration tests
     - [x] Happy path auth
