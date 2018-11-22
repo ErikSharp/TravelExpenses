@@ -7,7 +7,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TravelExpenses.Application.Common.Dtos;
+using TravelExpenses.Application.Exceptions;
 using TravelExpenses.WebAPI;
+using TravelExpenses.WebAPI.Controllers;
+using TravelExpenses.WebAPI.Models;
 using Xunit;
 
 namespace TravelExpenses.IntegrationTests.Controllers
@@ -79,8 +82,8 @@ namespace TravelExpenses.IntegrationTests.Controllers
             httpResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
             var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var response = JsonConvert.DeserializeObject<FailureResponse>(stringResponse);
-            response.Message.ShouldBe("Username or password is incorrect");
+            var response = JsonConvert.DeserializeObject<ErrorDetails>(stringResponse);
+            response.Message.ShouldBe(UsersController.InvalidCredsMsg);
         }
 
         [Fact]
@@ -101,11 +104,19 @@ namespace TravelExpenses.IntegrationTests.Controllers
             await CanAuthenticateUser(email, password).ConfigureAwait(false);
         }
 
-        //[Fact]
-        //public async Task CantCreateUserAsAlreadyExists()
-        //{
+        [Fact]
+        public async Task CantCreateUserAsAlreadyExists()
+        {
+            var httpResponse = await _client.PostAsync(
+                CreateUserPath,
+                CreateRequestUser(SeedData.Email1, "somepassword")).ConfigureAwait(false);
 
-        //}
+            httpResponse.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var response = JsonConvert.DeserializeObject<ErrorDetails>(stringResponse);
+            response.Message.ShouldBe(UserAlreadyExistsException.ExMessage);
+        }
 
         //[Fact]
         //public async Task CreateUserPasswordTooShort()

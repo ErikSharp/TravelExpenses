@@ -6,7 +6,9 @@ namespace TravelExpenses.Application.Exceptions
 {
     public class UserAlreadyExistsException : Exception
     {
-        public UserAlreadyExistsException() : base("The user already exists")
+        public const string ExMessage = "The user already exists";
+
+        public UserAlreadyExistsException() : base(ExMessage)
         {
 
         }

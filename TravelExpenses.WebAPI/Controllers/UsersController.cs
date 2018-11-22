@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features;
+using TravelExpenses.WebAPI.Models;
 
 namespace TravelExpenses.WebAPI.Controllers
 {
@@ -16,6 +17,7 @@ namespace TravelExpenses.WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        public const string InvalidCredsMsg = "Username or password is incorrect";
         private readonly IMediator mediator;
 
         public UsersController(IMediator mediator)
@@ -27,18 +29,16 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPut("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody]UserIn userParam)
         {
-            const string failureMessage = "Username or password is incorrect";
-
             if (string.IsNullOrEmpty(userParam.Password) || string.IsNullOrEmpty(userParam.Email))
             {
-                return BadRequest(new FailureResponse { Message = failureMessage });
+                return BadRequest(new ErrorDetails { Message = InvalidCredsMsg });
             }
 
             var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam));
 
             if (authenticatedUser == null)
             {
-                return BadRequest(new FailureResponse { Message = failureMessage });
+                return BadRequest(new ErrorDetails { Message = InvalidCredsMsg });
             }
 
             return Ok(authenticatedUser);

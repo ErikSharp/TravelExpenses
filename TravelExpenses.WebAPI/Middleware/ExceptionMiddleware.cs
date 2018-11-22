@@ -62,7 +62,6 @@ namespace TravelExpenses.WebAPI.Middleware
 
             return context.Response.WriteAsync(new ErrorDetails()
             {
-                StatusCode = context.Response.StatusCode,
                 Message = message
             }.ToString());
         }

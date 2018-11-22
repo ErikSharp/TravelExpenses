@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,6 +51,12 @@ namespace TravelExpenses.Application.Features
 
             public async Task<UserOut> Handle(Command request, CancellationToken cancellationToken)
             {
+                var userExists = await context.Users.AnyAsync(u => u.Email == request.LoginDetails.Email).ConfigureAwait(false);
+                if (userExists)
+                {
+                    throw new UserAlreadyExistsException();
+                }
+
                 var user = mapper.Map<User>(request.LoginDetails);
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.LoginDetails.Password);
                 context.Users.Add(user);
