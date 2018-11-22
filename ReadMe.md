@@ -12,11 +12,11 @@ dotnet-outdated
 - Server
   - [x] Add integration tests
     - [x] Happy path auth
-    - [ ] Wrong password
-    - [ ] Unknown user
-    - [ ] Happy path create user
-    - [ ] User already exists
-    - [ ] Validation errors
+    - [x] Wrong password
+    - [x] Unknown user
+    - [x] Happy path create user
+    - [x] User already exists
+    - [x] Validation errors
   - [ ] Complete database
   - [x] Create basic health checks
   - [x] Move connection string to correct location
