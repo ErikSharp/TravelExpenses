@@ -54,8 +54,10 @@ namespace TravelExpenses.IntegrationTests.Controllers
             var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var authenticatedUser = JsonConvert.DeserializeObject<UserOut>(stringResponse);
 
-            authenticatedUser.Email.ShouldBe(email, StringCompareShould.IgnoreCase);
-            authenticatedUser.Token.ShouldNotBeNullOrEmpty();
+            authenticatedUser.ShouldSatisfyAllConditions(
+                () => authenticatedUser.Email.ShouldBe(email, StringCompareShould.IgnoreCase),
+                () => authenticatedUser.Token.ShouldNotBeNullOrEmpty()
+            );
         }
 
         [Fact]
@@ -98,9 +100,6 @@ namespace TravelExpenses.IntegrationTests.Controllers
 
             httpResponse.EnsureSuccessStatusCode();
 
-            var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var authenticatedUser = JsonConvert.DeserializeObject<UserOut>(stringResponse);
-
             await CanAuthenticateUser(email, password).ConfigureAwait(false);
         }
 
@@ -118,34 +117,23 @@ namespace TravelExpenses.IntegrationTests.Controllers
             response.Message.ShouldBe(UserAlreadyExistsException.ExMessage);
         }
 
-        //[Fact]
-        //public async Task CreateUserPasswordTooShort()
-        //{
+        [Theory]
+        [InlineData(SeedData.Email1, "short")]
+        [InlineData(SeedData.Email1, "TooLongWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")]
+        [InlineData("notanemail", "password")]
+        [InlineData(null, "password")]
+        [InlineData(SeedData.Email1, null)]
+        public async Task CreateUserValidationFailureTests(string email, string password)
+        {
+            var httpResponse = await _client.PostAsync(
+                CreateUserPath,
+                CreateRequestUser(email, password)).ConfigureAwait(false);
 
-        //}
+            httpResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        //[Fact]
-        //public async Task CreateUserPasswordTooLong()
-        //{
-
-        //}
-
-        //[Fact]
-        //public async Task CreateUserMissingEmail()
-        //{
-
-        //}
-
-        //[Fact]
-        //public async Task CreateUserMissingPassword()
-        //{
-
-        //}
-
-        //[Fact]
-        //public async Task CreateUserNotAValidEmailAddress()
-        //{
-
-        //}
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var response = JsonConvert.DeserializeObject<ErrorDetails>(stringResponse);
+            response.Message.ShouldContain("ValidationException");
+        }
     }
 }
