@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TravelExpenses.Application.Common.Dtos;
-using TravelExpenses.Application.Common.Validators;
 using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Domain.Entities;
@@ -89,7 +88,8 @@ namespace TravelExpenses.Application.Features
             {
                 RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
                 {
-                    RuleFor(x => x.LoginDetails).SetValidator(new UserInValidator());
+                    RuleFor(x => x.LoginDetails.Email).NotNull().EmailAddress();
+                    RuleFor(x => x.LoginDetails.Password).NotNull().Length(6, 50);
                 });
             }
         }

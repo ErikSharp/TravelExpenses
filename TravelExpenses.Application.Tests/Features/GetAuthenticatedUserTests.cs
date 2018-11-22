@@ -21,42 +21,6 @@ namespace TravelExpenses.Application.Tests.Features
     public class GetAuthenticatedUserTests
     {
         [Fact]
-        public void ValidatorShouldRejectMissingLoginDetails()
-        {
-            RunValidator(null, "LoginDetails");
-        }
-
-        [Fact]
-        public void ValidatorShouldRejectInvalidEmail()
-        {
-            var loginDetails = new UserIn("NotAnEmail", "password");
-            RunValidator(loginDetails, "LoginDetails.Email");
-        }
-
-        [Fact]
-        public void ValidatorShouldRejectShortPassword()
-        {
-            var loginDetails = new UserIn("erik.sharp@hadleyshope.com", "short");
-            RunValidator(loginDetails, "LoginDetails.Password");
-        }
-
-        [Fact]
-        public void ValidatorShouldRejectLongPassword()
-        {
-            var loginDetails = new UserIn("erik.sharp@hadleyshope.com", new string('w', 51));
-            RunValidator(loginDetails, "LoginDetails.Password");
-        }
-
-        private void RunValidator(UserIn loginDetails, string propertyName)
-        {
-            var validator = new Validator();
-            var validation = validator.Validate(new Query(loginDetails));
-
-            validation.Errors.Count.ShouldBe(1);
-            validation.Errors.Single().PropertyName.ShouldBe(propertyName);
-        }
-
-        [Fact]
         public async void ShouldCreateAuthenticatedUserForCorrectCredentials()
         {
             var options = new DbContextOptionsBuilder<TravelExpensesContext>()

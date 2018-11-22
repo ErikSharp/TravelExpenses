@@ -63,7 +63,7 @@ namespace TravelExpenses.WebAPI
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetAuthenticatedUser.Validator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUser.Validator>());
 
             var connectionString = Configuration.GetConnectionString("TravelExpensesDatabase");
 

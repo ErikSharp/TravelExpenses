@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,11 +27,18 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPut("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody]UserIn userParam)
         {
+            const string failureMessage = "Username or password is incorrect";
+
+            if (string.IsNullOrEmpty(userParam.Password) || string.IsNullOrEmpty(userParam.Email))
+            {
+                return BadRequest(new FailureResponse { Message = failureMessage });
+            }
+
             var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam));
 
             if (authenticatedUser == null)
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new FailureResponse { Message = failureMessage });
             }
 
             return Ok(authenticatedUser);

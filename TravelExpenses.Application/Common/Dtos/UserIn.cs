@@ -8,11 +8,12 @@ namespace TravelExpenses.Application.Common.Dtos
     {
         public UserIn(string email, string password)
         {
-            Email = email;
+            var emailTemp = email ?? "";
+            Email = emailTemp.ToLowerInvariant();
             Password = password;
         }
 
-        public string Email { get; private set; }
+        public string Email { get; set; }
         public string Password { get; private set; }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TravelExpenses.Application.Common.Dtos;
-using TravelExpenses.Application.Common.Validators;
 using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
@@ -85,17 +83,6 @@ namespace TravelExpenses.Application.Features
 
                 return userOut;
             }
-        }
-
-        public class Validator : AbstractValidator<Query>
-        {
-            public Validator()
-            {
-                RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
-                {
-                    RuleFor(x => x.LoginDetails).SetValidator(new UserInValidator());
-                });
-            }
-        }        
+        }     
     }
 }

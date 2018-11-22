@@ -10,7 +10,13 @@ dotnet-outdated
   - [ ] Create Login page
   - [ ] Create registration page
 - Server
-  - [ ] Add functional tests
+  - [x] Add integration tests
+    - [x] Happy path auth
+    - [ ] Wrong password
+    - [ ] Unknown user
+    - [ ] Happy path create user
+    - [ ] User already exists
+    - [ ] Validation errors
   - [ ] Complete database
   - [x] Create basic health checks
   - [x] Move connection string to correct location
