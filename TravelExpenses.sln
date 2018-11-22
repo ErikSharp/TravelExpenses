@@ -40,6 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{0D8AD45A-016
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExpenses.IntegrationTests", "TravelExpenses.IntegrationTests\TravelExpenses.IntegrationTests.csproj", "{73AEEE3E-5854-4E47-BAA5-7629EC021F3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{051C2158-253F-45EC-B561-83B11EF923F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{051C2158-253F-45EC-B561-83B11EF923F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{051C2158-253F-45EC-B561-83B11EF923F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AEEE3E-5854-4E47-BAA5-7629EC021F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73AEEE3E-5854-4E47-BAA5-7629EC021F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73AEEE3E-5854-4E47-BAA5-7629EC021F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73AEEE3E-5854-4E47-BAA5-7629EC021F3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{25ABCAA8-DD1C-4697-9E9D-9A209DB16FA2} = {62037FFB-BB20-4451-8596-112634B88080}
 		{AADB9EEE-C7D0-428E-B93C-D2EDF29DEC77} = {25ABCAA8-DD1C-4697-9E9D-9A209DB16FA2}
 		{051C2158-253F-45EC-B561-83B11EF923F3} = {48D68870-6F68-40D7-8C93-A80AD2C081D3}
+		{73AEEE3E-5854-4E47-BAA5-7629EC021F3C} = {48D68870-6F68-40D7-8C93-A80AD2C081D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11A23A0A-206A-4827-BBE8-CE44979FDDCE}
