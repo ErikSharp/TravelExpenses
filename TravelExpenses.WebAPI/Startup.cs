@@ -70,6 +70,9 @@ namespace TravelExpenses.WebAPI
             services.AddDbContext<TravelExpensesContext>
                 (options => options.UseSqlServer(connectionString));
 
+            // Automatically perform database migration
+            services.BuildServiceProvider().GetService<TravelExpensesContext>().Database.Migrate();
+
             services.AddHealthChecks()
                 .AddCheck("Database", new SqlConnectionHealthCheck(connectionString))
                 .AddGCInfoCheck("GCInfo");
