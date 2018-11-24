@@ -27,7 +27,7 @@ namespace TravelExpenses.Application.Helpers
         public string CreateTokenString(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("52f5b5a8-1824-4108-b9b7-f8f4a35f93a3");
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

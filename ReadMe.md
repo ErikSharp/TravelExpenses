@@ -22,7 +22,7 @@ dotnet-outdated
   - [x] Create basic health checks
   - [x] Move connection string to correct location
   - [ ] Double logging of requests
-  - [ ] External configuration
+  - [x] External configuration
   - [ ] Add user id to the requests and logging
   - [x] Cleanup logging in Startup.cs
   - [x] Turn off developer exception page

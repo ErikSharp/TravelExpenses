@@ -61,8 +61,8 @@ namespace TravelExpenses.WebAPI
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUser.Validator>());
 
-            var connectionString = @"Server=tcp:travel-expenses-server.database.windows.net,1433;Initial Catalog=travel-expenses;Persist Security Info=False;User ID=esharp;Password=17fv9oGPAK3yb3gOIwXq;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"; //Configuration.GetConnectionString("MyDbConnection");
-            
+            var connectionString = Configuration.GetConnectionString("MyDbConnection");
+
             services.AddDbContext<TravelExpensesContext>
                 (options => options.UseSqlServer(connectionString));
 
@@ -83,12 +83,12 @@ namespace TravelExpenses.WebAPI
             services.AddAutoMapper();
 
             //configure strongly typed settings objects
-            //var appSettingsSection = Configuration.GetSection("AppSettings");
-            //services.Configure<AppSettings>(appSettingsSection);
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
             //configure jwt authentication
-            //var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes("52f5b5a8-1824-4108-b9b7-f8f4a35f93a3"); //appSettings.Secret);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(config =>
             {
