@@ -70,6 +70,7 @@ namespace TravelExpenses.WebAPI
             services.BuildServiceProvider().GetService<TravelExpensesContext>().Database.Migrate();
             
             services.AddHealthChecks()
+                .AddEnvironmentCheck()
                 .AddCheck("Database", new SqlConnectionHealthCheck(connectionString))
                 .AddGCInfoCheck("GCInfo");
             
@@ -138,13 +139,11 @@ namespace TravelExpenses.WebAPI
 
             var logger = loggerFactory.CreateLogger<Startup>();
 
-            logger.LogInformation("We are inside Startup talking via logger 2");
+            logger.LogDebug("The logger is now available");
 
             app.ConfigureCustomExceptionMiddleware();
-            logger.LogInformation("2");
 
             app.UseHttpsRedirection();
-            logger.LogInformation("3");
 
             // This will register the health checks middleware at the URL /health
             // 
@@ -155,10 +154,8 @@ namespace TravelExpenses.WebAPI
                 // This custom writer formats the detailed status as JSON.
                 ResponseWriter = WriteResponse,
             });
-            logger.LogInformation("4");
 
             app.UseMvc();
-            logger.LogInformation("5");
         }
 
         private static Task WriteResponse(HttpContext httpContext, HealthReport result)

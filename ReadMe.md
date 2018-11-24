@@ -24,10 +24,13 @@ dotnet-outdated
   - [ ] Double logging of requests
   - [ ] External configuration
   - [ ] Add user id to the requests and logging
-  - [ ] Cleanup logging in Startup.cs
+  - [x] Cleanup logging in Startup.cs
   - [x] Turn off developer exception page
+  - [ ] Logging format on Azure
+  - [x] Add environment health check
 - Azure
-  - [ ] Get build to work
-  - [ ] Deploy database
+  - [x] Get build to work
+  - [x] Deploy database
   - [ ] Deploy client code
-  - [ ] Logging setup
+  - [x] Logging setup
+  - [ ] Execute unit tests

@@ -34,6 +34,9 @@ namespace TravelExpenses.WebAPI.HealthChecks
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var data = new Dictionary<string, object>();
+            data.Add("TestQuery", TestQuery);
+
             using (var connection = CreateConnection(ConnectionString))
             {
                 try
@@ -48,13 +51,13 @@ namespace TravelExpenses.WebAPI.HealthChecks
                         await command.ExecuteNonQueryAsync(cancellationToken);
                     }
                 }
-                catch (DbException ex)
+                catch (Exception ex)
                 {
-                    return HealthCheckResult.Failed(exception: ex);
+                    return HealthCheckResult.Failed("The connection to the database has failed", ex, data);
                 }
-            }
+            }           
 
-            return HealthCheckResult.Passed();
+            return HealthCheckResult.Passed($"The connection and querying of the database has passed", data);
         }
     }
 }

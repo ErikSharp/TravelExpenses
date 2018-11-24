@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TravelExpenses.Common;
 
 namespace TravelExpenses.WebAPI.HealthChecks
 {
@@ -61,6 +62,7 @@ namespace TravelExpenses.WebAPI.HealthChecks
             var data = new Dictionary<string, object>()
             {
                 { "Allocated", allocated },
+                { "AllocatedMessage", $"{allocated.GetByteCountString()} allocated is {((double)allocated / (double)options.Threshold).ToString("P0")} of the threshold of {options.Threshold.GetByteCountString()}" },
                 { "Gen0Collections", GC.CollectionCount(0) },
                 { "Gen1Collections", GC.CollectionCount(1) },
                 { "Gen2Collections", GC.CollectionCount(2) },
