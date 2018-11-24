@@ -65,10 +65,16 @@ namespace TravelExpenses.WebAPI
             
             services.AddDbContext<TravelExpensesContext>
                 (options => options.UseSqlServer(connectionString));
-            
-            // Automatically perform database migration
-            services.BuildServiceProvider().GetService<TravelExpensesContext>().Database.Migrate();
-            
+
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment != null && environment != "Development")
+            {
+                // Automatically perform database migration
+                // The integration tests cannot run this command
+                services.BuildServiceProvider().GetService<TravelExpensesContext>().Database.Migrate();
+            }
+
             services.AddHealthChecks()
                 .AddEnvironmentCheck()
                 .AddCheck("Database", new SqlConnectionHealthCheck(connectionString))
