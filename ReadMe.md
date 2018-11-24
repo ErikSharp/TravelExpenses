@@ -21,6 +21,11 @@ dotnet-outdated
   - [ ] Complete database
   - [x] Create basic health checks
   - [x] Move connection string to correct location
+  - [ ] Double logging of requests
+  - [ ] External configuration
+  - [ ] Add user id to the requests and logging
+  - [ ] Cleanup logging in Startup.cs
+  - [x] Turn off developer exception page
 - Azure
   - [ ] Get build to work
   - [ ] Deploy database
