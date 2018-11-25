@@ -10,6 +10,7 @@ dotnet-outdated
   - [ ] Create Login page
   - [ ] Create registration page
   - [x] Build to wwwroot
+  - [x] Enable CORS for development
 - Server
   - [x] Add integration tests
     - [x] Happy path auth
@@ -31,6 +32,6 @@ dotnet-outdated
 - Azure
   - [x] Get build to work
   - [x] Deploy database
-  - [ ] Deploy client code
+  - [x] Deploy client code
   - [x] Logging setup
   - [ ] Execute unit tests

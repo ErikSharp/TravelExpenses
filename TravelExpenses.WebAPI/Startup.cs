@@ -48,6 +48,8 @@ namespace TravelExpenses.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddTransient<IDateTime, MachineDateTime>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();
 
@@ -114,10 +116,23 @@ namespace TravelExpenses.WebAPI
                 options.SuppressModelStateInvalidFilter = true;
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // https://www.blinkingcaret.com/2018/01/24/angular-and-asp-net-core/
+            app.Use(async (HttpContext context, Func<Task> next) =>
+            {
+                await next.Invoke();
+
+                // This is for when we are using SPA routing such as /customers/123
+                // This is obviously not for the Web API, so we pass it to the client
+                if (context.Response.StatusCode == 404 && !context.Request.Path.Value.Contains("/api"))
+                {
+                    context.Request.Path = new PathString("/index.html");
+                    await next.Invoke();
+                }
+            });
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -128,9 +143,11 @@ namespace TravelExpenses.WebAPI
                     .ReadFrom
                     .Configuration(Configuration)
                     .CreateLogger();
-
-                //app.UseDeveloperExceptionPage();
+                
                 loggerFactory.AddSerilog();
+
+                // As we are calling npm run serve in VS Code, it will be on a different port than the Web API and requires CORS config
+                app.UseCors(builder => builder.WithOrigins("http://localhost:8080"));
             }
             else
             {
