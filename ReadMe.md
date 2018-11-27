@@ -1,11 +1,42 @@
 # Travel Expenses - Manage Your Moolah
-### Build Procedures
+### Build Procedures and Deployment
+---
+##### Building the client for deployment to Azure
+- The client gets tested and built from the development environment and then the build artifacts are checked in to GIT and pushed
+- This will get detected by the DevOps Continuous Integration Pipeline and the build of the server will start
 ### Tasks
-Updated the nuget packages with this [dotnet tools](https://github.com/natemcmaster/dotnet-tools) command
-```
-dotnet-outdated
-```
+---
+##### Connect SQL Server Management Studio to the Azure SQL Server database
+- The server name is travel-expenses-server.database.windows.net
+
+##### Development procedure
+1. Visual Studio 2017 has TravelExpense.sln loaded
+2. Visual Studio Code has the TravelExpenses.Client folder loaded
+3. Start (F5) the WebAPI solution by self hosting TravelExpenses.WebAPI and not IIS Express
+   - It just runs faster
+   - Debugging works just as normal
+4. Open a terminal in VS Code and type `npm run serve`
+   - This will run the client in its own web server from the Vue CLI on port 8080
+   - Port 8080 is allowed by CORS in the Startup.cs file, but only in development
+   - The client is watched for changes so you just have to refresh the page
+5. Open SQL Server Management Studio and connect to `(localdb)\MSSQLLocalDB` with Windows authentication
+
+##### Commands
+- Update the nuget packages with this [dotnet tools](https://github.com/natemcmaster/dotnet-tools) command
+    ```
+    dotnet-outdated
+    ```
+- Created a new migration for changes that are made to either the entities or the context
+    ```
+    add-migration <name>
+    ```
+- Run migrations into the development database (uses the connection string in appsettings.Development.json)
+    ```
+    update-database <name>
+    ```
+    - *Note that migration are automatically run into the production database when Startup runs*
 ### Todos
+---
 - Client
   - [ ] Create Login page
   - [ ] Create registration page
