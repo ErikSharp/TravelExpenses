@@ -9,23 +9,16 @@ export default new Vuex.Store({
     contact
   },
   state: {
-    error: '',
-    busy: false
+    authStep: 1
   },
   mutations: {
-    SET_ERROR(state, error) {
-      state.error = error
-    },
-    SET_BUSY(state, busy) {
-      state.busy = busy
+    SET_AUTH_STEP(state, step) {
+      state.authStep = step
     }
   },
   actions: {
-    setError({ commit }, error) {
-      commit('SET_ERROR', error)
-    },
-    setBusy({ commit }, busy) {
-      commit('SET_BUSY', busy)
+    setAuthStep({ commit }, step) {
+      commit('SET_AUTH_STEP', step)
     }
   }
 })

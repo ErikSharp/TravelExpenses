@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Authentication from './views/Authentication.vue'
+import Home from '@/views/Home.vue'
+import NotFound from '@/views/NotFound.vue'
+import Authentication from '@/views/Authentication.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,10 @@ export default new Router({
       path: '/authentication',
       name: 'authentication',
       component: Authentication
+    },
+    {
+      path: '*',
+      component: NotFound
     }
   ]
 })

@@ -12,4 +12,9 @@
 </script>
 
 <style lang="scss">
+.click-text {
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
 </style>
