@@ -21,6 +21,26 @@ export default new Router({
       component: Authentication
     },
     {
+      path: '/cash-withdrawals',
+      name: 'cashWithdrawals',
+      component: Home
+    },
+    {
+      path: '/reconcile',
+      name: 'reconcile',
+      component: Home
+    },
+    {
+      path: '/queries',
+      name: 'queries',
+      component: Home
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Home
+    },
+    {
       path: '*',
       component: NotFound
     }
