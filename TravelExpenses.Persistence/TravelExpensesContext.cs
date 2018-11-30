@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TravelExpenses.Domain.Entities;
+using TravelExpenses.Persistence.Extensions;
 
 namespace TravelExpenses.Persistence
 {
@@ -27,27 +28,10 @@ namespace TravelExpenses.Persistence
 
             modelBuilder.HasDefaultSchema("app");
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                //https://7php.com/the-maximum-length-limit-of-an-email-address-is-254-not-320/
-                //https://stackoverflow.com/questions/3844431/are-email-addresses-allowed-to-contain-non-alphanumeric-characters
-                entity.Property(e => e.Email)
-                    .HasMaxLength(254)
-                    .IsUnicode()
-                    .IsRequired();
+            //Great information on mapping the fields
+            //https://www.meziantou.net/2017/07/27/entity-framework-core-specifying-data-type-length-and-precision
 
-                entity.HasIndex(e => e.Email).IsUnique().HasName("Index_Email");
-
-                //https://stackoverflow.com/questions/5881169/what-column-type-length-should-i-use-for-storing-a-bcrypt-hashed-password-in-a-d
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasMaxLength(60)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Created)
-                    .HasDefaultValueSql("getdate()")
-                    .ValueGeneratedOnAdd();
-            });
+            modelBuilder.ApplyAllConfigurations();
         }
     }
 }
