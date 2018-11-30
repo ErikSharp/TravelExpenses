@@ -1,15 +1,10 @@
 <template>
   <div>
     <home-header></home-header>
-    <router-view :key="$route.fullPath"/>
-    <v-bottom-nav
-      :active.sync="bottomNav"
-      @update:active="navigate"
-      :value="true"
-      fixed
-      shift
-      color="primary"
-    >
+    <transition name="fade">
+      <router-view :key="$route.fullPath"/>
+    </transition>
+    <v-bottom-nav :active.sync="homeView" :value="true" fixed shift color="primary">
       <v-btn dark value="transactions">
         <span>Home</span>
         <v-icon>home</v-icon>
@@ -47,16 +42,31 @@ export default {
   components: {
     HomeHeader
   },
-  data() {
-    return {
-      homeWindow: 0,
-      bottomNav: 'transactions'
-    }
+  created() {
+    this.$store.dispatch('setHomeView', this.$router.currentRoute.name)
   },
-  methods: {
-    navigate() {
-      this.$router.push({ name: this.bottomNav })
+  computed: {
+    homeView: {
+      get() {
+        return this.$store.state.homeView
+      },
+      set(newValue) {
+        return this.$store.dispatch('setHomeView', newValue)
+      }
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter-active {
+  transition-delay: 0.25s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

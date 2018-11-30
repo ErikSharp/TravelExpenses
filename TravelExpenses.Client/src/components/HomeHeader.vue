@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar dark color="primary">
-      <v-toolbar-title class="white--text">Title</v-toolbar-title>
+      <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom left>
         <v-btn dark slot="activator" icon>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import StringUtils from '@/common/StringUtilities.js'
+
 export default {
   data() {
     return {
@@ -35,6 +37,11 @@ export default {
         case 0:
           alert('logout')
       }
+    }
+  },
+  computed: {
+    title() {
+      return StringUtils(this.$store.state.homeView)
     }
   }
 }
