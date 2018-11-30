@@ -4,7 +4,7 @@
     <transition name="fade">
       <router-view :key="$route.fullPath"/>
     </transition>
-    <v-bottom-nav :active.sync="homeView" :value="true" fixed shift color="primary">
+    <v-bottom-nav :active.sync="homeView" :value="true" fixed color="primary">
       <v-btn dark value="transactions">
         <span>Home</span>
         <v-icon>home</v-icon>
