@@ -1,13 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from '@/router'
-import contact from '@/store/modules/user.js'
+import Router from '@/router'
+import User from '@/store/modules/UserStore.js'
+import Authentication from '@/store/modules/AuthenticationStore.js'
+import Values from '@/store/modules/ValuesStore.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    contact
+    User,
+    Authentication,
+    Values
   },
   state: {
     authStep: 1,
@@ -27,7 +31,7 @@ export default new Vuex.Store({
     },
     setHomeView({ commit }, view) {
       commit('SET_HOME_VIEW', view)
-      router.push({ name: view })
+      Router.push({ name: view })
     }
   }
 })

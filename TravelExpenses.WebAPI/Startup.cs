@@ -147,7 +147,12 @@ namespace TravelExpenses.WebAPI
                 loggerFactory.AddSerilog();
 
                 // As we are calling npm run serve in VS Code, it will be on a different port than the Web API and requires CORS config
-                app.UseCors(builder => builder.WithOrigins("http://localhost:8080"));
+                app.UseCors(builder => 
+                    builder.WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
+                app.UseMiddleware<DevelopmentLatencyMiddleware>();
             }
             else
             {
@@ -164,7 +169,7 @@ namespace TravelExpenses.WebAPI
 
             logger.LogDebug("The logger is now available");
 
-            app.ConfigureCustomExceptionMiddleware();
+            app.ConfigureCustomExceptionMiddleware();            
 
             app.UseHttpsRedirection();
 
