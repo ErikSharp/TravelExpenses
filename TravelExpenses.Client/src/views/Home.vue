@@ -30,6 +30,23 @@
         <v-icon>settings</v-icon>
       </v-btn>
     </v-bottom-nav>
+    <v-snackbar
+      v-model="snackbar.show"
+      :color="snackbar.color"
+      :multi-line="snackbar.mode === 'multi-line'"
+      :timeout="snackbar.timeout"
+      :vertical="snackbar.mode === 'vertical'"
+      top
+    >
+      {{ snackbar.message }}
+      <!-- <v-btn
+        dark
+        flat
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>-->
+    </v-snackbar>
   </div>
 </template>
 
@@ -53,6 +70,9 @@ export default {
       set(newValue) {
         return this.$store.dispatch('setHomeView', newValue)
       }
+    },
+    snackbar() {
+      return this.$store.state.snackbar
     }
   }
 }

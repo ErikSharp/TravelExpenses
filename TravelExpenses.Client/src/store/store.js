@@ -15,7 +15,14 @@ export default new Vuex.Store({
   },
   state: {
     authStep: 1,
-    homeView: 'transactions'
+    homeView: 'transactions',
+    snackbar: {
+      show: false,
+      color: '',
+      mode: '',
+      timeout: 3000,
+      message: ''
+    }
   },
   mutations: {
     SET_AUTH_STEP(state, step) {
@@ -23,6 +30,14 @@ export default new Vuex.Store({
     },
     SET_HOME_VIEW(state, view) {
       state.homeView = view
+    },
+    SET_SNACKBAR_DETAILS(state, snackbar) {
+      //'primary', success', 'info', 'error', 'cyan darken-2'
+      state.snackbar.color = snackbar.color || 'primary'
+      state.snackbar.message = snackbar.message || 'No message provided'
+      state.snackbar.mode = snackbar.mode || ''
+      state.snackbar.timeout = snackbar.timeout || 3000
+      state.snackbar.show = true
     }
   },
   actions: {
@@ -32,6 +47,9 @@ export default new Vuex.Store({
     setHomeView({ commit }, view) {
       commit('SET_HOME_VIEW', view)
       Router.push({ name: view })
+    },
+    showSnackbar({ commit }, snackbar) {
+      commit('SET_SNACKBAR_DETAILS', snackbar)
     }
   }
 })
