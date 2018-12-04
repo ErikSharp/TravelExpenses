@@ -13,6 +13,11 @@ namespace TravelExpenses.Persistence.Configurations
         {
             builder.HasKey(e => e.Id);
 
+            builder.Property(e => e.Username)
+                .HasMaxLength(60)
+                .IsUnicode()
+                .IsRequired();
+
             //https://7php.com/the-maximum-length-limit-of-an-email-address-is-254-not-320/
             //https://stackoverflow.com/questions/3844431/are-email-addresses-allowed-to-contain-non-alphanumeric-characters
             builder.Property(e => e.Email)
