@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import axios from 'axios'
+import Store from '@/store/store.js'
 
 // This is the one instance that everyone will use
 const apiClient = axios.create({
@@ -7,41 +7,19 @@ const apiClient = axios.create({
   withCredentials: false,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1NDI0NjgyODIsImV4cCI6MTU0MzA3MzA4MiwiaWF0IjoxNTQyNDY4MjgyfQ.Fyo4okV_SRRY3t4ReqMrjTqqzGUhbOvKvM0rf3LKaE0'
+    'Content-Type': 'application/json'
   }
 })
 
-// eslint-disable-next-line no-unused-vars
-let requestInterceptor = apiClient.interceptors.request.use(
-  config => {
-    console.log('Intercepting a request')
-    console.log(config)
-    console.log('End request interception')
-    return config
-  },
-  error => {
-    console.log('We have an error in the request interceptor:')
-    console.log(error)
-    return Promise.reject(error)
+apiClient.interceptors.request.use(config => {
+  if (Store.state.Authentication.authToken) {
+    config.headers['Authorization'] = `Bearer ${
+      Store.state.Authentication.authToken
+    }`
   }
-)
 
-// eslint-disable-next-line no-unused-vars
-let responseInterceptor = apiClient.interceptors.response.use(
-  response => {
-    console.log('Intercepting a response')
-    console.log(response)
-    console.log('End response interception')
-    return response
-  },
-  error => {
-    console.log('We have an error in the response interceptor:')
-    console.log(error)
-    return Promise.reject(error)
-  }
-)
+  return config
+})
 
 export default {
   getValues() {

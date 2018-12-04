@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Axios from '@/services/AxiosService.js'
 
 export default {
@@ -22,10 +21,6 @@ export default {
 
       try {
         let response = await Axios.getValues()
-        console.log(response.status)
-        console.log(response.statusText)
-        console.log(response.headers)
-        console.log(response.config)
         commit('SET_VALUES', response.data)
         dispatch(
           'showSnackbar',
@@ -44,9 +39,6 @@ export default {
             },
             { root: true }
           )
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
         } else if (error.request) {
           dispatch(
             'showSnackbar',
@@ -58,7 +50,6 @@ export default {
           )
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          console.log(error.request)
         } else {
           dispatch(
             'showSnackbar',
@@ -69,8 +60,6 @@ export default {
             },
             { root: true }
           )
-
-          console.log('Error', error.message)
         }
       } finally {
         commit('SET_BUSY', false)

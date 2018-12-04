@@ -183,6 +183,8 @@ namespace TravelExpenses.WebAPI
                 ResponseWriter = WriteResponse,
             });
 
+            app.UseAuthentication();
+
             app.UseMvc();
         }
 

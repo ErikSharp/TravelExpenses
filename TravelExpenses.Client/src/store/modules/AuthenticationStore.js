@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import LocalStorage from '@/services/LocalStorageService.js'
 import Axios from '@/services/AxiosService.js'
 import Router from '@/router'
@@ -27,7 +26,6 @@ export default {
     },
     async login({ dispatch, state }, details) {
       try {
-        console.log(details)
         let response = await Axios.login(details)
         if (state.persistToken) {
           LocalStorage.saveToken(response.data.token)
@@ -46,9 +44,6 @@ export default {
             },
             { root: true }
           )
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
         } else if (error.request) {
           dispatch(
             'showSnackbar',
@@ -60,7 +55,6 @@ export default {
           )
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          console.log(error.request)
         } else {
           dispatch(
             'showSnackbar',
@@ -71,12 +65,9 @@ export default {
             },
             { root: true }
           )
-
-          console.log('Error', error.message)
         }
       }
     },
-    // eslint-disable-next-line no-unused-vars
     async registerUser({ dispatch, state }, details) {
       try {
         let response = await Axios.register(details)
@@ -86,14 +77,10 @@ export default {
 
         dispatch('setToken', response.data.token)
       } catch (error) {
-        if (error.response) {
-          console.log('server says')
-          console.log(error.response)
-        } else if (error.request) {
-          console.log('no response from the server')
-        } else {
-          console.log('error setting up the request')
-        }
+        // if (error.response) {
+        // } else if (error.request) {
+        // } else {
+        // }
       }
     },
     logout({ commit }) {
