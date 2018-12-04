@@ -79,7 +79,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     async registerUser({ dispatch, state }, details) {
       try {
-        let response = await Axios.login(details)
+        let response = await Axios.register(details)
         if (state.persistToken) {
           LocalStorage.saveToken(response.data.token)
         }

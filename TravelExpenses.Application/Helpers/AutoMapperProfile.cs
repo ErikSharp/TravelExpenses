@@ -12,6 +12,7 @@ namespace TravelExpenses.Application.Helpers
         public AutoMapperProfile()
         {
             CreateMap<UserIn, User>();
+            CreateMap<UserRegistration, User>();
             CreateMap<User, UserOut>();
         }
     }

@@ -49,5 +49,8 @@ export default {
   },
   login(details) {
     return apiClient.put('api/users/authenticate', details)
+  },
+  register(details) {
+    return apiClient.post('api/users', details)
   }
 }
