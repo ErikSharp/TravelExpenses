@@ -1,16 +1,17 @@
-import Router from '@/router'
+/* eslint-disable no-console */
 import LocalStorage from '@/services/LocalStorageService.js'
+import Axios from '@/services/AxiosService.js'
+import Router from '@/router'
 
 export default {
   namespaced: true,
   state: {
-    jsonWebToken: ''
+    authToken: '',
+    persistToken: true
   },
   mutations: {
     SET_TOKEN(state, token) {
-      if (token) {
-        state.jsonWebToken = token
-      }
+      state.authToken = token
     }
   },
   actions: {
@@ -18,19 +19,64 @@ export default {
       commit('SET_TOKEN', token)
       Router.push({ name: 'transactions' })
     },
-    getToken({ dispatch }) {
+    checkLocalStorageForToken({ dispatch }) {
       let token = LocalStorage.getToken()
+      dispatch('setToken', token)
+    },
+    async login({ dispatch, state }, details) {
+      try {
+        console.log(details)
+        let response = await Axios.login(details)
+        if (state.persistToken) {
+          LocalStorage.saveToken(response.data.token)
+        }
 
-      if (token) {
-        dispatch('setToken', token)
-      } else {
-        Router.push({ name: 'authentication' })
+        dispatch('setToken', response.data.token)
+      } catch (error) {
+        if (error.response) {
+          dispatch(
+            'showSnackbar',
+            {
+              message:
+                'The request was made and the server responded with a status code that falls out of the range of 2xx',
+              mode: 'multi-line',
+              color: 'error'
+            },
+            { root: true }
+          )
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          dispatch(
+            'showSnackbar',
+            {
+              message: 'The request was made but no response was received',
+              color: 'error'
+            },
+            { root: true }
+          )
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          dispatch(
+            'showSnackbar',
+            {
+              message:
+                'Something happened in setting up the request that triggered an Error',
+              color: 'error'
+            },
+            { root: true }
+          )
+
+          console.log('Error', error.message)
+        }
       }
-    }
-  },
-  getters: {
-    isAuthenticated: state => {
-      return !!state.jsonWebToken
+    },
+    // eslint-disable-next-line no-unused-vars
+    registerUser({ commit }, details) {
+      console.log(details)
     }
   }
 }

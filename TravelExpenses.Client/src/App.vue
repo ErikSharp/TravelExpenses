@@ -5,12 +5,36 @@
         <transition name="fade">
           <router-view/>
         </transition>
+        <v-snackbar
+          v-model="snackbar.show"
+          :color="snackbar.color"
+          :multi-line="snackbar.mode === 'multi-line'"
+          :timeout="snackbar.timeout"
+          :vertical="snackbar.mode === 'vertical'"
+          top
+        >
+          {{ snackbar.message }}
+          <!-- <v-btn
+            dark
+            flat
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>-->
+        </v-snackbar>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
+export default {
+  computed: {
+    snackbar() {
+      return this.$store.state.snackbar
+    }
+  }
+}
 </script>
 
 <style lang="scss">

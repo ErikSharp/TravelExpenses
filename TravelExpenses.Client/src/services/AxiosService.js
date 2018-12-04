@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import axios from 'axios'
-import { Promise } from 'bluebird'
 
 // This is the one instance that everyone will use
 const apiClient = axios.create({
@@ -47,5 +46,8 @@ let responseInterceptor = apiClient.interceptors.response.use(
 export default {
   getValues() {
     return apiClient.get('/api/values')
+  },
+  login(details) {
+    return apiClient.put('api/users/authenticate', details)
   }
 }

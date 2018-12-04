@@ -14,7 +14,6 @@ export default new Vuex.Store({
     Values
   },
   state: {
-    authStep: 1,
     homeView: 'transactions',
     snackbar: {
       show: false,
@@ -25,9 +24,6 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    SET_AUTH_STEP(state, step) {
-      state.authStep = step
-    },
     SET_HOME_VIEW(state, view) {
       state.homeView = view
     },
@@ -41,9 +37,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setAuthStep({ commit }, step) {
-      commit('SET_AUTH_STEP', step)
-    },
     setHomeView({ commit }, view) {
       commit('SET_HOME_VIEW', view)
       Router.push({ name: view })

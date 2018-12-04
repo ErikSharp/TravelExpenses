@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
@@ -8,25 +9,16 @@ import Reconcile from '@/components/Reconcile.vue'
 import CashWithdrawals from '@/components/CashWithdrawals.vue'
 import Queries from '@/components/Queries.vue'
 import Setup from '@/components/Setup.vue'
+import Store from '@/store/store.js'
 
 Vue.use(Router)
 
-export default new Router({
+let myRouter = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/authentication',
-      name: 'authentication',
-      component: Authentication
-    },
-    {
-      path: '/transactions',
       component: Home,
       children: [
         {
@@ -35,6 +27,11 @@ export default new Router({
           component: Transactions
         }
       ]
+    },
+    {
+      path: '/authentication',
+      name: 'authentication',
+      component: Authentication
     },
     {
       path: '/cash-withdrawals',
@@ -86,3 +83,33 @@ export default new Router({
     }
   ]
 })
+
+myRouter.beforeEach((to, from, next) => {
+  let token = Store.state.Authentication.authToken
+
+  if (to.name === 'authentication') {
+    if (token) {
+      next({ name: 'transactions' })
+    } else {
+      Store.dispatch('Authentication/checkLocalStorageForToken')
+      if (Store.state.Authentication.authToken) {
+        next({ name: 'transactions' })
+      } else {
+        next()
+      }
+    }
+  } else {
+    if (token) {
+      next()
+    } else {
+      Store.dispatch('Authentication/checkLocalStorageForToken')
+      if (Store.state.Authentication.authToken) {
+        next()
+      } else {
+        next({ name: 'authentication' })
+      }
+    }
+  }
+})
+
+export default myRouter

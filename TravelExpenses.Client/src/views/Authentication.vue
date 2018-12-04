@@ -4,13 +4,13 @@
     <h3>Easily keep track of your expenses while you travel</h3>
     <v-window v-model="authStep">
       <v-window-item>
-        Reset the password here
+        <login @register="navToRegister" @resetPassword="navToResetPassword"/>
       </v-window-item>
       <v-window-item>
-        <login/>
+        <reset-password @navToLogin="navToLogin"/>
       </v-window-item>
       <v-window-item>
-        <register/>
+        <register @navToLogin="navToLogin"/>
       </v-window-item>
     </v-window>
   </div>
@@ -19,20 +19,24 @@
 <script>
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
+import ResetPassword from '@/components/ResetPassword.vue'
 
 export default {
-  components: { Login, Register },
+  components: { Login, Register, ResetPassword },
   data() {
-    return {}
+    return {
+      authStep: 0
+    }
   },
-  computed: {
-    authStep: {
-      get() {
-        return this.$store.state.authStep
-      },
-      set(newValue) {
-        return this.$store.dispatch('setAuthStep', newValue)
-      }
+  methods: {
+    navToLogin() {
+      this.authStep = 0
+    },
+    navToResetPassword() {
+      this.authStep = 1
+    },
+    navToRegister() {
+      this.authStep = 2
     }
   }
 }

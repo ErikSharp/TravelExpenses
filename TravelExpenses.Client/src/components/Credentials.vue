@@ -1,14 +1,12 @@
 <template>
   <div>
     <v-text-field
+      v-model="username"
       v-if="registering"
       placeholder="Username"
       prepend-inner-icon="person"
     ></v-text-field>
-    <v-text-field
-      placeholder="Email"
-      prepend-inner-icon="email"
-    ></v-text-field>
+    <v-text-field v-model="email" placeholder="Email" prepend-inner-icon="email"></v-text-field>
     <v-text-field
       v-model="password"
       placeholder="Password"
@@ -25,7 +23,7 @@
       :append-icon="getConfirmIcon"
       :type="passwordInputType"
     ></v-text-field>
-    <v-btn dark>{{getButtonText}}</v-btn>
+    <v-btn dark @click="submit">{{getButtonText}}</v-btn>
   </div>
 </template>
 
@@ -41,6 +39,8 @@ export default {
     return {
       passwordInputType: 'password',
       visibilityIcon: 'visibility',
+      username: '',
+      email: '',
       password: '',
       passwordConfirmation: ''
     }
@@ -53,6 +53,20 @@ export default {
       } else {
         this.passwordInputType = 'password'
         this.visibilityIcon = 'visibility'
+      }
+    },
+    submit() {
+      if (this.registering) {
+        this.$store.dispatch('Authentication/registerUser', {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        })
+      } else {
+        this.$store.dispatch('Authentication/login', {
+          email: this.email,
+          password: this.password
+        })
       }
     }
   },
