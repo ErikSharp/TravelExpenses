@@ -46,7 +46,7 @@ namespace TravelExpenses.WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody]UserIn userParam)
+        public async Task<IActionResult> CreateUser([FromBody]UserRegistration userParam)
         {
             var authenticatedUser = await mediator.Send(new CreateUser.Command(userParam));
 

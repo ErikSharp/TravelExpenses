@@ -22,12 +22,12 @@ namespace TravelExpenses.Application.Features
     {
         public class Command : IRequest<UserOut>
         {
-            public Command(UserIn loginDetails)
+            public Command(UserRegistration loginDetails)
             {
                 LoginDetails = loginDetails;
             }
 
-            public UserIn LoginDetails { get; private set; }
+            public UserRegistration LoginDetails { get; private set; }
         }
 
         public class Handler : IRequestHandler<Command, UserOut>
@@ -95,6 +95,7 @@ namespace TravelExpenses.Application.Features
             {
                 RuleFor(x => x.LoginDetails).NotNull().DependentRules(() =>
                 {
+                    RuleFor(x => x.LoginDetails.Username).NotNull().Length(3, 60);
                     RuleFor(x => x.LoginDetails.Email).NotNull().EmailAddress();
                     RuleFor(x => x.LoginDetails.Password).NotNull().Length(6, 50);
                 });

@@ -35,7 +35,7 @@ export default {
     menuItemClicked(itemIndex) {
       switch (itemIndex) {
         case 0:
-          alert('logout')
+          this.$store.dispatch('Authentication/logout')
       }
     }
   },

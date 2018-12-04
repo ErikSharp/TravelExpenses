@@ -21,7 +21,9 @@ export default {
     },
     checkLocalStorageForToken({ dispatch }) {
       let token = LocalStorage.getToken()
-      dispatch('setToken', token)
+      if (token) {
+        dispatch('setToken', token)
+      }
     },
     async login({ dispatch, state }, details) {
       try {
@@ -75,8 +77,29 @@ export default {
       }
     },
     // eslint-disable-next-line no-unused-vars
-    registerUser({ commit }, details) {
-      console.log(details)
+    async registerUser({ dispatch, state }, details) {
+      try {
+        let response = await Axios.login(details)
+        if (state.persistToken) {
+          LocalStorage.saveToken(response.data.token)
+        }
+
+        dispatch('setToken', response.data.token)
+      } catch (error) {
+        if (error.response) {
+          console.log('server says')
+          console.log(error.response)
+        } else if (error.request) {
+          console.log('no response from the server')
+        } else {
+          console.log('error setting up the request')
+        }
+      }
+    },
+    logout({ commit }) {
+      commit('SET_TOKEN', null)
+      LocalStorage.clearToken()
+      Router.push({ name: 'authentication' })
     }
   }
 }

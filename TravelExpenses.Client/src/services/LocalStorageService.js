@@ -1,8 +1,13 @@
+const tokenKey = 'TravelExpenses'
+
 export default {
   saveToken(token) {
-    localStorage.setItem('TravelExpenses', token)
+    localStorage.setItem(tokenKey, token)
   },
   getToken() {
-    return localStorage.getItem('TravelExpenses')
+    return localStorage.getItem(tokenKey)
+  },
+  clearToken() {
+    localStorage.removeItem(tokenKey)
   }
 }
