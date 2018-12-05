@@ -1,18 +1,20 @@
 <template>
   <div>
     <h3>Reconcile Summary</h3>
-    <v-btn @click="nextWindow(0)">Recount Cash</v-btn>
-    <v-btn @click="nextWindow(1)">Review Transactions</v-btn>
-    <v-btn @click="nextWindow(2)">Add Cash</v-btn>
-    <v-btn @click="nextWindow(3)">Make Loss/Gain adjustment</v-btn>
+    <v-btn @click="navToInvestigation">Investigate</v-btn>
   </div>
 </template>
 
 <script>
+import Windows from '@/common/enums/ReconcileWindows.js'
+
 export default {
   methods: {
-    nextWindow(windowId) {
-      this.$emit('nextWindow', windowId)
+    navToInvestigation() {
+      this.$store.dispatch(
+        'Reconcile/setReconcileWindowId',
+        Windows.investigation
+      )
     }
   }
 }

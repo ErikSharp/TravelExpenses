@@ -1,15 +1,17 @@
 <template>
   <div>
     <h3>Cash Calculator</h3>
-    <v-btn @click="done">Done</v-btn>
+    <v-btn @click="navToSummary">Done</v-btn>
   </div>
 </template>
 
 <script>
+import Windows from '@/common/enums/ReconcileWindows.js'
+
 export default {
   methods: {
-    done() {
-      this.$emit('done')
+    navToSummary() {
+      this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
     }
   }
 }

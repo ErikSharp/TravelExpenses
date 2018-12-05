@@ -1,14 +1,29 @@
 <template>
   <div>
-    <v-window v-model="reconcileScreen">
+    <v-window v-model="reconcileWindowId">
       <v-window-item>
-        <reconcile-cash-calc @done="navToSummary"/>
+        <reconcile-cash-calc/>
       </v-window-item>
       <v-window-item>
-        <reconcile-summary @nextWindow="navToAdjustments"/>
+        <reconcile-summary/>
       </v-window-item>
       <v-window-item>
-        <reconcile-adjustments :screen="adjustmentsScreen" @returnToSummary="navToSummary"/>
+        <reconcile-investigation/>
+      </v-window-item>
+      <v-window-item>
+        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+          <transactions/>
+        </button-wrapper>
+      </v-window-item>
+      <v-window-item>
+        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+          <cash-withdrawals/>
+        </button-wrapper>
+      </v-window-item>
+      <v-window-item>
+        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+          <reconcile-loss-gain/>
+        </button-wrapper>
       </v-window-item>
     </v-window>
   </div>
@@ -17,42 +32,36 @@
 <script>
 import ReconcileCashCalc from '@/components/reconcile/ReconcileCashCalc.vue'
 import ReconcileSummary from '@/components/reconcile/ReconcileSummary.vue'
-import ReconcileAdjustments from '@/components/reconcile/ReconcileAdjustments.vue'
+import ReconcileInvestigation from '@/components/reconcile/ReconcileInvestigation.vue'
+import ButtonWrapper from '@/components/reconcile/ButtonWrapper.vue'
+import Transactions from '@/components/Transactions.vue'
+import CashWithdrawals from '@/components/CashWithdrawals.vue'
+import ReconcileLossGain from '@/components/reconcile/ReconcileLossGain.vue'
+import Windows from '@/common/enums/ReconcileWindows.js'
 
 export default {
   components: {
     ReconcileCashCalc,
     ReconcileSummary,
-    ReconcileAdjustments
+    ReconcileInvestigation,
+    ButtonWrapper,
+    Transactions,
+    CashWithdrawals,
+    ReconcileLossGain
   },
   data() {
     return {
-      reconcileScreen: 0,
-      adjustmentsScreen: 0
+      buttonText: 'Return to Summary'
     }
   },
   methods: {
     navToSummary() {
-      this.reconcileScreen = 1
-    },
-    navToAdjustments(windowId) {
-      switch (windowId) {
-        case 0:
-          this.reconcileScreen = 0
-          break
-        case 1:
-          this.reconcileScreen = 2
-          this.adjustmentsScreen = 0
-          break
-        case 2:
-          this.reconcileScreen = 2
-          this.adjustmentsScreen = 1
-          break
-        case 3:
-          this.reconcileScreen = 2
-          this.adjustmentsScreen = 2
-          break
-      }
+      this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
+    }
+  },
+  computed: {
+    reconcileWindowId() {
+      return this.$store.state.Reconcile.reconcileWindowId
     }
   }
 }
