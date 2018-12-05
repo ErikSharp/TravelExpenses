@@ -5,12 +5,16 @@ import Router from '@/router'
 export default {
   namespaced: true,
   state: {
+    busy: false,
     authToken: '',
     persistToken: true
   },
   mutations: {
     SET_TOKEN(state, token) {
       state.authToken = token
+    },
+    SET_BUSY(state, busy) {
+      state.busy = busy
     }
   },
   actions: {
@@ -24,8 +28,9 @@ export default {
         dispatch('setToken', token)
       }
     },
-    async login({ dispatch, state }, details) {
+    async login({ dispatch, state, commit }, details) {
       try {
+        commit('SET_BUSY', true)
         let response = await Axios.login(details)
         if (state.persistToken) {
           LocalStorage.saveToken(response.data.token)
@@ -66,10 +71,13 @@ export default {
             { root: true }
           )
         }
+      } finally {
+        commit('SET_BUSY', false)
       }
     },
-    async registerUser({ dispatch, state }, details) {
+    async registerUser({ dispatch, state, commit }, details) {
       try {
+        commit('SET_BUSY', true)
         let response = await Axios.register(details)
         if (state.persistToken) {
           LocalStorage.saveToken(response.data.token)
@@ -81,6 +89,8 @@ export default {
         // } else if (error.request) {
         // } else {
         // }
+      } finally {
+        commit('SET_BUSY', false)
       }
     },
     logout({ commit }) {

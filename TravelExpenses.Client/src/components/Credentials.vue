@@ -39,7 +39,7 @@
       @input="$v.passwordConfirmation.$touch()"
       @blur="$v.passwordConfirmation.$touch()"
     ></v-text-field>
-    <v-btn :disabled="$v.$invalid" @click="submit">{{getButtonText}}</v-btn>
+    <v-btn :loading="busy" :disabled="$v.$invalid" @click="submit">{{getButtonText}}</v-btn>
   </div>
 </template>
 
@@ -187,6 +187,9 @@ export default {
       !this.$v.passwordConfirmation.sameAsPassword &&
         errors.push('The passwords must match')
       return errors
+    },
+    busy() {
+      return this.$store.state.Authentication.busy
     }
   }
 }
