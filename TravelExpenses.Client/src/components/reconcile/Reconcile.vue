@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import ReconcileCashCalc from '@/components/ReconcileCashCalc.vue'
-import ReconcileSummary from '@/components/ReconcileSummary.vue'
-import ReconcileAdjustments from '@/components/ReconcileAdjustments.vue'
+import ReconcileCashCalc from '@/components/reconcile/ReconcileCashCalc.vue'
+import ReconcileSummary from '@/components/reconcile/ReconcileSummary.vue'
+import ReconcileAdjustments from '@/components/reconcile/ReconcileAdjustments.vue'
 
 export default {
   components: {

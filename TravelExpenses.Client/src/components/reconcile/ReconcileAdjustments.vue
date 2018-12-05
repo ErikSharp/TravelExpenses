@@ -14,9 +14,9 @@
 
 <script>
 import Transactions from '@/components/Transactions.vue'
-import ReconcileLossGain from '@/components/ReconcileLossGain.vue'
+import ReconcileLossGain from '@/components/reconcile/ReconcileLossGain.vue'
 import CashWithdrawals from '@/components/CashWithdrawals.vue'
-import ButtonWrapper from '@/components/ButtonWrapper.vue'
+import ButtonWrapper from '@/components/reconcile/ButtonWrapper.vue'
 
 export default {
   props: {
