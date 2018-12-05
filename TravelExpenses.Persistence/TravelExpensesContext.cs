@@ -24,7 +24,7 @@ namespace TravelExpenses.Persistence
         {
             //This is a global query filter that will run everytime that we query User
             modelBuilder.Entity<User>()
-                .HasQueryFilter(u => u.Disabled == false);
+                .HasQueryFilter(u => !u.Disabled);
 
             modelBuilder.HasDefaultSchema("app");
 

@@ -14,7 +14,7 @@ namespace TravelExpenses.Application.Helpers
     public class TokenGenerator : ITokenGenerator
     {
         private readonly IDateTime dateTime;
-        private AppSettings appSettings;
+        private readonly AppSettings appSettings;
 
         public TokenGenerator(
             IOptions<AppSettings> appSettings,
