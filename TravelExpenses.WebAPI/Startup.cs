@@ -105,8 +105,12 @@ namespace TravelExpenses.WebAPI
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+                    RequireSignedTokens = true,
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(5)
                 };
             });
             

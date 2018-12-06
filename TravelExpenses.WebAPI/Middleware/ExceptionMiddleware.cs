@@ -42,6 +42,20 @@ namespace TravelExpenses.WebAPI.Middleware
                     HttpStatusCode.Conflict,
                     ex.Message);
             }
+            catch (SecurityException ex)
+            {
+                await HandleExceptionAsync(
+                    httpContext,
+                    HttpStatusCode.BadRequest,
+                    ex.Message);
+            }
+            catch (InfrastructureException ex)
+            {
+                await HandleExceptionAsync(
+                    httpContext,
+                    HttpStatusCode.InternalServerError,
+                    ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Exception: {ex}");
