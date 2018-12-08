@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Domain.Entities;
@@ -15,10 +16,12 @@ namespace TravelExpenses.Application.Helpers
             CreateMap<UserIn, User>();
             CreateMap<UserRegistration, User>();
             CreateMap<User, UserOut>();
-            CreateMap<TransactionIn, Transaction>().ForMember(ti => 
-                ti.TransDate, 
-                e => e.MapFrom(o => 
-                    DateTime.ParseExact(o.TransDate, "yyyyMMdd", CultureInfo.InvariantCulture)));
+            CreateMap<TransactionIn, Transaction>()
+                .ForMember(dest => dest.TransDate,
+                    e => e.MapFrom(source =>
+                        DateTime.ParseExact(source.TransDate, "yyyyMMdd", CultureInfo.InvariantCulture)))
+                .ForMember(dest => dest.TransactionKeywords,
+                    e => e.MapFrom(source => source.KeywordIds.Select(id => new TransactionKeyword { KeywordId = id })));
         }
     }
 }

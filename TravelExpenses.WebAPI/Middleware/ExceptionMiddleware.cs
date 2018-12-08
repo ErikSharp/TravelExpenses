@@ -53,11 +53,12 @@ namespace TravelExpenses.WebAPI.Middleware
             catch (DbUpdateException ex)
             {
                 var e = ex.InnerException ?? ex;
+                _logger.LogInformation($"DbUpdateException: {e.ToString()}");
 
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
-                    e.Message);
+                    "The database has rejected the request");
             }
             catch (InfrastructureException ex)
             {
