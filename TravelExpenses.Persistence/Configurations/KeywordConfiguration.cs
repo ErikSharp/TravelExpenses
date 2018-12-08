@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Keyword> builder)
         {
+            builder.ToTable("Keyword");
+
             builder.Property(e => e.KeywordName)
                     .HasMaxLength(255)
                     .IsRequired();

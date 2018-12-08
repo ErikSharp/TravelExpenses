@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+            builder.ToTable("Category");
+
             builder.Property(e => e.CategoryName)
                     .HasMaxLength(255)
                     .IsRequired();

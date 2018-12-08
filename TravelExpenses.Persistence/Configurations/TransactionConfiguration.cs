@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Transaction> builder)
         {
+            builder.ToTable("Transaction");
+
             builder.Property(e => e.TransDate)
                     .HasColumnType("date")
                     .IsRequired();

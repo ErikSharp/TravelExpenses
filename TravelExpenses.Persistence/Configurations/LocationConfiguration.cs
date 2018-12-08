@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Location> builder)
         {
+            builder.ToTable("Location");
+
             builder.Property(e => e.LocationName)
                     .HasMaxLength(255)
                     .IsRequired();

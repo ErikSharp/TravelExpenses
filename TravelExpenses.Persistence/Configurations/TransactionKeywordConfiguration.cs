@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TransactionKeyword> builder)
         {
+            builder.ToTable("TransactionKeyword");
+
             builder.HasKey(tk => new { tk.TransactionId, tk.KeywordId });
 
             builder

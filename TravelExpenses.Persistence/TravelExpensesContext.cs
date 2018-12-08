@@ -18,6 +18,12 @@ namespace TravelExpenses.Persistence
         {
         }
 
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Keyword> Keywords { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,6 +38,7 @@ namespace TravelExpenses.Persistence
             //https://www.meziantou.net/2017/07/27/entity-framework-core-specifying-data-type-length-and-precision
 
             modelBuilder.ApplyAllConfigurations();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -35,112 +36,25 @@ namespace TravelExpenses.Application.Features
         public class Handler : AsyncRequestHandler<Command>
         {
             private readonly TravelExpensesContext context;
+            private readonly IMapper mapper;
             private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
-                ILoggerFactory loggerFactory)
+                ILoggerFactory loggerFactory,
+                IMapper mapper)
             {
                 this.context = context;
+                this.mapper = mapper;
                 this.logger = loggerFactory.CreateLogger<CreateTransaction>();
             }
 
-            protected override async Task Handle(Command request, CancellationToken response)
+            protected override Task Handle(Command request, CancellationToken response)
             {
-                var transDate = new SqlParameter
-                {
-                    ParameterName = "@TransDate",
-                    SqlDbType = System.Data.SqlDbType.Date,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = DateTime.ParseExact(request.TransactionIn.TransDate, DateStringFormat, CultureInfo.InvariantCulture)
-                };
+                var transaction = mapper.Map<Transaction>(request.TransactionIn);
 
-                var amount = new SqlParameter
-                {
-                    ParameterName = "@Amount",
-                    SqlDbType = System.Data.SqlDbType.SmallMoney,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.Amount
-                };
-
-                var locationId = new SqlParameter
-                {
-                    ParameterName = "@LocationId",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.LocationId
-                };
-
-                var currencyId = new SqlParameter
-                {
-                    ParameterName = "@CurrencyId",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.CurrencyId
-                };
-
-                var categoryId = new SqlParameter
-                {
-                    ParameterName = "@CategoryId",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.CategoryId
-                };
-
-                var title = new SqlParameter
-                {
-                    ParameterName = "@Title",
-                    SqlDbType = System.Data.SqlDbType.NVarChar,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Size = 255,
-                    Value = request.TransactionIn.Title
-                };
-
-                var memo = new SqlParameter
-                {
-                    ParameterName = "@Memo",
-                    SqlDbType = System.Data.SqlDbType.NVarChar,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Size = -1, //this means max
-                    Value = request.TransactionIn.Memo
-                };
-
-                var paidWithCash = new SqlParameter
-                {
-                    ParameterName = "@PaidWithCash",
-                    SqlDbType = System.Data.SqlDbType.Bit,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.PaidWithCash
-                };
-
-                var userId = new SqlParameter
-                {
-                    ParameterName = "@UserId",
-                    SqlDbType = System.Data.SqlDbType.Int,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = request.TransactionIn.UserId
-                };
-
-                try
-                {
-                    await context.Database.ExecuteSqlCommandAsync(
-                        "EXEC [app].[usp_transaction_insert] @TransDate, @Amount, @LocationId, @CurrencyId, @CategoryId, @Title, @Memo, @PaidWithCash, @UserId",
-                        transDate,
-                        amount,
-                        locationId,
-                        currencyId,
-                        categoryId,
-                        title,
-                        memo,
-                        paidWithCash,
-                        userId).ConfigureAwait(false);
-                }
-                catch (SqlException ex)
-                {
-                    var message = "An error occurred communicating with the database";
-                    logger.LogError(ex, message);
-                    throw new InfrastructureException(message);
-                }
+                context.Transactions.Add(transaction);
+                return context.SaveChangesAsync();
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,37 +22,46 @@ namespace TravelExpenses.WebAPI.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _next(httpContext);
+                return _next(httpContext);
             }
             catch (ValidationException ex)
             {
                 _logger.LogInformation($"ValidationException: {ex.ToString()}");
-                await HandleExceptionAsync(
+                return HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     $"{ex.GetType().Name}: {ex.ToString()}");
             }
             catch (UserAlreadyExistsException ex)
             {
-                await HandleExceptionAsync(
+                return HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.Conflict,
                     ex.Message);
             }
             catch (SecurityException ex)
             {
-                await HandleExceptionAsync(
+                return HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     ex.Message);
             }
+            catch (DbUpdateException ex)
+            {
+                var e = ex.InnerException ?? ex;
+
+                return HandleExceptionAsync(
+                    httpContext,
+                    HttpStatusCode.BadRequest,
+                    e.Message);
+            }
             catch (InfrastructureException ex)
             {
-                await HandleExceptionAsync(
+                return HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.InternalServerError,
                     ex.Message);
@@ -59,7 +69,7 @@ namespace TravelExpenses.WebAPI.Middleware
             catch (Exception ex)
             {
                 _logger.LogError($"Exception: {ex}");
-                await HandleExceptionAsync(
+                return HandleExceptionAsync(
                     httpContext, 
                     HttpStatusCode.InternalServerError, 
                     $"{ex.GetType().Name}: {ex.Message}");

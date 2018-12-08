@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Currency> builder)
         {
+            builder.ToTable("Currency");
+
             builder.Property(e => e.IsoCode)
                     .HasMaxLength(3)
                     .IsRequired();

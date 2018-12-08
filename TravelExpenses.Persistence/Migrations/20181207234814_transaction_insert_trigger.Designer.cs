@@ -10,8 +10,8 @@ using TravelExpenses.Persistence;
 namespace TravelExpenses.Persistence.Migrations
 {
     [DbContext(typeof(TravelExpensesContext))]
-    [Migration("20181206190855_inserttransactionsp")]
-    partial class inserttransactionsp
+    [Migration("20181207234814_transaction_insert_trigger")]
+    partial class transaction_insert_trigger
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

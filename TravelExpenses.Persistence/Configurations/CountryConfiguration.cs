@@ -11,6 +11,8 @@ namespace TravelExpenses.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
+            builder.ToTable("Country");
+
             builder.Property(e => e.CountryName)
                     .HasMaxLength(255)
                     .IsRequired();
