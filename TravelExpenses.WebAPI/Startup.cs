@@ -156,7 +156,7 @@ namespace TravelExpenses.WebAPI
                     .AllowAnyHeader()
                     .AllowAnyMethod());
 
-                app.UseMiddleware<DevelopmentLatencyMiddleware>();
+                //app.UseMiddleware<DevelopmentLatencyMiddleware>();
             }
             else
             {
