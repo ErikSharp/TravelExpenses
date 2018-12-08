@@ -22,30 +22,30 @@ namespace TravelExpenses.WebAPI.Middleware
             _next = next;
         }
 
-        public Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                return _next(httpContext);
+                await _next(httpContext);
             }
             catch (ValidationException ex)
             {
                 _logger.LogInformation($"ValidationException: {ex.ToString()}");
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     $"{ex.GetType().Name}: {ex.ToString()}");
             }
             catch (UserAlreadyExistsException ex)
             {
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.Conflict,
                     ex.Message);
             }
             catch (SecurityException ex)
             {
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     ex.Message);
@@ -54,14 +54,14 @@ namespace TravelExpenses.WebAPI.Middleware
             {
                 var e = ex.InnerException ?? ex;
 
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
                     e.Message);
             }
             catch (InfrastructureException ex)
             {
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.InternalServerError,
                     ex.Message);
@@ -69,7 +69,7 @@ namespace TravelExpenses.WebAPI.Middleware
             catch (Exception ex)
             {
                 _logger.LogError($"Exception: {ex}");
-                return HandleExceptionAsync(
+                await HandleExceptionAsync(
                     httpContext, 
                     HttpStatusCode.InternalServerError, 
                     $"{ex.GetType().Name}: {ex.Message}");
