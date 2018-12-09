@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Transactions</h1>
     <v-window v-model="transactionWindow">
       <v-window-item>
         <recent-transactions @addTransaction="addTransaction"></recent-transactions>

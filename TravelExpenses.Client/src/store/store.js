@@ -5,6 +5,7 @@ import User from '@/store/modules/UserStore.js'
 import Authentication from '@/store/modules/AuthenticationStore.js'
 import Values from '@/store/modules/ValuesStore.js'
 import Reconcile from '@/store/modules/ReconcileStore.js'
+import SetupData from '@/store/modules/SetupDataStore.js'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
     User,
     Authentication,
     Values,
-    Reconcile
+    Reconcile,
+    SetupData
   },
   state: {
     homeView: 'transactions',
