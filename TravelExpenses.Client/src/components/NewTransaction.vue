@@ -104,7 +104,7 @@
         <template slot="selection" slot-scope="data">{{ getLocationString(data.item) }}</template>
         <template slot="item" slot-scope="data">{{ getLocationString(data.item) }}</template>
       </v-select>
-      <v-combobox :items="keywords" v-model="chosenKeywords" label="Keywords" chips solo multiple>
+      <v-select :items="keywords" v-model="chosenKeywords" label="Keywords" chips solo multiple>
         <template slot="selection" slot-scope="data">
           <v-chip :selected="data.selected" close @input="removeKeyword(data.item)">
             <span>{{ data.item.keywordName }}</span>
@@ -118,12 +118,56 @@
             :label="data.item.keywordName"
           />
         </template>
-      </v-combobox>
-      <v-textarea solo label="Description" auto-grow v-model="memo"></v-textarea>
-      <v-checkbox class="mt-0" dark v-model="paidWithCash">
-        <div slot="label" class="white--text">Paid With Cash</div>
-      </v-checkbox>
-      <v-btn @click="cancel">Cancel</v-btn>
+      </v-select>
+      <v-textarea hide-details solo label="Description" auto-grow v-model="memo"></v-textarea>
+      <v-container class="py-0">
+        <v-layout row wrap justify-start>
+          <v-flex xs12 sm6>
+            <v-switch
+              hide-details
+              class="my-2 justify-center"
+              dark
+              color="white"
+              v-model="gpsLocation"
+            >
+              <div
+                slot="label"
+                :class="{ 'white--text' : gpsLocation, 'gray--text' : !gpsLocation }"
+              >GPS Location</div>
+            </v-switch>
+          </v-flex>
+          <v-flex xs12 sm6>
+            <v-checkbox hide-details class="my-2 justify-center" dark v-model="paidWithCash">
+              <div slot="label" class="white--text">Paid With Cash</div>
+            </v-checkbox>
+          </v-flex>
+          <v-flex xs12 sm4>
+            <div class="text-xs-center">
+              <v-btn
+                dark
+                :loading="busy && !usingSaveAndNew"
+                :disabled="$v.$invalid || (busy && !usingSaveAndNew)"
+                @click="save"
+              >Save</v-btn>
+            </div>
+          </v-flex>
+          <v-flex xs12 sm4>
+            <div class="text-xs-center">
+              <v-btn
+                dark
+                :loading="busy && usingSaveAndNew"
+                :disabled="$v.$invalid || (busy && usingSaveAndNew)"
+                @click="saveAndNew"
+              >Save & New</v-btn>
+            </div>
+          </v-flex>
+          <v-flex xs12 sm4>
+            <div class="text-xs-center">
+              <v-btn dark @click="cancel">Cancel</v-btn>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-container>
   </div>
 </template>
@@ -152,7 +196,9 @@ export default {
       location: {},
       chosenKeywords: [],
       memo: '',
-      paidWithCash: true
+      gpsLocation: false,
+      paidWithCash: true,
+      usingSaveAndNew: false
     }
   },
   validations() {
@@ -194,8 +240,38 @@ export default {
       this.chosenKeywords.splice(this.chosenKeywords.indexOf(item), 1)
       this.chosenKeywords = [...this.chosenKeywords]
     },
+    saveInternal() {
+      this.$store.dispatch('Transaction/saveTransaction', { title: this.title })
+    },
+    save() {
+      this.usingSaveAndNew = false
+      this.saveInternal()
+    },
+    saveAndNew() {
+      this.usingSaveAndNew = true
+      this.saveInternal()
+      this.$v.$reset()
+
+      this.title = ''
+      //this.date = ''
+      this.amount = ''
+      //this.currency = {}
+      this.category = {}
+      //this.location = {}
+      this.chosenKeywords = []
+      this.memo = ''
+      this.gpsLocation = false
+      this.paidWithCash = true
+    },
     cancel() {
       this.$emit('done')
+    },
+    scrollToTop() {
+      this.$vuetify.goTo(0, {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      })
     }
   },
   computed: {
@@ -288,6 +364,15 @@ export default {
 
       !this.$v.location.required && errors.push('A location is required')
       return errors
+    },
+    busy() {
+      const isBusy = this.$store.state.Transaction.busy
+
+      if (!isBusy && this.usingSaveAndNew) {
+        this.scrollToTop()
+      }
+
+      return isBusy
     }
   }
 }
