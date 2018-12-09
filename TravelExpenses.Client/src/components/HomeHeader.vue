@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar dark color="primary">
+    <v-toolbar fixed dark color="primary">
       <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom left>

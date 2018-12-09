@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Recent Transactions</h1>
+    <h1 class="white--text">Recent Transactions</h1>
     <v-btn @click="addTransaction">Add</v-btn>
     <v-btn :loading="busy" :disabled="busy" @click="retrieveValues">Retrieve values</v-btn>
     <p v-show="busy">We are busy</p>
-    <pre>{{values}}</pre>
+    <pre class="white--text">{{values}}</pre>
   </div>
 </template>
 
