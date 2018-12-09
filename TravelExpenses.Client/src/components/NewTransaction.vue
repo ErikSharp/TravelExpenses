@@ -120,7 +120,7 @@
         </template>
       </v-combobox>
       <v-textarea solo label="Description" auto-grow v-model="memo"></v-textarea>
-      <v-checkbox dark v-model="paidWithCash">
+      <v-checkbox class="mt-0" dark v-model="paidWithCash">
         <div slot="label" class="white--text">Paid With Cash</div>
       </v-checkbox>
       <v-btn @click="cancel">Cancel</v-btn>

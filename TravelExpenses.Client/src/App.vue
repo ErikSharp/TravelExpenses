@@ -58,4 +58,9 @@ export default {
 #app {
   background: #261136;
 }
+
+.v-text-field--box .v-input__slot {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
 </style>
