@@ -23,7 +23,7 @@
       </v-btn>
 
       <v-btn dark value="queries">
-        <span>Query</span>
+        <span>Queries</span>
         <v-icon>bar_chart</v-icon>
       </v-btn>
 
