@@ -7,10 +7,7 @@ namespace TravelExpenses.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             var trigger =
-@"USE TravelExpenses;
-GO
-
-CREATE OR ALTER TRIGGER [app].[transactionkeyword_insert] ON [app].[TransactionKeyword]
+@"CREATE OR ALTER TRIGGER [app].[transactionkeyword_insert] ON [app].[TransactionKeyword]
 AFTER INSERT, UPDATE
 AS
 
@@ -35,10 +32,7 @@ end;";
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             var sql =
-@"USE [TravelExpenses]
-GO
-
-DROP TRIGGER [app].[transactionkeyword_insert]
+@"DROP TRIGGER [app].[transactionkeyword_insert]
 GO";
             migrationBuilder.Sql(sql);
         }
