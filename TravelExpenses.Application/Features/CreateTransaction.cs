@@ -19,7 +19,7 @@ namespace TravelExpenses.Application.Features
 {
     public class CreateTransaction
     {
-        const string DateStringFormat = "yyyyMMdd";
+        public static readonly string DateStringFormat = "yyyy-MM-dd";
 
         public class Command : IRequest
         {

@@ -30,5 +30,8 @@ export default {
   },
   register(details) {
     return apiClient.post('api/users', details)
+  },
+  createTransaction(transaction) {
+    return apiClient.post('api/transactions', transaction)
   }
 }

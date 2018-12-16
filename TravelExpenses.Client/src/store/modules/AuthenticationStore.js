@@ -98,5 +98,12 @@ export default {
       LocalStorage.clearToken()
       Router.push({ name: 'authentication' })
     }
+  },
+  getters: {
+    userId: state => {
+      let base64Url = state.authToken.split('.')[1]
+      let base64 = base64Url.replace('-', '+').replace('_', '/')
+      return +JSON.parse(window.atob(base64)).userId
+    }
   }
 }

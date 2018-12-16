@@ -36,7 +36,7 @@
         <v-date-picker v-model="date" @input="dateMenu = false"></v-date-picker>
       </v-menu>
       <v-text-field
-        v-model.trim="amount"
+        v-model.number="amount"
         :error-messages="amountErrors"
         label="Amount"
         box
@@ -183,6 +183,7 @@ import {
 } from 'vuelidate/lib/validators'
 
 import sortBy from 'lodash/sortBy'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -241,7 +242,18 @@ export default {
       this.chosenKeywords = [...this.chosenKeywords]
     },
     saveInternal() {
-      this.$store.dispatch('Transaction/saveTransaction', { title: this.title })
+      this.$store.dispatch('Transaction/saveTransaction', {
+        title: this.title,
+        transDate: this.date,
+        amount: this.amount,
+        locationId: this.location.id,
+        currencyId: this.currency.id,
+        categoryId: this.category.id,
+        memo: this.memo,
+        paidWithCash: this.paidWithCash,
+        userId: this.userId,
+        keywordIds: this.chosenKeywords.map(k => k.id)
+      })
     },
     save() {
       this.usingSaveAndNew = false
@@ -260,8 +272,6 @@ export default {
       //this.location = {}
       this.chosenKeywords = []
       this.memo = ''
-      this.gpsLocation = false
-      this.paidWithCash = true
     },
     cancel() {
       this.$emit('done')
@@ -275,6 +285,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('Authentication', ['userId']),
     currencies() {
       return sortBy(this.$store.state.SetupData.currencies, c => c.isoCode)
     },
