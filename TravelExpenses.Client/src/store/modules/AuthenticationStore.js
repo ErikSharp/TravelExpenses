@@ -20,7 +20,6 @@ export default {
   actions: {
     setToken({ commit }, token) {
       commit('SET_TOKEN', token)
-      Router.push({ name: 'transactions' })
     },
     checkLocalStorageForToken({ dispatch }) {
       let token = LocalStorage.getToken()
