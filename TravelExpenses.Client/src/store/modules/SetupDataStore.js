@@ -1,6 +1,9 @@
+import SetupWindow from '@/common/enums/SetupWindows.js'
+
 export default {
   namespaced: true,
   state: {
+    setupWindow: SetupWindow.navigation,
     currencies: [
       {
         id: 1,
@@ -80,5 +83,15 @@ export default {
         keywordName: 'Tuk Tuk'
       }
     ]
+  },
+  mutations: {
+    SET_SETUP_WINDOW(state, window) {
+      state.setupWindow = window
+    }
+  },
+  actions: {
+    setSetupWindow({ commit }, window) {
+      commit('SET_SETUP_WINDOW', window)
+    }
   }
 }

@@ -7,7 +7,7 @@ import Transactions from '@/components/Transactions.vue'
 import Reconcile from '@/components/reconcile/Reconcile.vue'
 import CashWithdrawals from '@/components/CashWithdrawals.vue'
 import Queries from '@/components/Queries.vue'
-import Setup from '@/components/Setup.vue'
+import Setup from '@/components/setup/Setup.vue'
 import Store from '@/store/store.js'
 
 Vue.use(Router)
