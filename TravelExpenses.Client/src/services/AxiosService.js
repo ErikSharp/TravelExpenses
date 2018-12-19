@@ -22,9 +22,6 @@ apiClient.interceptors.request.use(config => {
 })
 
 export default {
-  getValues() {
-    return apiClient.get('/api/values')
-  },
   login(details) {
     return apiClient.put('api/users/authenticate', details)
   },
@@ -33,5 +30,8 @@ export default {
   },
   createTransaction(transaction) {
     return apiClient.post('api/transactions', transaction)
+  },
+  getCountries() {
+    return apiClient.get('api/countries')
   }
 }

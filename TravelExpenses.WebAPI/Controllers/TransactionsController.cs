@@ -29,7 +29,7 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromHeader(Name = "Authorization")]string token)
         {
             var userId = User.Claims.GetUserId();
-            await mediator.Send(new CreateTransaction.Command(transaction, userId));
+            await mediator.Send(new CreateTransaction.Command(transaction, userId)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),

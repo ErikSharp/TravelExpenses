@@ -3,22 +3,24 @@ import AxiosService from '@/services/AxiosService.js'
 export default {
   namespaced: true,
   state: {
-    busy: false
+    busy: false,
+    countries: []
   },
   mutations: {
     SET_BUSY(state, busy) {
       state.busy = busy
+    },
+    SET_COUNTRIES(state, countries) {
+      state.countries = countries
     }
   },
   actions: {
-    saveTransaction({ dispatch, commit }, transaction) {
+    initialize({ dispatch, commit }) {
       commit('SET_BUSY', true)
 
-      return AxiosService.createTransaction(transaction)
-        .then(() => {
-          dispatch('showSaveMessage', `${transaction.title} has been saved`, {
-            root: true
-          })
+      return AxiosService.getCountries()
+        .then(response => {
+          commit('SET_COUNTRIES', response.data)
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })

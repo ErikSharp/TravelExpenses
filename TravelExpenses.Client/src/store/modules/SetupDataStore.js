@@ -90,7 +90,12 @@ export default {
     }
   },
   actions: {
-    setSetupWindow({ commit }, window) {
+    setSetupWindow({ dispatch, commit }, window) {
+      switch (window) {
+        case SetupWindow.countries:
+          dispatch('Country/initialize', null, { root: true })
+          break
+      }
       commit('SET_SETUP_WINDOW', window)
     }
   }

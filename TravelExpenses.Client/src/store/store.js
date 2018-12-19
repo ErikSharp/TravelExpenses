@@ -6,6 +6,7 @@ import Values from '@/store/modules/ValuesStore.js'
 import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
+import Country from '@/store/modules/CountryStore.js'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     Values,
     Reconcile,
     SetupData,
-    Transaction
+    Transaction,
+    Country
   },
   state: {
     homeView: 'transactions',
@@ -47,6 +49,35 @@ export default new Vuex.Store({
     },
     showSnackbar({ commit }, snackbar) {
       commit('SET_SNACKBAR_DETAILS', snackbar)
+    },
+    showErrorMessage({ dispatch }, error) {
+      if (error.response) {
+        dispatch('showSnackbar', {
+          message:
+            'The request was made and the server responded with a status code that falls out of the range of 2xx',
+          mode: 'multi-line',
+          color: 'error'
+        })
+      } else if (error.request) {
+        dispatch('showSnackbar', {
+          message: 'The request was made but no response was received',
+          color: 'error'
+        })
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+      } else {
+        dispatch('showSnackbar', {
+          message:
+            'Something happened in setting up the request that triggered an Error',
+          color: 'error'
+        })
+      }
+    },
+    showSaveMessage({ dispatch }, message) {
+      dispatch('showSnackbar', {
+        message: message,
+        color: 'primary darken-3'
+      })
     }
   }
 })

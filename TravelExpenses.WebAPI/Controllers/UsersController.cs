@@ -34,7 +34,7 @@ namespace TravelExpenses.WebAPI.Controllers
                 return BadRequest(new ErrorDetails { Message = InvalidCredsMsg });
             }
 
-            var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam));
+            var authenticatedUser = await mediator.Send(new GetAuthenticatedUser.Query(userParam)).ConfigureAwait(false);
 
             if (authenticatedUser == null)
             {
