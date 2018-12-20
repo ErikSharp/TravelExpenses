@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="white--text">Add additional countries</h2>
+    <h2 class="white--text">Add additional country</h2>
     <v-text-field
       v-model.trim="newCountry"
       :error-messages="newCountryErrors"
