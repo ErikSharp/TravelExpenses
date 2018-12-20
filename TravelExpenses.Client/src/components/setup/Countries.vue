@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import sortBy from 'lodash/sortBy'
+import orderBy from 'lodash/orderBy'
 import AddCountry from '@/components/setup/AddCountry.vue'
 
 export default {
@@ -44,7 +44,7 @@ export default {
       let countries = this.$store.state.Country.countries.map(
         c => c.countryName
       )
-      return sortBy(countries)
+      return orderBy(countries, [c => c.toLowerCase()])
     },
     busy() {
       return this.$store.state.Country.busy

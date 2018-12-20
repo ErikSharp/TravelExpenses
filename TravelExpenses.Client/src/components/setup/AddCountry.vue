@@ -14,7 +14,7 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs4 offset-xs2>
-          <v-btn dark color="primary" :disabled="$v.$invalid" @click="add">Add</v-btn>
+          <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
         </v-flex>
         <v-flex xs4 offset-xs2>
           <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
@@ -56,7 +56,7 @@ export default {
       this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.navigation)
     },
     add() {
-      alert('add')
+      this.$store.dispatch('Country/addCountry', this.newCountry)
     }
   },
   computed: {
@@ -85,6 +85,15 @@ export default {
     },
     items() {
       return this.$store.state.Country.countries
+    },
+    busy() {
+      return this.$store.state.Country.addCountryBusy
+    }
+  },
+  watch: {
+    items() {
+      this.newCountry = ''
+      this.$v.$reset()
     }
   }
 }

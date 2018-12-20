@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Router from '@/router'
 import Authentication from '@/store/modules/AuthenticationStore.js'
-import Values from '@/store/modules/ValuesStore.js'
 import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
@@ -13,7 +12,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     Authentication,
-    Values,
     Reconcile,
     SetupData,
     Transaction,
