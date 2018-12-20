@@ -63,4 +63,12 @@ export default {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
 }
+
+.v-list {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding-bottom: 0px;
+}
 </style>
