@@ -2,7 +2,12 @@
   <div>
     <h2 class="white--text">Added countries</h2>
     <v-list subheader>
-      <v-list-tile v-if="listItems.length < 1">
+      <v-list-tile v-if="busy">
+        <v-list-tile-content>
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile v-else-if="listItems.length < 1">
         <v-list-tile-content>
           <v-list-tile-title>You currently don't have any countries added</v-list-tile-title>
         </v-list-tile-content>
@@ -40,6 +45,9 @@ export default {
         c => c.countryName
       )
       return sortBy(countries)
+    },
+    busy() {
+      return this.$store.state.Country.busy
     }
   }
 }

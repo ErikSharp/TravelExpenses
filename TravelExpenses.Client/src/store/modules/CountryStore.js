@@ -16,6 +16,7 @@ export default {
   },
   actions: {
     initialize({ dispatch, commit }) {
+      commit('SET_COUNTRIES', [])
       commit('SET_BUSY', true)
 
       return AxiosService.getCountries()
