@@ -13,6 +13,8 @@ namespace TravelExpenses.Persistence.Configurations
         {
             builder.ToTable("Country");
 
+            builder.HasIndex(c => new { c.CountryName, c.UserId }).IsUnique(true);
+
             builder.Property(e => e.CountryName)
                     .HasMaxLength(255)
                     .IsRequired();

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelExpenses.Persistence;
 
 namespace TravelExpenses.Persistence.Migrations
 {
     [DbContext(typeof(TravelExpensesContext))]
-    partial class TravelExpensesContextModelSnapshot : ModelSnapshot
+    [Migration("20181221124304_country_unique_constraint")]
+    partial class country_unique_constraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
