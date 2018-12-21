@@ -6,6 +6,8 @@ import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
 import Country from '@/store/modules/CountryStore.js'
+import * as HomeViews from '@/common/constants/HomeViews.js'
+import SetupWindows from '@/common/enums/SetupWindows.js'
 
 Vue.use(Vuex)
 
@@ -18,7 +20,7 @@ export default new Vuex.Store({
     Country
   },
   state: {
-    homeView: 'transactions',
+    homeView: HomeViews.Transactions,
     snackbar: {
       show: false,
       color: '',
@@ -41,8 +43,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setHomeView({ commit }, view) {
+    setHomeView({ dispatch, commit }, view) {
       commit('SET_HOME_VIEW', view)
+      switch (view) {
+        case HomeViews.Transactions:
+          dispatch('SetupData/setSetupWindow', SetupWindows.navigation)
+          break
+      }
       Router.push({ name: view })
     },
     showSnackbar({ commit }, snackbar) {

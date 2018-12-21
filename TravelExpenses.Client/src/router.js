@@ -9,6 +9,7 @@ import CashWithdrawals from '@/components/CashWithdrawals.vue'
 import Queries from '@/components/Queries.vue'
 import Setup from '@/components/setup/Setup.vue'
 import Store from '@/store/store.js'
+import * as HomeViews from '@/common/constants/HomeViews.js'
 
 Vue.use(Router)
 
@@ -21,7 +22,7 @@ let myRouter = new Router({
       component: Home,
       children: [
         {
-          name: 'transactions',
+          name: HomeViews.Transactions,
           path: '',
           component: Transactions
         }
@@ -29,7 +30,7 @@ let myRouter = new Router({
     },
     {
       path: '/authentication',
-      name: 'authentication',
+      name: HomeViews.Authentication,
       component: Authentication
     },
     {
@@ -37,7 +38,7 @@ let myRouter = new Router({
       component: Home,
       children: [
         {
-          name: 'cashWithdrawals',
+          name: HomeViews.CashWithdrawals,
           path: '',
           component: CashWithdrawals
         }
@@ -48,7 +49,7 @@ let myRouter = new Router({
       component: Home,
       children: [
         {
-          name: 'reconcile',
+          name: HomeViews.Reconcile,
           path: '',
           component: Reconcile
         }
@@ -59,7 +60,7 @@ let myRouter = new Router({
       component: Home,
       children: [
         {
-          name: 'queries',
+          name: HomeViews.Queries,
           path: '',
           component: Queries
         }
@@ -70,7 +71,7 @@ let myRouter = new Router({
       component: Home,
       children: [
         {
-          name: 'setup',
+          name: HomeViews.Setup,
           path: '',
           component: Setup
         }
