@@ -8,6 +8,7 @@ import Transaction from '@/store/modules/TransactionStore.js'
 import Country from '@/store/modules/CountryStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import SetupWindows from '@/common/enums/SetupWindows.js'
+import { firstLetterUpper } from '@/common/StringUtilities.js'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   },
   state: {
     homeView: HomeViews.Transactions,
+    title: '',
     snackbar: {
       show: false,
       color: '',
@@ -40,6 +42,9 @@ export default new Vuex.Store({
       state.snackbar.mode = snackbar.mode || ''
       state.snackbar.timeout = snackbar.timeout || 3000
       state.snackbar.show = true
+    },
+    SET_TITLE(state, title) {
+      state.title = title
     }
   },
   actions: {
@@ -47,10 +52,17 @@ export default new Vuex.Store({
       commit('SET_HOME_VIEW', view)
       switch (view) {
         case HomeViews.Transactions:
+          dispatch('setTitle', 'Recent Transactions')
           dispatch('SetupData/setSetupWindow', SetupWindows.navigation)
+          break
+        default:
+          dispatch('setTitle', firstLetterUpper(view))
           break
       }
       Router.push({ name: view })
+    },
+    setTitle({ commit }, title) {
+      commit('SET_TITLE', title)
     },
     showSnackbar({ commit }, snackbar) {
       commit('SET_SNACKBAR_DETAILS', snackbar)

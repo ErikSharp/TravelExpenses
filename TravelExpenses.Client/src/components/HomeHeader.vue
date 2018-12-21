@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import StringUtils from '@/common/StringUtilities.js'
-
 export default {
   data() {
     return {
@@ -41,7 +39,7 @@ export default {
   },
   computed: {
     title() {
-      return StringUtils(this.$store.state.homeView)
+      return this.$store.state.title
     }
   }
 }

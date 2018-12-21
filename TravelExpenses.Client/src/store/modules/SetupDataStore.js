@@ -1,4 +1,5 @@
 import SetupWindow from '@/common/enums/SetupWindows.js'
+import { firstLetterUpper } from '@/common/StringUtilities.js'
 
 export default {
   namespaced: true,
@@ -90,10 +91,16 @@ export default {
     }
   },
   actions: {
-    setSetupWindow({ dispatch, commit }, window) {
+    setSetupWindow({ dispatch, commit, rootState }, window) {
       switch (window) {
         case SetupWindow.countries:
+          dispatch('setTitle', 'Countries', { root: true })
           dispatch('Country/initialize', null, { root: true })
+          break
+        case SetupWindow.navigation:
+          dispatch('setTitle', firstLetterUpper(rootState.homeView), {
+            root: true
+          })
           break
       }
       commit('SET_SETUP_WINDOW', window)
