@@ -18,7 +18,7 @@ namespace TravelExpenses.WebAPI.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            await Task.Delay(1000);
+            await Task.Delay(2000);
             await next(httpContext);
         }
     }
