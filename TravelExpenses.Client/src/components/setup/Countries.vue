@@ -22,21 +22,35 @@
       </template>
     </v-list>
     <hr class="my-4">
-    <add-country/>
+    <v-window v-model="editWindow">
+      <v-window-item>
+        <add-edit-country/>
+      </v-window-item>
+      <v-window-item>
+        <add-edit-country edit :country="selectedCountry"/>
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 
 <script>
 import orderBy from 'lodash/orderBy'
-import AddCountry from '@/components/setup/AddCountry.vue'
+import AddEditCountry from '@/components/setup/AddEditCountry.vue'
 
 export default {
+  data() {
+    return {
+      editWindow: 0,
+      selectedCountry: ''
+    }
+  },
   components: {
-    AddCountry
+    AddEditCountry
   },
   methods: {
     edit(item) {
-      alert(item)
+      this.selectedCountry = item
+      this.editWindow = 1
     }
   },
   computed: {
