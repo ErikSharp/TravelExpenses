@@ -18,13 +18,10 @@ export default {
     }
   },
   actions: {
-    setToken({ commit }, token) {
-      commit('SET_TOKEN', token)
-    },
-    checkLocalStorageForToken({ dispatch }) {
+    checkLocalStorageForToken({ commit }) {
       let token = LocalStorage.getToken()
       if (token) {
-        dispatch('setToken', token)
+        commit('SET_TOKEN', token)
       }
     },
     async login({ dispatch, state, commit }, details) {
@@ -35,15 +32,15 @@ export default {
           LocalStorage.saveToken(response.data.token)
         }
 
-        dispatch('setToken', response.data.token)
+        commit('SET_TOKEN', response.data.token)
+        Router.push({ name: 'transactions' })
       } catch (error) {
         if (error.response) {
           dispatch(
             'showSnackbar',
             {
               message:
-                'The request was made and the server responded with a status code that falls out of the range of 2xx',
-              mode: 'multi-line',
+                'The user credentials are incorrect or the user is disabled',
               color: 'error'
             },
             { root: true }
@@ -74,7 +71,7 @@ export default {
         commit('SET_BUSY', false)
       }
     },
-    async registerUser({ dispatch, state, commit }, details) {
+    async registerUser({ state, commit }, details) {
       try {
         commit('SET_BUSY', true)
         let response = await Axios.register(details)
@@ -82,7 +79,8 @@ export default {
           LocalStorage.saveToken(response.data.token)
         }
 
-        dispatch('setToken', response.data.token)
+        commit('SET_TOKEN', response.data.token)
+        Router.push({ name: 'transactions' })
       } catch (error) {
         // if (error.response) {
         // } else if (error.request) {
