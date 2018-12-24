@@ -13,6 +13,13 @@
           :vertical="snackbar.mode === 'vertical'"
           top
         >
+          <v-icon v-if="snackbar.color.toLowerCase() === 'error'" color="white" class="mr-2">error</v-icon>
+          <v-icon
+            v-else-if="snackbar.color.toLowerCase() === 'warning'"
+            color="white"
+            class="mr-2"
+          >warning</v-icon>
+          <v-icon v-else color="white" class="mr-2">info</v-icon>
           {{ snackbar.message }}
           <!-- <v-btn
             dark

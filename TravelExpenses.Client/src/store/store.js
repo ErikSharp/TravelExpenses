@@ -27,7 +27,7 @@ export default new Vuex.Store({
       show: false,
       color: '',
       mode: '',
-      timeout: 3000,
+      timeout: 5000,
       message: ''
     }
   },
