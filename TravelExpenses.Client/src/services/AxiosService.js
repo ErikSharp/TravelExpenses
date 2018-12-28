@@ -36,5 +36,8 @@ export default {
   },
   addCountry(newCountry) {
     return apiClient.post('api/countries', { countryName: newCountry })
+  },
+  editCountry(country) {
+    return apiClient.put('api/countries', country)
   }
 }

@@ -5,6 +5,7 @@ export default {
   state: {
     busy: false,
     addCountryBusy: false,
+    editCountryBusy: false,
     countries: []
   },
   mutations: {
@@ -13,6 +14,9 @@ export default {
     },
     SET_ADD_COUNTRY_BUSY(state, busy) {
       state.addCountryBusy = busy
+    },
+    SET_EDIT_COUNTRY_BUSY(state, busy) {
+      state.editCountryBusy = busy
     },
     SET_COUNTRIES(state, countries) {
       state.countries = countries
@@ -49,6 +53,27 @@ export default {
         })
         .then(() => {
           commit('SET_ADD_COUNTRY_BUSY', false)
+        })
+    },
+    editCountry({ dispatch, commit }, country) {
+      commit('SET_EDIT_COUNTRY_BUSY', true)
+
+      return AxiosService.editCountry(country)
+        .then(() => {
+          dispatch(
+            'showSaveMessage',
+            `${country.countryName} has been updated`,
+            {
+              root: true
+            }
+          )
+          dispatch('initialize')
+        })
+        .catch(error => {
+          dispatch('showErrorMessage', error, { root: true })
+        })
+        .then(() => {
+          commit('SET_EDIT_COUNTRY_BUSY', false)
         })
     }
   }

@@ -48,5 +48,17 @@ namespace TravelExpenses.WebAPI.Controllers
                 new Uri(Request.Path, UriKind.Relative),
                 null);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(
+            [FromHeader(Name = "Authorization")]string token,
+            [FromBody]Country country)
+        {
+            var userId = User.Claims.GetUserId();
+            country.UserId = userId;
+            await mediator.Send(new UpdateCountry.Command(country)).ConfigureAwait(false);
+
+            return Ok();
+        }
     }
 }

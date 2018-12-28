@@ -14,7 +14,7 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs4 offset-xs2>
-          <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Edit</v-btn>
+          <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="edit">Edit</v-btn>
         </v-flex>
         <v-flex xs4 offset-xs2>
           <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
@@ -54,8 +54,10 @@ export default {
     cancel() {
       this.$emit('cancel')
     },
-    add() {
-      this.$store.dispatch('Country/addCountry', this.country)
+    edit() {
+      this.$store
+        .dispatch('Country/editCountry', this.country)
+        .then(() => this.$emit('cancel'))
     }
   },
   computed: {
@@ -87,7 +89,7 @@ export default {
       return this.$store.state.Country.countries
     },
     busy() {
-      return this.$store.state.Country.addCountryBusy
+      return this.$store.state.Country.editCountryBusy
     }
   },
   watch: {
