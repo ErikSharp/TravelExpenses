@@ -1,11 +1,10 @@
 <template>
   <div>
-    <h2 v-if="edit" class="white--text">Edit country</h2>
-    <h2 v-else class="white--text">Add additional country</h2>
+    <h2 class="white--text">Edit country</h2>
     <v-text-field
-      v-model.trim="country"
+      v-model.trim="country.countryName"
       :error-messages="countryErrors"
-      :label="edit ? 'Edit name' : 'Enter country name'"
+      label="Edit name"
       box
       background-color="white"
       color="primary"
@@ -15,13 +14,7 @@
     <v-container>
       <v-layout row wrap>
         <v-flex xs4 offset-xs2>
-          <v-btn
-            dark
-            color="primary"
-            :disabled="$v.$invalid"
-            :loading="busy"
-            @click="add"
-          >{{edit ? 'Edit' : 'Add'}}</v-btn>
+          <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Edit</v-btn>
         </v-flex>
         <v-flex xs4 offset-xs2>
           <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
@@ -33,24 +26,24 @@
 
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
-import SetupWindow from '@/common/enums/SetupWindows.js'
 
 const countryMustBeUnique = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.countryName.toLowerCase())
-  return itemsLowered.indexOf(value.toLowerCase()) < 0
+  return itemsLowered.indexOf(value.countryName.toLowerCase()) < 0
 }
 
 export default {
   props: {
-    edit: Boolean,
-    country: String
+    country: Object
   },
   validations() {
     const result = {
       country: {
-        required,
-        minLength: minLength(3),
-        maxLength: maxLength(255),
+        countryName: {
+          required,
+          minLength: minLength(3),
+          maxLength: maxLength(255)
+        },
         countryMustBeUnique
       }
     }
@@ -59,7 +52,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.navigation)
+      this.$emit('cancel')
     },
     add() {
       this.$store.dispatch('Country/addCountry', this.country)
@@ -71,26 +64,23 @@ export default {
 
       if (!this.$v.country.$dirty) return errors
 
-      !this.$v.country.maxLength &&
+      !this.$v.country.countryName.maxLength &&
         errors.push(
           `The country can be a maximum of ${
-            this.$v.country.$params.maxLength.max
+            this.$v.country.countryName.$params.maxLength.max
           } characters`
         )
-      !this.$v.country.minLength &&
+      !this.$v.country.countryName.minLength &&
         errors.push(
           `The country must be a minimum of ${
-            this.$v.country.$params.minLength.min
+            this.$v.country.countryName.$params.minLength.min
           } characters`
         )
       !this.$v.country.countryMustBeUnique &&
-        errors.push(
-          this.edit
-            ? 'The country has not changed'
-            : 'The country must be unique'
-        )
+        errors.push('The country has not changed')
 
-      !this.$v.country.required && errors.push('A country is required')
+      !this.$v.country.countryName.required &&
+        errors.push('A country is required')
       return errors
     },
     items() {
@@ -101,8 +91,7 @@ export default {
     }
   },
   watch: {
-    items() {
-      this.country = ''
+    country() {
       this.$v.$reset()
     }
   }
