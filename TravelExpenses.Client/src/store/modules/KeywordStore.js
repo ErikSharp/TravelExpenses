@@ -4,32 +4,32 @@ export default {
   namespaced: true,
   state: {
     busy: false,
-    addCountryBusy: false,
-    editCountryBusy: false,
-    countries: []
+    addKeywordBusy: false,
+    editKeywordBusy: false,
+    keywords: []
   },
   mutations: {
     SET_BUSY(state, busy) {
       state.busy = busy
     },
-    SET_ADD_COUNTRY_BUSY(state, busy) {
-      state.addCountryBusy = busy
+    SET_ADD_KEYWORD_BUSY(state, busy) {
+      state.addKeywordBusy = busy
     },
-    SET_EDIT_COUNTRY_BUSY(state, busy) {
-      state.editCountryBusy = busy
+    SET_EDIT_KEYWORD_BUSY(state, busy) {
+      state.editKeywordBusy = busy
     },
-    SET_COUNTRIES(state, countries) {
-      state.countries = countries
+    SET_KEYWORDS(state, keywords) {
+      state.keywords = keywords
     }
   },
   actions: {
     load({ dispatch, commit }) {
-      commit('SET_COUNTRIES', [])
+      commit('SET_KEYWORDS', [])
       commit('SET_BUSY', true)
 
-      return AxiosService.getCountries()
+      return AxiosService.getKeywords()
         .then(response => {
-          commit('SET_COUNTRIES', response.data)
+          commit('SET_KEYWORDS', response.data)
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -38,12 +38,12 @@ export default {
           commit('SET_BUSY', false)
         })
     },
-    addCountry({ dispatch, commit }, newCountry) {
-      commit('SET_ADD_COUNTRY_BUSY', true)
+    addKeyword({ dispatch, commit }, newKeyword) {
+      commit('SET_ADD_KEYWORD_BUSY', true)
 
-      return AxiosService.addCountry(newCountry)
+      return AxiosService.addKeyword(newKeyword)
         .then(() => {
-          dispatch('showSaveMessage', `${newCountry} has been saved`, {
+          dispatch('showSaveMessage', `${newKeyword} has been saved`, {
             root: true
           })
           dispatch('load')
@@ -52,17 +52,17 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_ADD_COUNTRY_BUSY', false)
+          commit('SET_ADD_KEYWORD_BUSY', false)
         })
     },
-    editCountry({ dispatch, commit }, country) {
-      commit('SET_EDIT_COUNTRY_BUSY', true)
+    editKeyword({ dispatch, commit }, keyword) {
+      commit('SET_EDIT_KEYWORD_BUSY', true)
 
-      return AxiosService.editCountry(country)
+      return AxiosService.editKeyword(keyword)
         .then(() => {
           dispatch(
             'showSaveMessage',
-            `${country.countryName} has been updated`,
+            `${keyword.keywordName} has been updated`,
             {
               root: true
             }
@@ -73,7 +73,7 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_EDIT_COUNTRY_BUSY', false)
+          commit('SET_EDIT_KEYWORD_BUSY', false)
         })
     }
   }

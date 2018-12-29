@@ -95,7 +95,11 @@ export default {
       switch (window) {
         case SetupWindow.countries:
           dispatch('setTitle', 'Countries', { root: true })
-          dispatch('Country/initialize', null, { root: true })
+          dispatch('Country/load', null, { root: true })
+          break
+        case SetupWindow.keywords:
+          dispatch('setTitle', 'Keywords', { root: true })
+          dispatch('Keyword/load', null, { root: true })
           break
         case SetupWindow.navigation:
           dispatch('setTitle', firstLetterUpper(rootState.homeView), {

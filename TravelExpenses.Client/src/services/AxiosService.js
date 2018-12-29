@@ -39,5 +39,14 @@ export default {
   },
   editCountry(country) {
     return apiClient.put('api/countries', country)
+  },
+  getKeywords() {
+    return apiClient.get('api/keywords')
+  },
+  addKeyword(newKeyword) {
+    return apiClient.post('api/keywords', { keywordName: newKeyword })
+  },
+  editKeyword(keyword) {
+    return apiClient.put('api/keywords', keyword)
   }
 }

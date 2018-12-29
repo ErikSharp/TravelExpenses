@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h2 class="white--text">Edit country</h2>
+    <h2 class="white--text">Edit keyword</h2>
     <v-text-field
-      v-model.trim="country.countryName"
-      :error-messages="countryErrors"
+      v-model.trim="keyword.keywordName"
+      :error-messages="keywordErrors"
       label="Edit name"
       box
       background-color="white"
       color="primary"
-      @input="$v.country.$touch()"
-      @blur="$v.country.$touch()"
+      @input="$v.keyword.$touch()"
+      @blur="$v.keyword.$touch()"
     ></v-text-field>
     <v-container>
       <v-layout row wrap>
@@ -27,24 +27,24 @@
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
-const countryMustBeUnique = (value, vm) => {
-  let itemsLowered = vm.items.map(i => i.countryName.toLowerCase())
-  return itemsLowered.indexOf(value.countryName.toLowerCase()) < 0
+const keywordMustBeUnique = (value, vm) => {
+  let itemsLowered = vm.items.map(i => i.keywordName.toLowerCase())
+  return itemsLowered.indexOf(value.keywordName.toLowerCase()) < 0
 }
 
 export default {
   props: {
-    country: Object
+    keyword: Object
   },
   validations() {
     const result = {
-      country: {
-        countryName: {
+      keyword: {
+        keywordName: {
           required,
           minLength: minLength(3),
           maxLength: maxLength(255)
         },
-        countryMustBeUnique
+        keywordMustBeUnique
       }
     }
 
@@ -56,44 +56,44 @@ export default {
     },
     edit() {
       this.$store
-        .dispatch('Country/editCountry', this.country)
+        .dispatch('Keyword/editKeyword', this.keyword)
         .then(() => this.$emit('cancel'))
     }
   },
   computed: {
-    countryErrors() {
+    keywordErrors() {
       const errors = []
 
-      if (!this.$v.country.$dirty) return errors
+      if (!this.$v.keyword.$dirty) return errors
 
-      !this.$v.country.countryName.maxLength &&
+      !this.$v.keyword.keywordName.maxLength &&
         errors.push(
-          `The country can be a maximum of ${
-            this.$v.country.countryName.$params.maxLength.max
+          `The keyword can be a maximum of ${
+            this.$v.keyword.keywordName.$params.maxLength.max
           } characters`
         )
-      !this.$v.country.countryName.minLength &&
+      !this.$v.keyword.keywordName.minLength &&
         errors.push(
-          `The country must be a minimum of ${
-            this.$v.country.countryName.$params.minLength.min
+          `The keyword must be a minimum of ${
+            this.$v.keyword.keywordName.$params.minLength.min
           } characters`
         )
-      !this.$v.country.countryMustBeUnique &&
-        errors.push('The country must be unique')
+      !this.$v.keyword.keywordMustBeUnique &&
+        errors.push('The keyword must be unique')
 
-      !this.$v.country.countryName.required &&
-        errors.push('A country is required')
+      !this.$v.keyword.keywordName.required &&
+        errors.push('A keyword is required')
       return errors
     },
     items() {
-      return this.$store.state.Country.countries
+      return this.$store.state.Keyword.keywords
     },
     busy() {
-      return this.$store.state.Country.editCountryBusy
+      return this.$store.state.Keyword.editKeywordBusy
     }
   },
   watch: {
-    country() {
+    keyword() {
       this.$v.$reset()
     }
   }

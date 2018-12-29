@@ -6,6 +6,7 @@ import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
 import Country from '@/store/modules/CountryStore.js'
+import Keyword from '@/store/modules/KeywordStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import SetupWindows from '@/common/enums/SetupWindows.js'
 import { firstLetterUpper } from '@/common/StringUtilities.js'
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     Reconcile,
     SetupData,
     Transaction,
-    Country
+    Country,
+    Keyword
   },
   state: {
     homeView: HomeViews.Transactions,
