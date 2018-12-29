@@ -83,7 +83,7 @@ export default {
       return errors
     },
     items() {
-      return this.$store.state.Keyword.countries
+      return this.$store.state.Keyword.keywords
     },
     busy() {
       return this.$store.state.Keyword.addKeywordBusy
