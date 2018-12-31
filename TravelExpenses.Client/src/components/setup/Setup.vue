@@ -25,11 +25,11 @@
 
 <script>
 import SetupNav from '@/components/setup/SetupNav.vue'
-import Countries from '@/components/setup/Countries.vue'
-import Locations from '@/components/setup/Locations.vue'
-import Currencies from '@/components/setup/Currencies.vue'
-import Categories from '@/components/setup/Categories.vue'
-import Keywords from '@/components/setup/Keywords.vue'
+import Countries from '@/components/setup/country/Countries.vue'
+import Locations from '@/components/setup/location/Locations.vue'
+import Currencies from '@/components/setup/currency/Currencies.vue'
+import Categories from '@/components/setup/category/Categories.vue'
+import Keywords from '@/components/setup/keyword/Keywords.vue'
 
 export default {
   components: {

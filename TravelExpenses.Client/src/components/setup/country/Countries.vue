@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="white--text">Added keywords</h2>
+    <h2 class="white--text">Added countries</h2>
     <v-list subheader>
       <v-list-tile v-if="busy">
         <v-list-tile-content>
@@ -9,13 +9,13 @@
       </v-list-tile>
       <v-list-tile v-else-if="listItems.length < 1">
         <v-list-tile-content>
-          <v-list-tile-title>You currently don't have any keywords added</v-list-tile-title>
+          <v-list-tile-title>You currently don't have any countries added</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <template v-for="(item, index) in listItems">
         <v-list-tile @click="edit(item)" :key="item.id">
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.keywordName"></v-list-tile-title>
+            <v-list-tile-title v-text="item.countryName"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider v-if="index + 1 < listItems.length" class="my-0" :key="item.id + 'div'"></v-divider>
@@ -24,10 +24,10 @@
     <hr class="my-4">
     <v-window v-model="editWindow">
       <v-window-item>
-        <add-keyword @cancel="cancelAdd"/>
+        <add-country @cancel="cancelAdd"/>
       </v-window-item>
       <v-window-item>
-        <edit-keyword :keyword="selectedKeyword" @cancel="cancelEdit"/>
+        <edit-country :country="selectedCountry" @cancel="cancelEdit"/>
       </v-window-item>
     </v-window>
   </div>
@@ -36,24 +36,24 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import clone from 'lodash/clone'
-import AddKeyword from '@/components/setup/AddKeyword.vue'
-import EditKeyword from '@/components/setup/EditKeyword.vue'
+import AddCountry from '@/components/setup/country/AddCountry.vue'
+import EditCountry from '@/components/setup/country/EditCountry.vue'
 import SetupWindows from '@/common/enums/SetupWindows.js'
 
 export default {
   data() {
     return {
       editWindow: 0,
-      selectedKeyword: {}
+      selectedCountry: {}
     }
   },
   components: {
-    AddKeyword,
-    EditKeyword
+    AddCountry,
+    EditCountry
   },
   methods: {
     edit(item) {
-      this.selectedKeyword = clone(item)
+      this.selectedCountry = clone(item)
       this.editWindow = 1
     },
     cancelAdd() {
@@ -65,11 +65,11 @@ export default {
   },
   computed: {
     listItems() {
-      let keywords = this.$store.state.Keyword.keywords
-      return orderBy(keywords, [c => c.keywordName.toLowerCase()])
+      let countries = this.$store.state.Country.countries
+      return orderBy(countries, [c => c.countryName.toLowerCase()])
     },
     busy() {
-      return this.$store.state.Keyword.busy
+      return this.$store.state.Country.busy
     }
   }
 }
