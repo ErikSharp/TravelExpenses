@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using TravelExpenses.Application.Features;
+using TravelExpenses.Application.Features.Users;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Application.Infrastructure;
 using TravelExpenses.Application.Interfaces;

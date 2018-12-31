@@ -6,6 +6,7 @@ import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
 import Country from '@/store/modules/CountryStore.js'
+import Category from '@/store/modules/CategoryStore.js'
 import Keyword from '@/store/modules/KeywordStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import SetupWindows from '@/common/enums/SetupWindows.js'
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     SetupData,
     Transaction,
     Country,
+    Category,
     Keyword
   },
   state: {

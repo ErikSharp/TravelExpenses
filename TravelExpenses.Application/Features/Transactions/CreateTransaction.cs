@@ -15,7 +15,7 @@ using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features
+namespace TravelExpenses.Application.Features.Transactions
 {
     public class CreateTransaction
     {

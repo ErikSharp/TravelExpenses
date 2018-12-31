@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features
+namespace TravelExpenses.Application.Features.Categories
 {
-    public class UpdateKeyword
+    public class UpdateCategory
     {
         public class Command : IRequest
         {
-            public Command(Keyword keyword)
+            public Command(Category category)
             {
-                Keyword = keyword;
+                Category = category;
             }
 
-            public Keyword Keyword { get; }
+            public Category Category { get; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
@@ -34,8 +34,8 @@ namespace TravelExpenses.Application.Features
 
             protected override Task Handle(Command request, CancellationToken response)
             {
-                context.Attach(request.Keyword);
-                context.Keywords.Update(request.Keyword);
+                context.Attach(request.Category);
+                context.Categories.Update(request.Category);
                 return context.SaveChangesAsync();
             }
         }
@@ -44,7 +44,7 @@ namespace TravelExpenses.Application.Features
         {
             public Validator()
             {
-                RuleFor(c => c.Keyword.KeywordName).NotEmpty().Length(3, 255);
+                RuleFor(c => c.Category.CategoryName).NotEmpty().Length(3, 255);
             }
         }
     }

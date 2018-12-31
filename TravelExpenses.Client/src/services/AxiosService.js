@@ -48,5 +48,14 @@ export default {
   },
   editKeyword(keyword) {
     return apiClient.put('api/keywords', keyword)
+  },
+  getCategories() {
+    return apiClient.get('api/categories')
+  },
+  addCategory(newCategory) {
+    return apiClient.post('api/categories', { categoryName: newCategory })
+  },
+  editCategory(category) {
+    return apiClient.put('api/categories', category)
   }
 }

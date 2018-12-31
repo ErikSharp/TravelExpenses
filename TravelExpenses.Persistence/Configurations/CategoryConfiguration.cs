@@ -13,6 +13,8 @@ namespace TravelExpenses.Persistence.Configurations
         {
             builder.ToTable("Category");
 
+            builder.HasIndex(c => new { c.CategoryName, c.UserId }).IsUnique(true);
+
             builder.Property(e => e.CategoryName)
                     .HasMaxLength(255)
                     .IsRequired();

@@ -9,7 +9,7 @@ using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features
+namespace TravelExpenses.Application.Features.Users
 {
     public class GetAuthenticatedUser
     {

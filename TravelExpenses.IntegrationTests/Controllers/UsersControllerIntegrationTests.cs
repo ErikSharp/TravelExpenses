@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -26,28 +24,28 @@ namespace TravelExpenses.IntegrationTests.Controllers
             _client = factory.CreateClient();
         }
 
-        private StringContent CreateRequestUser(string email, string password)
+        private StringContent CreateRequestUser(string username, string email, string password)
         {
             return new StringContent(
                 JsonConvert.SerializeObject(
-                    new UserIn(email, password)), 
+                    new UserIn(username, email, password)), 
                     Encoding.UTF8, 
                     "application/json");
         }
 
         [Theory]
-        [InlineData(SeedData.Email1, "password")]
-        [InlineData("ERIK.SHARP@HADLEYSHOPE.COM", "password")]
-        public async Task CanAuthenticateUserTests(string email, string password)
+        [InlineData("CaptainBedpan", SeedData.Email1, "password")]
+        [InlineData("CaptainBedpan", "ERIK.SHARP@HADLEYSHOPE.COM", "password")]
+        public async Task CanAuthenticateUserTests(string username, string email, string password)
         {
-            await CanAuthenticateUser(email, password);
+            await CanAuthenticateUser(username, email, password);
         }
 
-        private async Task CanAuthenticateUser(string email, string password)
+        private async Task CanAuthenticateUser(string username, string email, string password)
         {
             var httpResponse = await _client.PutAsync(
                 AuthPath,
-                CreateRequestUser(email, password)).ConfigureAwait(false);
+                CreateRequestUser(username, email, password)).ConfigureAwait(false);
 
             httpResponse.EnsureSuccessStatusCode();
 
@@ -71,15 +69,15 @@ namespace TravelExpenses.IntegrationTests.Controllers
         }
 
         [Theory]
-        [InlineData(SeedData.Email1, "wrongpassword")]
-        [InlineData("dontknowme@gmail.com", "password")]
-        [InlineData(null, "password")]
-        [InlineData(SeedData.Email1, null)]
-        public async Task AuthBadRequestTests(string email, string password)
+        [InlineData("CaptainBedpan", SeedData.Email1, "wrongpassword")]
+        [InlineData("CaptainBedpan", "dontknowme@gmail.com", "password")]
+        [InlineData("CaptainBedpan", null, "password")]
+        [InlineData("CaptainBedpan", SeedData.Email1, null)]
+        public async Task AuthBadRequestTests(string username, string email, string password)
         {
             var httpResponse = await _client.PutAsync(
                 AuthPath,
-                CreateRequestUser(email, password)).ConfigureAwait(false);
+                CreateRequestUser(username, email, password)).ConfigureAwait(false);
 
             httpResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -91,16 +89,17 @@ namespace TravelExpenses.IntegrationTests.Controllers
         [Fact]
         public async Task CanCreateUser()
         {
+            var username = "sugarbooger";
             var email = "lynseysharp@yahoo.com";
             var password = "littlepiggy";
 
             var httpResponse = await _client.PostAsync(
                 CreateUserPath,
-                CreateRequestUser(email, password)).ConfigureAwait(false);
+                CreateRequestUser(username, email, password)).ConfigureAwait(false);
 
             httpResponse.EnsureSuccessStatusCode();
 
-            await CanAuthenticateUser(email, password).ConfigureAwait(false);
+            await CanAuthenticateUser(username, email, password).ConfigureAwait(false);
         }
 
         [Fact]
@@ -108,7 +107,7 @@ namespace TravelExpenses.IntegrationTests.Controllers
         {
             var httpResponse = await _client.PostAsync(
                 CreateUserPath,
-                CreateRequestUser(SeedData.Email1, "somepassword")).ConfigureAwait(false);
+                CreateRequestUser("CaptainBedpan", SeedData.Email1, "somepassword")).ConfigureAwait(false);
 
             httpResponse.StatusCode.ShouldBe(HttpStatusCode.Conflict);
 
@@ -118,16 +117,16 @@ namespace TravelExpenses.IntegrationTests.Controllers
         }
 
         [Theory]
-        [InlineData(SeedData.Email1, "short")]
-        [InlineData(SeedData.Email1, "TooLongWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")]
-        [InlineData("notanemail", "password")]
-        [InlineData(null, "password")]
-        [InlineData(SeedData.Email1, null)]
-        public async Task CreateUserValidationFailureTests(string email, string password)
+        [InlineData("CaptainBedpan", SeedData.Email1, "short")]
+        [InlineData("CaptainBedpan", SeedData.Email1, "TooLongWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")]
+        [InlineData("CaptainBedpan", "notanemail", "password")]
+        [InlineData("CaptainBedpan", null, "password")]
+        [InlineData("CaptainBedpan", SeedData.Email1, null)]
+        public async Task CreateUserValidationFailureTests(string username, string email, string password)
         {
             var httpResponse = await _client.PostAsync(
                 CreateUserPath,
-                CreateRequestUser(email, password)).ConfigureAwait(false);
+                CreateRequestUser(username, email, password)).ConfigureAwait(false);
 
             httpResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 

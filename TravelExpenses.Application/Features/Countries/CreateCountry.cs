@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features
+namespace TravelExpenses.Application.Features.Countries
 {
     public class CreateCountry
     {

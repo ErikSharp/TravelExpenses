@@ -1,10 +1,13 @@
 ﻿
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TravelExpenses.Application.Features.Countries;
+using TravelExpenses.Application.Features.Categories;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.WebAPI.Extensions;
 
@@ -13,11 +16,11 @@ namespace TravelExpenses.WebAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CountriesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly IMediator mediator;
 
-        public CountriesController(IMediator mediator)
+        public CategoriesController(IMediator mediator)
         {
             this.mediator = mediator;
         }
@@ -27,20 +30,20 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromHeader(Name = "Authorization")]string token)
         {
             var userId = User.Claims.GetUserId();
-            var countries = await mediator.Send(new GetCountries.Query(userId)).ConfigureAwait(false);
+            var categories = await mediator.Send(new GetCategories.Query(userId)).ConfigureAwait(false);
 
-            return Ok(countries);
+            return Ok(categories);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Country country)
+            [FromBody]Category category)
         {
             var userId = User.Claims.GetUserId();
-            country.UserId = userId;
-            await mediator.Send(new CreateCountry.Command(country)).ConfigureAwait(false);
-            
+            category.UserId = userId;
+            await mediator.Send(new CreateCategory.Command(category)).ConfigureAwait(false);
+
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
                 null);
@@ -49,11 +52,11 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Country country)
+            [FromBody]Category category)
         {
             var userId = User.Claims.GetUserId();
-            country.UserId = userId;
-            await mediator.Send(new UpdateCountry.Command(country)).ConfigureAwait(false);
+            category.UserId = userId;
+            await mediator.Send(new UpdateCategory.Command(category)).ConfigureAwait(false);
 
             return Ok();
         }

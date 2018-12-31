@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features
+namespace TravelExpenses.Application.Features.Keywords
 {
-    public class UpdateCountry
+    public class UpdateKeyword
     {
         public class Command : IRequest
         {
-            public Command(Country country)
+            public Command(Keyword keyword)
             {
-                Country = country;
+                Keyword = keyword;
             }
 
-            public Country Country { get; }
+            public Keyword Keyword { get; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
@@ -34,8 +34,8 @@ namespace TravelExpenses.Application.Features
 
             protected override Task Handle(Command request, CancellationToken response)
             {
-                context.Attach(request.Country);
-                context.Countries.Update(request.Country);
+                context.Attach(request.Keyword);
+                context.Keywords.Update(request.Keyword);
                 return context.SaveChangesAsync();
             }
         }
@@ -44,7 +44,7 @@ namespace TravelExpenses.Application.Features
         {
             public Validator()
             {
-                RuleFor(c => c.Country.CountryName).NotEmpty().Length(3, 255);
+                RuleFor(c => c.Keyword.KeywordName).NotEmpty().Length(3, 255);
             }
         }
     }

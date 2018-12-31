@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TravelExpenses.Application.Common.Dtos;
-using TravelExpenses.Application.Features;
+using TravelExpenses.Application.Features.Transactions;
 using TravelExpenses.WebAPI.Extensions;
 
 namespace TravelExpenses.WebAPI.Controllers

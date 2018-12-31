@@ -101,6 +101,10 @@ export default {
           dispatch('setTitle', 'Keywords', { root: true })
           dispatch('Keyword/load', null, { root: true })
           break
+        case SetupWindow.categories:
+          dispatch('setTitle', 'Categories', { root: true })
+          dispatch('Category/load', null, { root: true })
+          break
         case SetupWindow.navigation:
           dispatch('setTitle', firstLetterUpper(rootState.homeView), {
             root: true

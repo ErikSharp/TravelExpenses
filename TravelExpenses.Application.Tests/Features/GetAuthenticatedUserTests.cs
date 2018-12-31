@@ -14,7 +14,7 @@ using TravelExpenses.Domain.Entities;
 using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
 using Xunit;
-using static TravelExpenses.Application.Features.GetAuthenticatedUser;
+using static TravelExpenses.Application.Features.Users.GetAuthenticatedUser;
 
 namespace TravelExpenses.Application.Tests.Features
 {
@@ -42,6 +42,7 @@ namespace TravelExpenses.Application.Tests.Features
             using (var context = new TravelExpensesContext(options))
             {
                 var loginDetails = new UserIn(
+                    "CaptainBedpan",
                     "erik.sharp@hadleyshope.com",
                     "password");
 
@@ -81,6 +82,7 @@ namespace TravelExpenses.Application.Tests.Features
             using (var context = new TravelExpensesContext(options))
             {
                 var loginDetails = new UserIn(
+                    "CaptainBedpan",
                     "erik.sharp@hadleyshope.com",
                     "password");
 
