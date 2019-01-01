@@ -93,10 +93,6 @@ export default {
   actions: {
     setSetupWindow({ dispatch, commit, rootState }, window) {
       switch (window) {
-        case SetupWindow.countries:
-          dispatch('setTitle', 'Countries', { root: true })
-          dispatch('Country/load', null, { root: true })
-          break
         case SetupWindow.keywords:
           dispatch('setTitle', 'Keywords', { root: true })
           dispatch('Keyword/load', null, { root: true })

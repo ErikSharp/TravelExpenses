@@ -8,8 +8,6 @@ namespace TravelExpenses.Domain.Entities
     {
         public int Id { get; set; }
         public string CountryName { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
 
         public ICollection<Location> Locations { get; private set; }
     }

@@ -17,12 +17,6 @@ namespace TravelExpenses.Application.Features.Countries
     {
         public class Query : IRequest<List<CountryOut>>
         {
-            public Query(int userId)
-            {
-                UserId = userId;
-            }
-
-            public int UserId { get; private set; }
         }
 
         public class Handler : IRequestHandler<Query, List<CountryOut>>
@@ -44,8 +38,6 @@ namespace TravelExpenses.Application.Features.Countries
             public async Task<List<CountryOut>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var countries = await context.Countries
-                    .Where(c => c.UserId == request.UserId)
-                    .Include(c => c.User)
                     .ToListAsync()
                     .ConfigureAwait(false);
 

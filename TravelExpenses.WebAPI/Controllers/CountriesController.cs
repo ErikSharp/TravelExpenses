@@ -23,39 +23,11 @@ namespace TravelExpenses.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(
-            [FromHeader(Name = "Authorization")]string token)
+        public async Task<IActionResult> GetAll()
         {
-            var userId = User.Claims.GetUserId();
-            var countries = await mediator.Send(new GetCountries.Query(userId)).ConfigureAwait(false);
+            var countries = await mediator.Send(new GetCountries.Query()).ConfigureAwait(false);
 
             return Ok(countries);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Post(
-            [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Country country)
-        {
-            var userId = User.Claims.GetUserId();
-            country.UserId = userId;
-            await mediator.Send(new CreateCountry.Command(country)).ConfigureAwait(false);
-            
-            return Created(
-                new Uri(Request.Path, UriKind.Relative),
-                null);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Put(
-            [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Country country)
-        {
-            var userId = User.Claims.GetUserId();
-            country.UserId = userId;
-            await mediator.Send(new UpdateCountry.Command(country)).ConfigureAwait(false);
-
-            return Ok();
         }
     }
 }

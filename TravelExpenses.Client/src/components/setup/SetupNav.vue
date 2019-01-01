@@ -3,17 +3,8 @@
     <v-card>
       <v-list three-line>
         <template v-for="(item, index) in items">
-          <v-divider
-            v-if="item.divider"
-            :inset="item.inset"
-            :key="index"
-          ></v-divider>
-          <v-list-tile
-            v-else
-            :key="item.title"
-            avatar
-            @click="navigate(item.window)"
-          >
+          <v-divider v-if="item.divider" :inset="item.inset" :key="index"></v-divider>
+          <v-list-tile v-else :key="item.title" avatar @click="navigate(item.window)">
             <v-list-tile-avatar size="55" class="mr-3 mt-1">
               <v-icon large class="purple white--text">{{item.icon}}</v-icon>
             </v-list-tile-avatar>
@@ -36,13 +27,6 @@ export default {
   data() {
     return {
       items: [
-        {
-          window: SetupWindow.countries,
-          icon: 'flag',
-          title: 'Countries',
-          subtitle: 'Add the countries you will be travelling to'
-        },
-        { divider: true, inset: true },
         {
           window: SetupWindow.locations,
           icon: 'add_location',
