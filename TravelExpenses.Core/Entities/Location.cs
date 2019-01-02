@@ -10,8 +10,6 @@ namespace TravelExpenses.Domain.Entities
         public string LocationName { get; set; }
         public int CountryId { get; set; }
         public Country Country { get; set; }
-        public int CurrencyId { get; set; }
-        public Currency Currency { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
 

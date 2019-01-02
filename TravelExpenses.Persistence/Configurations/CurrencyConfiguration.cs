@@ -20,12 +20,6 @@ namespace TravelExpenses.Persistence.Configurations
             builder.Property(e => e.CurrencyName)
                 .HasMaxLength(255)
                 .IsRequired();
-
-            builder.Property(e => e.IsHomeCurrency)
-                .IsRequired();
-
-            builder.Property(e => e.HomeCurrencyRatio)
-                .IsRequired();
         }
     }
 }

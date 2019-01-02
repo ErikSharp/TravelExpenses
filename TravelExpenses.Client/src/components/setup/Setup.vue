@@ -8,9 +8,6 @@
         <locations/>
       </v-window-item>
       <v-window-item>
-        <currencies/>
-      </v-window-item>
-      <v-window-item>
         <categories/>
       </v-window-item>
       <v-window-item>
@@ -23,7 +20,6 @@
 <script>
 import SetupNav from '@/components/setup/SetupNav.vue'
 import Locations from '@/components/setup/location/Locations.vue'
-import Currencies from '@/components/setup/currency/Currencies.vue'
 import Categories from '@/components/setup/category/Categories.vue'
 import Keywords from '@/components/setup/keyword/Keywords.vue'
 
@@ -31,7 +27,6 @@ export default {
   components: {
     SetupNav,
     Locations,
-    Currencies,
     Categories,
     Keywords
   },

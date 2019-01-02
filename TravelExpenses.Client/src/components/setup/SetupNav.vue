@@ -35,13 +35,6 @@ export default {
         },
         { divider: true, inset: true },
         {
-          window: SetupWindow.currencies,
-          icon: 'money',
-          title: 'Currencies',
-          subtitle: 'Add currencies for the countries you will be travelling to'
-        },
-        { divider: true, inset: true },
-        {
           window: SetupWindow.categories,
           icon: 'collections_bookmark',
           title: 'Categories',

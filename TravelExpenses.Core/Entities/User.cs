@@ -15,7 +15,6 @@ namespace TravelExpenses.Domain.Entities
 
         public ICollection<Location> Locations { get; private set; }
         public ICollection<Category> Categories { get; private set; }
-        public ICollection<Currency> Currencies { get; private set; }
         public ICollection<Keyword> Keywords { get; private set; }
         public ICollection<Transaction> Transactions { get; private set; }
     }

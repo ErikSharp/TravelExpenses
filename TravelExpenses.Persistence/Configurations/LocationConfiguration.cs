@@ -18,11 +18,6 @@ namespace TravelExpenses.Persistence.Configurations
                     .IsRequired();
 
             builder
-                .HasOne(l => l.Currency)
-                .WithMany(c => c.Locations)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
                 .HasOne(l => l.User)
                 .WithMany(u => u.Locations)
                 .OnDelete(DeleteBehavior.Restrict);
