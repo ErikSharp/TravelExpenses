@@ -38,10 +38,19 @@
 ### Todos
 ---
 - Client
-  - [ ] Create Login page
-  - [ ] Create registration page
+  - [x] Create Login page
+  - [x] Create registration page
+  - [ ] Create forgot password procedure
+    - [ ] Create send email page
+    - [ ] Server to talk to SendGrid to send email
+    - [ ] Server to record reset password record
+    - [ ] Create password reset page
   - [x] Build to wwwroot
   - [x] Enable CORS for development
+  - [ ] Make Setup data records scroll when there are too many
+  - [ ] Create Recent Transactions page
+  - [ ] Get GPS coordinates when creating transaction
+  - [ ] Add transaction to wire up to the stores (locations, currencies, categories, keywords)
 - Server
   - [x] Add integration tests
     - [x] Happy path auth
@@ -50,7 +59,10 @@
     - [x] Happy path create user
     - [x] User already exists
     - [x] Validation errors
-  - [ ] Complete database
+  - [ ] Create import API
+    - [ ] Export data from Access database
+  - [x] Complete database
+  - [ ] Add memory caches for currencies and countries
   - [x] Create basic health checks
   - [x] Move connection string to correct location
   - [ ] Double logging of requests
