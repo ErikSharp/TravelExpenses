@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,46 +12,50 @@ using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features.Categories
+namespace TravelExpenses.Application.Features.Locations
 {
-    public class UpdateCategory
+    public class UpdateLocation
     {
         public class Command : IRequest
         {
-            public Command(Category category)
+            public Command(Location location)
             {
-                Category = category;
+                Location = location;
             }
 
-            public Category Category { get; }
+            public Location Location { get; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
         {
             private readonly TravelExpensesContext context;
+            private readonly ILogger logger; 
 
             public Handler(
-                TravelExpensesContext context)
+                TravelExpensesContext context,
+                ILoggerFactory loggerFactory)
             {
                 this.context = context;
+                this.logger = loggerFactory.CreateLogger(nameof(Handler));
             }
 
             protected override async Task Handle(Command request, CancellationToken response)
             {
-                var category = await context.Categories.Where(k =>
-                    k.UserId == request.Category.UserId &&
-                    k.Id == request.Category.Id)
+                var location = await context.Locations.Where(l => 
+                    l.UserId == request.Location.UserId && 
+                    l.Id == request.Location.Id)
                     .SingleOrDefaultAsync()
                     .ConfigureAwait(false);
 
-                if (category != null)
+                if (location != null)
                 {
-                    category.CategoryName = request.Category.CategoryName;
+                    location.LocationName = request.Location.LocationName;
+                    location.CountryId = request.Location.CountryId;
                     await context.SaveChangesAsync().ConfigureAwait(false);
                 }
                 else
                 {
-                    var msg = $"Category {request.Category.Id} not found for user {request.Category.UserId}";
+                    var msg = $"Location {request.Location.Id} not found for user {request.Location.UserId}";
                     throw new NotFoundException(msg);
                 }
             }
@@ -60,7 +65,7 @@ namespace TravelExpenses.Application.Features.Categories
         {
             public Validator()
             {
-                RuleFor(c => c.Category.CategoryName).NotEmpty().Length(3, 255);
+                RuleFor(c => c.Location.LocationName).NotEmpty().Length(3, 255);
             }
         }
     }

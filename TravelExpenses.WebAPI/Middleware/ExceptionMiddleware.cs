@@ -11,6 +11,9 @@ using TravelExpenses.WebAPI.Models;
 
 namespace TravelExpenses.WebAPI.Middleware
 {
+    /// <summary>
+    /// Translates exceptions into API responses
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -49,6 +52,15 @@ namespace TravelExpenses.WebAPI.Middleware
                     httpContext,
                     HttpStatusCode.BadRequest,
                     ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.LogWarning($"NotFoundException: {ex.ToString()}");
+
+                await HandleExceptionAsync(
+                    httpContext,
+                    HttpStatusCode.NotFound,
+                    "The record was not found");
             }
             catch (DbUpdateException ex)
             {

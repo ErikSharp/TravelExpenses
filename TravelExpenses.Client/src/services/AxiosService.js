@@ -34,12 +34,6 @@ export default {
   getCountries() {
     return apiClient.get('api/countries')
   },
-  addCountry(newCountry) {
-    return apiClient.post('api/countries', { countryName: newCountry })
-  },
-  editCountry(country) {
-    return apiClient.put('api/countries', country)
-  },
   getKeywords() {
     return apiClient.get('api/keywords')
   },
@@ -57,5 +51,14 @@ export default {
   },
   editCategory(category) {
     return apiClient.put('api/categories', category)
+  },
+  getLocations() {
+    return apiClient.get('api/locations')
+  },
+  addLocation(newLocation) {
+    return apiClient.post('api/locations', newLocation)
+  },
+  editLocation(location) {
+    return apiClient.put('api/locations', location)
   }
 }

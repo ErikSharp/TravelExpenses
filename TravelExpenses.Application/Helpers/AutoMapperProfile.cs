@@ -29,6 +29,10 @@ namespace TravelExpenses.Application.Helpers
 
             CreateMap<Country, CountryOut>();
             CreateMap<Keyword, KeywordOut>();
+
+            CreateMap<Location, LocationOut>()
+                .ForMember(dest => dest.CountryName,
+                    e => e.MapFrom(source => source.Country.CountryName));
         }
     }
 }

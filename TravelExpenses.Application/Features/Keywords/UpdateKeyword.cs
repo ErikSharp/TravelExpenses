@@ -1,10 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
@@ -32,11 +35,24 @@ namespace TravelExpenses.Application.Features.Keywords
                 this.context = context;
             }
 
-            protected override Task Handle(Command request, CancellationToken response)
+            protected async override Task Handle(Command request, CancellationToken response)
             {
-                context.Attach(request.Keyword);
-                context.Keywords.Update(request.Keyword);
-                return context.SaveChangesAsync();
+                var keyword = await context.Keywords.Where(k =>
+                    k.UserId == request.Keyword.UserId &&
+                    k.Id == request.Keyword.Id)
+                    .SingleOrDefaultAsync()
+                    .ConfigureAwait(false);
+
+                if (keyword != null)
+                {
+                    keyword.KeywordName = request.Keyword.KeywordName;
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    var msg = $"Keyword {request.Keyword.Id} not found for user {request.Keyword.UserId}";
+                    throw new NotFoundException(msg);
+                }
             }
         }
 
