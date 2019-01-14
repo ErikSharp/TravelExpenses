@@ -1,6 +1,5 @@
 import Windows from '@/common/enums/InitialSetupWindows.js'
 import AxiosService from '@/services/AxiosService.js'
-import axios from 'axios'
 import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 
@@ -33,10 +32,10 @@ export default {
     SET_HAS_LOCATION(state, hasLocation) {
       state.hasLocation = hasLocation
     },
-    SET_HAS_CATEGORIES(state, hasCategory) {
+    SET_HAS_CATEGORY(state, hasCategory) {
       state.hasCategory = hasCategory
     },
-    SET_HAS_KEYWORDS(state, hasKeyword) {
+    SET_HAS_KEYWORD(state, hasKeyword) {
       state.hasKeyword = hasKeyword
     },
     SET_LOADED(state) {
@@ -54,26 +53,12 @@ export default {
       if (!state.loaded || missingBaseData) {
         let requests = []
         requests.push(
-          AxiosService.getLocations().then(response => {
-            commit('SET_HAS_LOCATION', !!response.data.length)
+          AxiosService.getBaseRequirements().then(response => {
+            commit('SET_HAS_LOCATION', response.data.hasLocation)
+            commit('SET_HAS_CATEGORY', response.data.hasCategory)
+            commit('SET_HAS_KEYWORD', response.data.hasKeyword)
           })
         )
-
-        requests.push(
-          AxiosService.getCategories().then(response => {
-            commit('SET_HAS_CATEGORIES', !!response.data.length)
-          })
-        )
-
-        requests.push(
-          AxiosService.getKeywords().then(response => {
-            commit('SET_HAS_KEYWORDS', !!response.data.length)
-          })
-        )
-
-        axios.all(requests).then(() => {
-          commit('SET_LOADED')
-        })
       }
     },
     setWindow({ commit }, window) {
