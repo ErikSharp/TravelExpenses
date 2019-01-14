@@ -4,10 +4,12 @@ import Axios from '@/services/AxiosService.js'
 import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 
+const baseTitle = 'Manage Your Moo-lah'
+
 export default {
   namespaced: true,
   state: {
-    title: 'Manage Your Moo-lah',
+    title: baseTitle,
     window: Windows.introduction,
     loaded: false,
     hasLocation: false,
@@ -17,6 +19,16 @@ export default {
   },
   mutations: {
     SET_WINDOW(state, window) {
+      switch (window) {
+        case Windows.introduction:
+        case Windows.finish:
+          state.title = baseTitle
+          break
+        default:
+          state.title = 'Initial Setup'
+          break
+      }
+
       state.window = window
     },
     SET_HAS_LOCATION(state, hasLocation) {
@@ -24,6 +36,9 @@ export default {
     },
     SET_LOADED(state) {
       state.loaded = true
+    },
+    SET_TITLE(state, title) {
+      state.title = title
     }
   },
   actions: {
@@ -53,10 +68,13 @@ export default {
       }
     },
     setWindow({ commit }, window) {
-      if (window === Windows.transactions) {
-        Router.push({ name: HomeViews.Transactions })
-      } else {
-        commit('SET_WINDOW', window)
+      switch (window) {
+        case Windows.transactions:
+          Router.push({ name: HomeViews.Transactions })
+          break
+        default:
+          commit('SET_WINDOW', window)
+          break
       }
     }
   }
