@@ -12,9 +12,6 @@
           <location/>
         </v-window-item>
         <v-window-item>
-          <currency/>
-        </v-window-item>
-        <v-window-item>
           <categories1/>
         </v-window-item>
         <v-window-item>
@@ -38,7 +35,6 @@
 import Introduction from '@/components/initialSetup/Introduction.vue'
 import Categories1 from '@/components/initialSetup/Categories1.vue'
 import Categories2 from '@/components/initialSetup/Categories2.vue'
-import Currency from '@/components/initialSetup/Currency.vue'
 import Finish from '@/components/initialSetup/Finish.vue'
 import Keywords1 from '@/components/initialSetup/Keywords1.vue'
 import Keywords2 from '@/components/initialSetup/Keywords2.vue'
@@ -49,7 +45,6 @@ export default {
     Introduction,
     Categories1,
     Categories2,
-    Currency,
     Finish,
     Keywords1,
     Keywords2,

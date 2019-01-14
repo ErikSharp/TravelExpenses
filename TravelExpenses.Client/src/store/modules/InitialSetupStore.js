@@ -1,6 +1,6 @@
-//import AxiosService from '@/services/AxiosService.js'
 import Windows from '@/common/enums/InitialSetupWindows.js'
-import Axios from '@/services/AxiosService.js'
+import AxiosService from '@/services/AxiosService.js'
+import axios from 'axios'
 import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 
@@ -13,7 +13,6 @@ export default {
     window: Windows.introduction,
     loaded: false,
     hasLocation: false,
-    hasCurrency: false,
     hasCategory: false,
     hasKeyword: false
   },
@@ -34,6 +33,12 @@ export default {
     SET_HAS_LOCATION(state, hasLocation) {
       state.hasLocation = hasLocation
     },
+    SET_HAS_CATEGORIES(state, hasCategory) {
+      state.hasCategory = hasCategory
+    },
+    SET_HAS_KEYWORDS(state, hasKeyword) {
+      state.hasKeyword = hasKeyword
+    },
     SET_LOADED(state) {
       state.loaded = true
     },
@@ -43,28 +48,32 @@ export default {
   },
   actions: {
     checkBaseRequirements({ state, commit }) {
-      if (!state.loaded) {
+      let missingBaseData =
+        state.hasLocation && state.hasCategory && state.hasKeyword
+
+      if (!state.loaded || missingBaseData) {
         let requests = []
         requests.push(
-          Axios.getLocations().then(response => {
-            commit('SET_HAS_LOCATION', !!response.data)
+          AxiosService.getLocations().then(response => {
+            commit('SET_HAS_LOCATION', !!response.data.length)
           })
         )
 
-        Axios.all(requests).then(() => {
-          console.log('They have all completed')
+        requests.push(
+          AxiosService.getCategories().then(response => {
+            commit('SET_HAS_CATEGORIES', !!response.data.length)
+          })
+        )
+
+        requests.push(
+          AxiosService.getKeywords().then(response => {
+            commit('SET_HAS_KEYWORDS', !!response.data.length)
+          })
+        )
+
+        axios.all(requests).then(() => {
           commit('SET_LOADED')
         })
-      }
-
-      let missingBaseData =
-        state.hasLocation &&
-        state.hasCurrency &&
-        state.hasCategory &&
-        state.hasKeyword
-
-      if (missingBaseData) {
-        commit('SET_WINDOW', Windows.introduction)
       }
     },
     setWindow({ commit }, window) {

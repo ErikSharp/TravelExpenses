@@ -11,7 +11,7 @@ import Windows from '@/common/enums/InitialSetupWindows.js'
 export default {
   methods: {
     next() {
-      this.$store.dispatch('InitialSetup/setWindow', Windows.currency)
+      this.$store.dispatch('InitialSetup/setWindow', Windows.categories1)
     }
   }
 }

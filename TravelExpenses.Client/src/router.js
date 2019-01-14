@@ -91,11 +91,13 @@ let myRouter = new Router({
 })
 
 const checkBaseDataAndProceedTo = (next, name) => {
-  if (name) {
-    next({ name: name })
-  } else {
-    next()
-  }
+  Store.dispatch('InitialSetup/checkBaseRequirements').then(() => {
+    if (name) {
+      next({ name: name })
+    } else {
+      next()
+    }
+  })
 }
 
 myRouter.beforeEach((to, from, next) => {
