@@ -4,6 +4,7 @@ import Router from '@/router'
 import Authentication from '@/store/modules/AuthenticationStore.js'
 import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
+import InitialSetup from '@/store/modules/InitialSetupStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
 import Location from '@/store/modules/LocationStore.js'
 import Country from '@/store/modules/CountryStore.js'
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     Authentication,
     Reconcile,
     SetupData,
+    InitialSetup,
     Transaction,
     Location,
     Country,

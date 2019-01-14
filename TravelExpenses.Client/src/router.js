@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import Authentication from '@/views/Authentication.vue'
+import InitialSetup from '@/views/InitialSetup.vue'
 import Transactions from '@/components/Transactions.vue'
 import Reconcile from '@/components/reconcile/Reconcile.vue'
 import CashWithdrawals from '@/components/CashWithdrawals.vue'
@@ -76,6 +77,11 @@ let myRouter = new Router({
           component: Setup
         }
       ]
+    },
+    {
+      path: '/initial-setup',
+      name: HomeViews.InitialSetup,
+      component: InitialSetup
     },
     {
       path: '*',
