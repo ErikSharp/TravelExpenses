@@ -90,27 +90,35 @@ let myRouter = new Router({
   ]
 })
 
+const checkBaseDataAndProceedTo = (next, name) => {
+  if (name) {
+    next({ name: name })
+  } else {
+    next()
+  }
+}
+
 myRouter.beforeEach((to, from, next) => {
   let token = Store.state.Authentication.authToken
 
   if (to.name === 'authentication') {
     if (token) {
-      next({ name: 'transactions' })
+      checkBaseDataAndProceedTo(next, 'transactions')
     } else {
       Store.dispatch('Authentication/checkLocalStorageForToken')
       if (Store.state.Authentication.authToken) {
-        next({ name: 'transactions' })
+        checkBaseDataAndProceedTo(next, 'transactions')
       } else {
-        next()
+        next({ name: 'authentication' })
       }
     }
   } else {
     if (token) {
-      next()
+      checkBaseDataAndProceedTo(next)
     } else {
       Store.dispatch('Authentication/checkLocalStorageForToken')
       if (Store.state.Authentication.authToken) {
-        next()
+        checkBaseDataAndProceedTo(next)
       } else {
         next({ name: 'authentication' })
       }
