@@ -12,24 +12,24 @@ export default {
     SET_BUSY(state, busy) {
       state.busy = busy
     },
-    SET_ADD_KEYWORD_BUSY(state, busy) {
+    SET_ADD_LOCATION_BUSY(state, busy) {
       state.addLocationBusy = busy
     },
-    SET_EDIT_KEYWORD_BUSY(state, busy) {
+    SET_EDIT_LOCATION_BUSY(state, busy) {
       state.editLocationBusy = busy
     },
-    SET_KEYWORDS(state, locations) {
+    SET_LOCATIONS(state, locations) {
       state.locations = locations
     }
   },
   actions: {
     load({ dispatch, commit }) {
-      commit('SET_KEYWORDS', [])
+      commit('SET_LOCATIONS', [])
       commit('SET_BUSY', true)
 
       return AxiosService.getLocations()
         .then(response => {
-          commit('SET_KEYWORDS', response.data)
+          commit('SET_LOCATIONS', response.data)
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -39,7 +39,7 @@ export default {
         })
     },
     addLocation({ dispatch, commit }, newLocation) {
-      commit('SET_ADD_KEYWORD_BUSY', true)
+      commit('SET_ADD_LOCATION_BUSY', true)
 
       return AxiosService.addLocation(newLocation)
         .then(() => {
@@ -56,11 +56,11 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_ADD_KEYWORD_BUSY', false)
+          commit('SET_ADD_LOCATION_BUSY', false)
         })
     },
     editLocation({ dispatch, commit }, location) {
-      commit('SET_EDIT_KEYWORD_BUSY', true)
+      commit('SET_EDIT_LOCATION_BUSY', true)
 
       return AxiosService.editLocation(location)
         .then(() => {
@@ -77,7 +77,7 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_EDIT_KEYWORD_BUSY', false)
+          commit('SET_EDIT_LOCATION_BUSY', false)
         })
     }
   }
