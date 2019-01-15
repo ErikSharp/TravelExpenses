@@ -28,6 +28,7 @@ namespace TravelExpenses.Application.Helpers
                     e => e.MapFrom(source => source.KeywordIds.Select(id => new TransactionKeyword { KeywordId = id })));
 
             CreateMap<Country, CountryOut>();
+            CreateMap<Currency, CurrencyOut>();
             CreateMap<Keyword, KeywordOut>();
 
             CreateMap<Location, LocationOut>()
