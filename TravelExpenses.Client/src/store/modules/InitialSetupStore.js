@@ -11,9 +11,11 @@ export default {
     title: baseTitle,
     window: Windows.introduction,
     loaded: false,
-    hasLocation: false,
-    hasCategory: false,
-    hasKeyword: false
+    baseData: {
+      hasLocation: false,
+      hasCategory: false,
+      hasKeyword: false
+    }
   },
   mutations: {
     SET_WINDOW(state, window) {
@@ -29,36 +31,26 @@ export default {
 
       state.window = window
     },
-    SET_HAS_LOCATION(state, hasLocation) {
-      state.hasLocation = hasLocation
-    },
-    SET_HAS_CATEGORY(state, hasCategory) {
-      state.hasCategory = hasCategory
-    },
-    SET_HAS_KEYWORD(state, hasKeyword) {
-      state.hasKeyword = hasKeyword
+    SET_BASE_DATA(state, baseData) {
+      state.baseData = baseData
     },
     SET_LOADED(state) {
       state.loaded = true
-    },
-    SET_TITLE(state, title) {
-      state.title = title
     }
   },
   actions: {
-    checkBaseRequirements({ state, commit }) {
+    checkBaseRequirements({ state, commit }, callback) {
       let missingBaseData =
         state.hasLocation && state.hasCategory && state.hasKeyword
 
       if (!state.loaded || missingBaseData) {
-        let requests = []
-        requests.push(
-          AxiosService.getBaseRequirements().then(response => {
-            commit('SET_HAS_LOCATION', response.data.hasLocation)
-            commit('SET_HAS_CATEGORY', response.data.hasCategory)
-            commit('SET_HAS_KEYWORD', response.data.hasKeyword)
-          })
-        )
+        AxiosService.getBaseRequirements().then(response => {
+          commit('SET_BASE_DATA', response.data)
+          commit('SET_LOADED')
+          callback()
+        })
+      } else {
+        callback()
       }
     },
     setWindow({ commit }, window) {
@@ -70,6 +62,11 @@ export default {
           commit('SET_WINDOW', window)
           break
       }
+    }
+  },
+  getters: {
+    missingBaseData: state => {
+      return !state.hasLocation || !state.hasCategory || !state.hasKeyword
     }
   }
 }

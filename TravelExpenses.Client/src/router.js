@@ -90,10 +90,12 @@ let myRouter = new Router({
   ]
 })
 
-const checkBaseDataAndProceedTo = (next, name) => {
-  Store.dispatch('InitialSetup/checkBaseRequirements').then(() => {
-    if (name) {
-      next({ name: name })
+const checkBaseDataAndProceedTo = (next, destinationName) => {
+  Store.dispatch('InitialSetup/checkBaseRequirements', () => {
+    if (Store.getters['InitialSetup/missingBaseData']) {
+      next({ name: HomeViews.InitialSetup })
+    } else if (destinationName) {
+      next({ name: destinationName })
     } else {
       next()
     }
@@ -103,26 +105,34 @@ const checkBaseDataAndProceedTo = (next, name) => {
 myRouter.beforeEach((to, from, next) => {
   let token = Store.state.Authentication.authToken
 
-  if (to.name === 'authentication') {
+  if (to.name === HomeViews.Authentication) {
     if (token) {
-      checkBaseDataAndProceedTo(next, 'transactions')
+      checkBaseDataAndProceedTo(next, HomeViews.Transactions)
     } else {
       Store.dispatch('Authentication/checkLocalStorageForToken')
       if (Store.state.Authentication.authToken) {
-        checkBaseDataAndProceedTo(next, 'transactions')
+        checkBaseDataAndProceedTo(next, HomeViews.Transactions)
       } else {
-        next({ name: 'authentication' })
+        next({ name: HomeViews.Authentication })
       }
     }
   } else {
     if (token) {
-      checkBaseDataAndProceedTo(next)
+      if (to.name === HomeViews.InitialSetup) {
+        next()
+      } else {
+        checkBaseDataAndProceedTo(next)
+      }
     } else {
       Store.dispatch('Authentication/checkLocalStorageForToken')
       if (Store.state.Authentication.authToken) {
-        checkBaseDataAndProceedTo(next)
+        if (to.name === HomeViews.InitialSetup) {
+          next()
+        } else {
+          checkBaseDataAndProceedTo(next)
+        }
       } else {
-        next({ name: 'authentication' })
+        next({ name: HomeViews.Authentication })
       }
     }
   }
