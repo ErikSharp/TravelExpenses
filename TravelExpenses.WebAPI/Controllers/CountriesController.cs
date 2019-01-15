@@ -1,9 +1,12 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.Countries;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.WebAPI.Extensions;
@@ -16,16 +19,25 @@ namespace TravelExpenses.WebAPI.Controllers
     public class CountriesController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IMemoryCache memoryCache;
 
-        public CountriesController(IMediator mediator)
+        public CountriesController(IMediator mediator, IMemoryCache memoryCache)
         {
             this.mediator = mediator;
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            var cachedCountries = memoryCache.Get<List<CountryOut>>(1);
+            if (cachedCountries != null)
+                return Ok(cachedCountries);
+
             var countries = await mediator.Send(new GetCountries.Query()).ConfigureAwait(false);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromDays(1));
+            memoryCache.Set(1, countries, cacheEntryOptions);
 
             return Ok(countries);
         }

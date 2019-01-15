@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.Currencies;
 
 namespace TravelExpenses.WebAPI.Controllers
@@ -13,18 +16,27 @@ namespace TravelExpenses.WebAPI.Controllers
     public class CurrenciesController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IMemoryCache memoryCache;
 
-        public CurrenciesController(IMediator mediator)
+        public CurrenciesController(IMediator mediator, IMemoryCache memoryCache)
         {
             this.mediator = mediator;
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var countries = await mediator.Send(new GetCurrencies.Query()).ConfigureAwait(false);
+            var cachedCurrencies = memoryCache.Get<List<CurrencyOut>>(1);
+            if (cachedCurrencies != null)
+                return Ok(cachedCurrencies);
 
-            return Ok(countries);
+            var currencies = await mediator.Send(new GetCurrencies.Query()).ConfigureAwait(false);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromDays(1));
+            memoryCache.Set(1, currencies, cacheEntryOptions);
+
+            return Ok(currencies);
         }
     }
 }
