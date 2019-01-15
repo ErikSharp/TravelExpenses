@@ -12,7 +12,14 @@ import Windows from '@/common/enums/InitialSetupWindows.js'
 export default {
   methods: {
     next() {
-      this.$store.dispatch('InitialSetup/setWindow', Windows.keywords1)
+      this.$store.dispatch('InitialSetup/setWindow', this.getNextWindow())
+    },
+    getNextWindow() {
+      if (!this.$store.state.InitialSetup.baseData.hasKeyword) {
+        return Windows.keywords1
+      } else {
+        return Windows.finish
+      }
     }
   }
 }

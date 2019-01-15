@@ -16,8 +16,10 @@ export default {
     getNextWindow() {
       if (!this.$store.state.InitialSetup.baseData.hasCategory) {
         return Windows.categories1
-      } else {
+      } else if (!this.$store.state.InitialSetup.baseData.hasKeyword) {
         return Windows.keywords1
+      } else {
+        return Windows.finish
       }
     }
   }

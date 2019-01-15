@@ -17,13 +17,11 @@ export default {
     getNextWindow() {
       if (!this.$store.state.InitialSetup.baseData.hasLocation) {
         return Windows.location
-      }
-
-      if (!this.$store.state.InitialSetup.baseData.hasCategory) {
+      } else if (!this.$store.state.InitialSetup.baseData.hasCategory) {
         return Windows.categories1
+      } else {
+        return Windows.keywords1
       }
-
-      return Windows.keywords1
     }
   }
 }
