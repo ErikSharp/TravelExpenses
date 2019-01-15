@@ -62,10 +62,10 @@
   - [ ] Create import API
     - [ ] Export data from Access database
   - [x] Complete database
-  - [ ] Add memory caches for currencies and countries
+  - [x] Add memory caches for currencies and countries
   - [x] Create basic health checks
   - [x] Move connection string to correct location
-  - [ ] Double logging of requests
+  - [ ] Double logging of requests (I think this is due to OPTIONS calls in development for CORS)
   - [x] External configuration
   - [ ] Add user id to the requests and logging
   - [x] Cleanup logging in Startup.cs
