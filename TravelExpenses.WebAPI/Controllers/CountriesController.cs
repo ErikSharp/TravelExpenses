@@ -20,6 +20,7 @@ namespace TravelExpenses.WebAPI.Controllers
     {
         private readonly IMediator mediator;
         private readonly IMemoryCache memoryCache;
+        private readonly string cacheKey = new Guid().ToString();
 
         public CountriesController(IMediator mediator, IMemoryCache memoryCache)
         {
@@ -30,14 +31,14 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var cachedCountries = memoryCache.Get<List<CountryOut>>(1);
+            var cachedCountries = memoryCache.Get<List<CountryOut>>(cacheKey);
             if (cachedCountries != null)
                 return Ok(cachedCountries);
 
             var countries = await mediator.Send(new GetCountries.Query()).ConfigureAwait(false);
 
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromDays(1));
-            memoryCache.Set(1, countries, cacheEntryOptions);
+            memoryCache.Set(cacheKey, countries, cacheEntryOptions);
 
             return Ok(countries);
         }

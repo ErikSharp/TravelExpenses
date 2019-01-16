@@ -41,8 +41,8 @@ namespace TravelExpenses.Application.Features.Currencies
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                var countriesOut = currencies.Select(c => mapper.Map<CurrencyOut>(c)).ToList();
-                return countriesOut;
+                var currenciesOut = currencies.Select(c => mapper.Map<CurrencyOut>(c)).ToList();
+                return currenciesOut;
             }
         }
     }
