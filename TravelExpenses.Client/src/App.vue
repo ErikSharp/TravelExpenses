@@ -6,7 +6,7 @@
           <router-view/>
         </transition>
         <v-snackbar
-          v-model="snackbar.show"
+          v-model="snackbarShow"
           :color="snackbar.color"
           :multi-line="snackbar.mode === 'multi-line'"
           :timeout="snackbar.timeout"
@@ -39,6 +39,12 @@ export default {
   computed: {
     snackbar() {
       return this.$store.state.snackbar
+    },
+    snackbarShow: {
+      get() {
+        return this.$store.state.snackbar.show
+      },
+      set() {}
     }
   }
 }
