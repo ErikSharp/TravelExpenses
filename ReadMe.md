@@ -50,7 +50,7 @@
   - [ ] Make Setup data records scroll when there are too many
   - [ ] Create Recent Transactions page
   - [ ] Get GPS coordinates when creating transaction
-  - [ ] Add transaction to wire up to the stores (locations, currencies, categories, keywords)
+  - [x] Add transaction to wire up to the stores (locations, currencies, categories, keywords)
 - Server
   - [x] Add integration tests
     - [x] Happy path auth
@@ -67,7 +67,8 @@
   - [x] Move connection string to correct location
   - [ ] Double logging of requests (I think this is due to OPTIONS calls in development for CORS)
   - [x] External configuration
-  - [ ] Add user id to the requests and logging
+  - [x] Add user id to the requests
+  - [ ] Add user id to the logging
   - [x] Cleanup logging in Startup.cs
   - [x] Turn off developer exception page
   - [ ] Logging format on Azure
