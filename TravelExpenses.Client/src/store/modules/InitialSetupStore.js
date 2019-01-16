@@ -66,7 +66,11 @@ export default {
   },
   getters: {
     missingBaseData: state => {
-      return !state.hasLocation || !state.hasCategory || !state.hasKeyword
+      return (
+        !state.baseData.hasLocation ||
+        !state.baseData.hasCategory ||
+        !state.baseData.hasKeyword
+      )
     }
   }
 }

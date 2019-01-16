@@ -34,6 +34,9 @@ export default {
   getCountries() {
     return apiClient.get('api/countries')
   },
+  getCurrencies() {
+    return apiClient.get('api/currencies')
+  },
   getKeywords() {
     return apiClient.get('api/keywords')
   },

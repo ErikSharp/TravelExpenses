@@ -8,6 +8,7 @@ import InitialSetup from '@/store/modules/InitialSetupStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
 import Location from '@/store/modules/LocationStore.js'
 import Country from '@/store/modules/CountryStore.js'
+import Currency from '@/store/modules/CurrencyStore.js'
 import Category from '@/store/modules/CategoryStore.js'
 import Keyword from '@/store/modules/KeywordStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     Transaction,
     Location,
     Country,
+    Currency,
     Category,
     Keyword
   },

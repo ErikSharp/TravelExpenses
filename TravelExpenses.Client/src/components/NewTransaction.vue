@@ -186,6 +186,23 @@ import sortBy from 'lodash/sortBy'
 import { mapGetters } from 'vuex'
 
 export default {
+  created() {
+    if (!this.$store.state.Country.countries.length) {
+      this.$store.dispatch('Country/load')
+    }
+    if (!this.$store.state.Location.locations.length) {
+      this.$store.dispatch('Location/load')
+    }
+    if (!this.$store.state.Currency.currencies.length) {
+      this.$store.dispatch('Currency/load')
+    }
+    if (!this.$store.state.Keyword.keywords.length) {
+      this.$store.dispatch('Keyword/load')
+    }
+    if (!this.$store.state.Category.categories.length) {
+      this.$store.dispatch('Category/load')
+    }
+  },
   data() {
     return {
       title: '',
@@ -234,8 +251,11 @@ export default {
   methods: {
     getLocationString(locationObj) {
       const country = this.countries.find(c => c.id === locationObj.countryId)
-
-      return `${locationObj.locationName}, ${country.countryName}`
+      if (country) {
+        return `${locationObj.locationName}, ${country.countryName}`
+      } else {
+        return locationObj.locationName
+      }
     },
     removeKeyword(item) {
       this.chosenKeywords.splice(this.chosenKeywords.indexOf(item), 1)
@@ -287,19 +307,19 @@ export default {
   computed: {
     ...mapGetters('Authentication', ['userId']),
     currencies() {
-      return sortBy(this.$store.state.SetupData.currencies, c => c.isoCode)
+      return sortBy(this.$store.state.Currency.currencies, c => c.isoCode)
     },
     categories() {
-      return sortBy(this.$store.state.SetupData.categories, c => c.categoryName)
+      return sortBy(this.$store.state.Category.categories, c => c.categoryName)
     },
     locations() {
-      return sortBy(this.$store.state.SetupData.locations, l => l.locationName)
+      return sortBy(this.$store.state.Location.locations, l => l.locationName)
     },
     countries() {
-      return sortBy(this.$store.state.SetupData.countries, c => c.countryName)
+      return sortBy(this.$store.state.Country.countries, c => c.countryName)
     },
     keywords() {
-      return sortBy(this.$store.state.SetupData.keywords, k => k.keywordName)
+      return sortBy(this.$store.state.Keyword.keywords, k => k.keywordName)
     },
     titleErrors() {
       const errors = []
