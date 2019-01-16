@@ -17,7 +17,7 @@ namespace TravelExpenses.WebAPI.Controllers
     {
         private readonly IMediator mediator;
         private readonly IMemoryCache memoryCache;
-        private readonly string cacheKey = new Guid().ToString();
+        private readonly string cacheKey = Guid.NewGuid().ToString();
 
         public CurrenciesController(IMediator mediator, IMemoryCache memoryCache)
         {
