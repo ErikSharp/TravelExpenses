@@ -11,6 +11,7 @@ using TravelExpenses.WebAPI.Models;
 
 namespace TravelExpenses.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UtilitiesController : ControllerBase
