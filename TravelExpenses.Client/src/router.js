@@ -11,6 +11,7 @@ import Queries from '@/components/Queries.vue'
 import Setup from '@/components/setup/Setup.vue'
 import Store from '@/store/store.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
+import routerGuard from '@/routerGuard.js'
 
 Vue.use(Router)
 
@@ -90,52 +91,26 @@ let myRouter = new Router({
   ]
 })
 
-const checkBaseDataAndProceedTo = (next, destinationName) => {
-  Store.dispatch('InitialSetup/checkBaseRequirements', () => {
-    if (Store.getters['InitialSetup/missingBaseData']) {
-      next({ name: HomeViews.InitialSetup })
-    } else if (destinationName) {
-      next({ name: destinationName })
-    } else {
-      next()
-    }
-  })
+let getToken = callback => {
+  let token = Store.state.Authentication.authToken
+
+  if (!token) {
+    Store.dispatch('Authentication/checkLocalStorageForToken').then(() => {
+      callback(Store.state.Authentication.authToken)
+    })
+  }
 }
 
 myRouter.beforeEach((to, from, next) => {
-  let token = Store.state.Authentication.authToken
-
-  if (to.name === HomeViews.Authentication) {
-    if (token) {
-      checkBaseDataAndProceedTo(next, HomeViews.Transactions)
+  routerGuard(to, next, getToken, callback => {
+    if (!Store.state.InitialSetup.loaded) {
+      Store.dispatch('InitialSetup/checkBaseRequirements', () => {
+        callback(Store.getters['InitialSetup/missingBaseData'])
+      })
     } else {
-      Store.dispatch('Authentication/checkLocalStorageForToken')
-      if (Store.state.Authentication.authToken) {
-        checkBaseDataAndProceedTo(next, HomeViews.Transactions)
-      } else {
-        next({ name: HomeViews.Authentication })
-      }
+      callback(Store.getters['InitialSetup/missingBaseData'])
     }
-  } else {
-    if (token) {
-      if (to.name === HomeViews.InitialSetup) {
-        next()
-      } else {
-        checkBaseDataAndProceedTo(next)
-      }
-    } else {
-      Store.dispatch('Authentication/checkLocalStorageForToken')
-      if (Store.state.Authentication.authToken) {
-        if (to.name === HomeViews.InitialSetup) {
-          next()
-        } else {
-          checkBaseDataAndProceedTo(next)
-        }
-      } else {
-        next({ name: HomeViews.Authentication })
-      }
-    }
-  }
+  })
 })
 
 export default myRouter
