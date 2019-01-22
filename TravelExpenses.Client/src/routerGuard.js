@@ -1,16 +1,27 @@
+/* eslint-disable no-console */
 import * as HomeViews from '@/common/constants/HomeViews.js'
 
 let redirectFlag = false
 
-let nextDesination = (next, destination) => {
+let nextDesination = (redirect, destination) => {
   redirectFlag = true
-  next({ name: destination })
+  redirect({ name: destination })
 }
 
-let routerGuard = (to, next, getToken, getMissingSetupData) => {
+export let resetRedirectFlag = () => {
+  redirectFlag = false
+}
+
+export let routerGuard = (
+  to,
+  redirect,
+  proceed,
+  getToken,
+  getMissingSetupData
+) => {
   if (redirectFlag) {
     redirectFlag = false
-    next()
+    proceed()
   }
 
   let destination = to.name
@@ -23,19 +34,17 @@ let routerGuard = (to, next, getToken, getMissingSetupData) => {
 
       getMissingSetupData(isMissingData => {
         if (isMissingData) {
-          nextDesination(next, HomeViews.InitialSetup)
+          nextDesination(redirect, HomeViews.InitialSetup)
         } else {
           if (destination === HomeViews.InitialSetup) {
-            nextDesination(next, HomeViews.Transactions)
+            nextDesination(redirect, HomeViews.Transactions)
           } else {
-            nextDesination(next, destination)
+            proceed()
           }
         }
       })
     } else {
-      nextDesination(next, HomeViews.Authentication)
+      nextDesination(redirect, HomeViews.Authentication)
     }
   })
 }
-
-export default routerGuard

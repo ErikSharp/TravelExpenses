@@ -11,7 +11,7 @@ import Queries from '@/components/Queries.vue'
 import Setup from '@/components/setup/Setup.vue'
 import Store from '@/store/store.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
-import routerGuard from '@/routerGuard.js'
+import * as Guard from '@/routerGuard.js'
 
 Vue.use(Router)
 
@@ -102,7 +102,7 @@ let getToken = callback => {
 }
 
 myRouter.beforeEach((to, from, next) => {
-  routerGuard(to, next, getToken, callback => {
+  Guard.routerGuard(to, to => next(to), () => next(), getToken, callback => {
     if (!Store.state.InitialSetup.loaded) {
       Store.dispatch('InitialSetup/checkBaseRequirements', () => {
         callback(Store.getters['InitialSetup/missingBaseData'])
