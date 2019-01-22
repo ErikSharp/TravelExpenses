@@ -94,7 +94,9 @@ let myRouter = new Router({
 let getToken = callback => {
   let token = Store.state.Authentication.authToken
 
-  if (!token) {
+  if (token) {
+    callback(token)
+  } else {
     Store.dispatch('Authentication/checkLocalStorageForToken').then(() => {
       callback(Store.state.Authentication.authToken)
     })
