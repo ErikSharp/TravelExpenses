@@ -1,9 +1,9 @@
 <template>
   <v-card class="pa-3">
     <v-flex xs12 class="mb-3">
-      <v-layout row justify-center align-center>
-        <v-avatar size="55" class="mr-2 elevation-4">
-          <v-icon large class="purple white--text">add_location</v-icon>
+      <v-layout row align-center>
+        <v-avatar size="55" class="mr-3 elevation-4">
+          <v-icon large class="primary white--text">add_location</v-icon>
         </v-avatar>
         <h1>Country and Location</h1>
       </v-layout>
