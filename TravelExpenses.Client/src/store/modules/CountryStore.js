@@ -11,7 +11,11 @@ export default {
     }
   },
   actions: {
-    load({ dispatch, commit }) {
+    load({ state, dispatch, commit }) {
+      if (state.countries.length) {
+        return
+      }
+
       commit('SET_COUNTRIES', [])
 
       return AxiosService.getCountries()
