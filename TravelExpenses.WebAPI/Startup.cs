@@ -157,8 +157,6 @@ namespace TravelExpenses.WebAPI
                     builder.WithOrigins("http://localhost:8080")
                     .AllowAnyHeader()
                     .AllowAnyMethod());
-
-                app.UseMiddleware<DevelopmentLatencyMiddleware>();
             }
             else
             {
