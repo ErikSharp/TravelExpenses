@@ -1,8 +1,14 @@
 <template>
-  <v-card>
-    <h1>Welcome to Manage Your Moo-lah</h1>
-    <p>There are a few things we need to do to get you started...</p>
-    <v-btn @click="next">LET'S GO</v-btn>
+  <v-card class="pa-3">
+    <h1 class="text-xs-center">Welcome to
+      <br>Manage Your Moo-lah
+    </h1>
+    <p class="text-xs-center">There are a few things we need to do to get you started...</p>
+    <v-flex xs12>
+      <v-layout row justify-center>
+        <v-btn color="primary" @click="next">LET'S GO</v-btn>
+      </v-layout>
+    </v-flex>
   </v-card>
 </template>
 
