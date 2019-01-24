@@ -49,8 +49,8 @@ export default {
   getCategories() {
     return apiClient.get('api/categories')
   },
-  addCategory(newCategory) {
-    return apiClient.post('api/categories', { categoryName: newCategory })
+  addCategories(newCategories) {
+    return apiClient.post('api/categories', newCategories)
   },
   editCategory(category) {
     return apiClient.put('api/categories', category)

@@ -38,11 +38,11 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Category category)
+            [FromBody]string[] categoryNames)
         {
             var userId = User.Claims.GetUserId();
-            category.UserId = userId;
-            await mediator.Send(new CreateCategory.Command(category)).ConfigureAwait(false);
+            var categories = categoryNames.Select(n => new Category() { CategoryName = n, UserId = userId }).ToArray();
+            await mediator.Send(new CreateCategory.Command(categories)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),

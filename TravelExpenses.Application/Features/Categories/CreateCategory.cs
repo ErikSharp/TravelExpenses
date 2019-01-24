@@ -14,12 +14,12 @@ namespace TravelExpenses.Application.Features.Categories
     {
         public class Command : IRequest
         {
-            public Command(Category category)
+            public Command(Category[] categories)
             {
-                Category = category;
+                Categories = categories;
             }
 
-            public Category Category { get; }
+            public Category[] Categories { get; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
@@ -34,7 +34,7 @@ namespace TravelExpenses.Application.Features.Categories
 
             protected override Task Handle(Command request, CancellationToken response)
             {
-                context.Categories.Add(request.Category);
+                context.Categories.AddRange(request.Categories);
                 return context.SaveChangesAsync();
             }
         }
@@ -43,8 +43,16 @@ namespace TravelExpenses.Application.Features.Categories
         {
             public Validator()
             {
-                RuleFor(c => c.Category.CategoryName).NotEmpty().Length(3, 255);
+                RuleForEach(c => c.Categories).SetValidator(new CategoryValidator());
             }
-        }
+
+            public class CategoryValidator : AbstractValidator<Category>
+            {
+                public CategoryValidator()
+                {
+                    RuleFor(c => c.CategoryName).NotEmpty().Length(3, 255);
+                }
+            }
+        }        
     }
 }

@@ -55,7 +55,7 @@ export default {
       this.$emit('cancel')
     },
     add() {
-      this.$store.dispatch('Category/addCategory', this.category)
+      this.$store.dispatch('Category/addCategories', [this.category])
     }
   },
   computed: {

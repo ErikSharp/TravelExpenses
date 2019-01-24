@@ -6,30 +6,42 @@ export default {
     busy: false,
     addCategoryBusy: false,
     editCategoryBusy: false,
-    categories: []
+    categories: [],
+    sampleCategories: [
+      'Transportation',
+      'Dining',
+      'Groceries',
+      'Entertainment',
+      'Accommodations',
+      'Utilities',
+      'Medical',
+      'Fees',
+      'Deposit',
+      'Non-trip'
+    ]
   },
   mutations: {
     SET_BUSY(state, busy) {
       state.busy = busy
     },
-    SET_ADD_COUNTRY_BUSY(state, busy) {
+    SET_ADD_CATEGORY_BUSY(state, busy) {
       state.addCategoryBusy = busy
     },
-    SET_EDIT_COUNTRY_BUSY(state, busy) {
+    SET_EDIT_CATEGORY_BUSY(state, busy) {
       state.editCategoryBusy = busy
     },
-    SET_COUNTRIES(state, categories) {
+    SET_CATEGORIES(state, categories) {
       state.categories = categories
     }
   },
   actions: {
     load({ dispatch, commit }) {
-      commit('SET_COUNTRIES', [])
+      commit('SET_CATEGORIES', [])
       commit('SET_BUSY', true)
 
       return AxiosService.getCategories()
         .then(response => {
-          commit('SET_COUNTRIES', response.data)
+          commit('SET_CATEGORIES', response.data)
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -38,25 +50,33 @@ export default {
           commit('SET_BUSY', false)
         })
     },
-    addCategory({ dispatch, commit }, newCategory) {
-      commit('SET_ADD_COUNTRY_BUSY', true)
+    addCategories({ dispatch, commit }, newCategories) {
+      commit('SET_ADD_CATEGORY_BUSY', true)
 
-      return AxiosService.addCategory(newCategory)
+      return AxiosService.addCategories(newCategories)
         .then(() => {
-          dispatch('showSaveMessage', `${newCategory} has been saved`, {
-            root: true
-          })
+          dispatch(
+            'showSaveMessage',
+            `${
+              newCategories.length === 1
+                ? newCategories[0] + ' has'
+                : newCategories.length + ' categories have'
+            } been saved`,
+            {
+              root: true
+            }
+          )
           dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_ADD_COUNTRY_BUSY', false)
+          commit('SET_ADD_CATEGORY_BUSY', false)
         })
     },
     editCategory({ dispatch, commit }, category) {
-      commit('SET_EDIT_COUNTRY_BUSY', true)
+      commit('SET_EDIT_CATEGORY_BUSY', true)
 
       return AxiosService.editCategory(category)
         .then(() => {
@@ -73,7 +93,7 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_EDIT_COUNTRY_BUSY', false)
+          commit('SET_EDIT_CATEGORY_BUSY', false)
         })
     }
   }
