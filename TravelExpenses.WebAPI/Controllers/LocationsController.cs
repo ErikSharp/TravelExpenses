@@ -42,11 +42,11 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var userId = User.Claims.GetUserId();
             location.UserId = userId;
-            await mediator.Send(new CreateLocation.Command(location)).ConfigureAwait(false);
+            var locations = await mediator.Send(new CreateLocation.Query(location)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
-                null);
+                locations);
         }
 
         [HttpPut]
