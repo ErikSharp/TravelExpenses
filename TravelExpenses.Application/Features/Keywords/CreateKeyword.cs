@@ -14,12 +14,12 @@ namespace TravelExpenses.Application.Features.Keywords
     {
         public class Command : IRequest
         {
-            public Command(Keyword keyword)
+            public Command(Keyword[] keywords)
             {
-                Keyword = keyword;
+                Keywords = keywords;
             }
 
-            public Keyword Keyword { get; }
+            public Keyword[] Keywords { get; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
@@ -34,7 +34,7 @@ namespace TravelExpenses.Application.Features.Keywords
 
             protected override Task Handle(Command request, CancellationToken response)
             {
-                context.Keywords.Add(request.Keyword);
+                context.Keywords.AddRange(request.Keywords);
                 return context.SaveChangesAsync();
             }
         }
@@ -43,7 +43,15 @@ namespace TravelExpenses.Application.Features.Keywords
         {
             public Validator()
             {
-                RuleFor(c => c.Keyword.KeywordName).NotEmpty().Length(3, 255);
+                RuleForEach(c => c.Keywords).SetValidator(new KeywordValidator());
+            }
+
+            public class KeywordValidator : AbstractValidator<Keyword>
+            {
+                public KeywordValidator()
+                {
+                    RuleFor(c => c.KeywordName).NotEmpty().Length(3, 255);
+                }
             }
         }
     }

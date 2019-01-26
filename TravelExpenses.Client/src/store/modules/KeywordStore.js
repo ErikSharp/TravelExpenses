@@ -6,7 +6,19 @@ export default {
     busy: false,
     addKeywordBusy: false,
     editKeywordBusy: false,
-    keywords: []
+    keywords: [],
+    sampleKeywords: [
+      'Expensive',
+      'Cheap',
+      'Coffee',
+      'Alcohol',
+      'Lunch',
+      'Dinner',
+      'Breakfast',
+      'Uber',
+      'Doctor',
+      'Dentist'
+    ]
   },
   mutations: {
     SET_BUSY(state, busy) {
@@ -38,14 +50,22 @@ export default {
           commit('SET_BUSY', false)
         })
     },
-    addKeyword({ dispatch, commit }, newKeyword) {
+    addKeywords({ dispatch, commit }, newKeywords) {
       commit('SET_ADD_KEYWORD_BUSY', true)
 
-      return AxiosService.addKeyword(newKeyword)
+      return AxiosService.addKeyword(newKeywords)
         .then(() => {
-          dispatch('showSaveMessage', `${newKeyword} has been saved`, {
-            root: true
-          })
+          dispatch(
+            'showSaveMessage',
+            `${
+              newKeywords.length === 1
+                ? newKeywords[0] + ' has'
+                : newKeywords.length + ' keywords have'
+            } been saved`,
+            {
+              root: true
+            }
+          )
           dispatch('load')
         })
         .catch(error => {

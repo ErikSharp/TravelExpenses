@@ -9,7 +9,7 @@
       </v-layout>
     </v-flex>
     <p>The following is a pre-defined list of typical Categories you might want to use.</p>
-    <p>Refine the selection below to your liking</p>
+    <p>Refine the selection below to your liking:</p>
     <v-select :items="categories" v-model="chosenCategories" label="Categories" chips solo multiple>
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" close @input="removeCategory(data.item)">

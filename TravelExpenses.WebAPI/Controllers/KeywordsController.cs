@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +17,7 @@ namespace TravelExpenses.WebAPI.Controllers
     public class KeywordsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private object k;
 
         public KeywordsController(IMediator mediator)
         {
@@ -35,11 +37,11 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Keyword keyword)
+            [FromBody]string[] keywordNames)
         {
             var userId = User.Claims.GetUserId();
-            keyword.UserId = userId;
-            await mediator.Send(new CreateKeyword.Command(keyword)).ConfigureAwait(false);
+            var keywords = keywordNames.Select(k => new Keyword() { KeywordName = k, UserId = userId }).ToArray();
+            await mediator.Send(new CreateKeyword.Command(keywords)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),

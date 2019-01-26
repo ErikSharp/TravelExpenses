@@ -40,8 +40,8 @@ export default {
   getKeywords() {
     return apiClient.get('api/keywords')
   },
-  addKeyword(newKeyword) {
-    return apiClient.post('api/keywords', { keywordName: newKeyword })
+  addKeyword(newKeywords) {
+    return apiClient.post('api/keywords', newKeywords)
   },
   editKeyword(keyword) {
     return apiClient.put('api/keywords', keyword)

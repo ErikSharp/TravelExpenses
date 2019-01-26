@@ -55,7 +55,7 @@ export default {
       this.$emit('cancel')
     },
     add() {
-      this.$store.dispatch('Keyword/addKeyword', this.keyword)
+      this.$store.dispatch('Keyword/addKeywords', [this.keyword])
     }
   },
   computed: {
