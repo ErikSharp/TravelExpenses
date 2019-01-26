@@ -15,9 +15,9 @@ namespace TravelExpenses.Application.Features.Keywords
 {
     public class UpdateKeyword
     {
-        public class Command : IRequest
+        public class Query : IRequest<string[]>
         {
-            public Command(Keyword keyword)
+            public Query(Keyword keyword)
             {
                 Keyword = keyword;
             }
@@ -25,7 +25,7 @@ namespace TravelExpenses.Application.Features.Keywords
             public Keyword Keyword { get; }
         }
 
-        public class Handler : AsyncRequestHandler<Command>
+        public class Handler : IRequestHandler<Query, string[]>
         {
             private readonly TravelExpensesContext context;
 
@@ -35,7 +35,7 @@ namespace TravelExpenses.Application.Features.Keywords
                 this.context = context;
             }
 
-            protected async override Task Handle(Command request, CancellationToken response)
+            public async Task<string[]> Handle(Query request, CancellationToken response)
             {
                 var keyword = await context.Keywords.Where(k =>
                     k.UserId == request.Keyword.UserId &&
@@ -53,10 +53,18 @@ namespace TravelExpenses.Application.Features.Keywords
                     var msg = $"Keyword {request.Keyword.Id} not found for user {request.Keyword.UserId}";
                     throw new NotFoundException(msg);
                 }
+
+                var keywords = await context.Keywords
+                    .Where(k => k.UserId == request.Keyword.UserId)
+                    .Include(k => k.User)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return keywords.Select(k => k.KeywordName).ToArray();
             }
         }
 
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {
