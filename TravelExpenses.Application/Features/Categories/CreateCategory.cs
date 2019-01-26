@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,9 +14,9 @@ namespace TravelExpenses.Application.Features.Categories
 {
     public class CreateCategory
     {
-        public class Command : IRequest
+        public class Query : IRequest<string[]>
         {
-            public Command(Category[] categories)
+            public Query(Category[] categories)
             {
                 Categories = categories;
             }
@@ -22,7 +24,7 @@ namespace TravelExpenses.Application.Features.Categories
             public Category[] Categories { get; }
         }
 
-        public class Handler : AsyncRequestHandler<Command>
+        public class Handler : IRequestHandler<Query, string[]>
         {
             private readonly TravelExpensesContext context;
 
@@ -32,14 +34,24 @@ namespace TravelExpenses.Application.Features.Categories
                 this.context = context;
             }
 
-            protected override Task Handle(Command request, CancellationToken response)
+            public async Task<string[]> Handle(Query request, CancellationToken cancellationToken)
             {
                 context.Categories.AddRange(request.Categories);
-                return context.SaveChangesAsync();
+                await context.SaveChangesAsync().ConfigureAwait(false);
+
+                var userId = request.Categories.First().UserId;
+
+                var categories = await context.Categories
+                    .Where(c => c.UserId == userId)
+                    .Include(c => c.User)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return categories.Select(c => c.CategoryName).ToArray();
             }
         }
 
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {

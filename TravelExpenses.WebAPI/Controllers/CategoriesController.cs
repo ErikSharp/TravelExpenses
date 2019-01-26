@@ -42,11 +42,11 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var userId = User.Claims.GetUserId();
             var categories = categoryNames.Select(n => new Category() { CategoryName = n, UserId = userId }).ToArray();
-            await mediator.Send(new CreateCategory.Command(categories)).ConfigureAwait(false);
+            var categoryStrings = await mediator.Send(new CreateCategory.Query(categories)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
-                null);
+                categoryStrings);
         }
 
         [HttpPut]
