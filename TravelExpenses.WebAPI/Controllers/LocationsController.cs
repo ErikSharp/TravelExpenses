@@ -56,9 +56,9 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var userId = User.Claims.GetUserId();
             location.UserId = userId;
-            await mediator.Send(new UpdateLocation.Command(location)).ConfigureAwait(false);
+            var locations = await mediator.Send(new UpdateLocation.Query(location)).ConfigureAwait(false);
 
-            return Ok();
+            return Ok(locations);
         }
     }
 }
