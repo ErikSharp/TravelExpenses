@@ -56,9 +56,9 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var userId = User.Claims.GetUserId();
             category.UserId = userId;
-            await mediator.Send(new UpdateCategory.Command(category)).ConfigureAwait(false);
+            var categoryStrings = await mediator.Send(new UpdateCategory.Query(category)).ConfigureAwait(false);
 
-            return Ok();
+            return Ok(categoryStrings);
         }
     }
 }

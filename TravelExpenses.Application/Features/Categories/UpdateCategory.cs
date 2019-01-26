@@ -15,9 +15,9 @@ namespace TravelExpenses.Application.Features.Categories
 {
     public class UpdateCategory
     {
-        public class Command : IRequest
+        public class Query : IRequest<string[]>
         {
-            public Command(Category category)
+            public Query(Category category)
             {
                 Category = category;
             }
@@ -25,7 +25,7 @@ namespace TravelExpenses.Application.Features.Categories
             public Category Category { get; }
         }
 
-        public class Handler : AsyncRequestHandler<Command>
+        public class Handler : IRequestHandler<Query, string[]>
         {
             private readonly TravelExpensesContext context;
 
@@ -35,7 +35,7 @@ namespace TravelExpenses.Application.Features.Categories
                 this.context = context;
             }
 
-            protected override async Task Handle(Command request, CancellationToken response)
+            public async Task<string[]> Handle(Query request, CancellationToken cancellationToken)
             {
                 var category = await context.Categories.Where(k =>
                     k.UserId == request.Category.UserId &&
@@ -53,10 +53,18 @@ namespace TravelExpenses.Application.Features.Categories
                     var msg = $"Category {request.Category.Id} not found for user {request.Category.UserId}";
                     throw new NotFoundException(msg);
                 }
+
+                var categories = await context.Categories
+                    .Where(c => c.UserId == request.Category.UserId)
+                    .Include(c => c.User)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return categories.Select(c => c.CategoryName).ToArray();
             }
         }
 
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {
