@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,9 +14,9 @@ namespace TravelExpenses.Application.Features.Keywords
 {
     public class CreateKeyword
     {
-        public class Command : IRequest
+        public class Query : IRequest<string[]>
         {
-            public Command(Keyword[] keywords)
+            public Query(Keyword[] keywords)
             {
                 Keywords = keywords;
             }
@@ -22,7 +24,7 @@ namespace TravelExpenses.Application.Features.Keywords
             public Keyword[] Keywords { get; }
         }
 
-        public class Handler : AsyncRequestHandler<Command>
+        public class Handler : IRequestHandler<Query, string[]>
         {
             private readonly TravelExpensesContext context;
 
@@ -32,14 +34,24 @@ namespace TravelExpenses.Application.Features.Keywords
                 this.context = context;
             }
 
-            protected override Task Handle(Command request, CancellationToken response)
+            public async Task<string[]> Handle(Query request, CancellationToken cancellationToken)
             {
                 context.Keywords.AddRange(request.Keywords);
-                return context.SaveChangesAsync();
+                await context.SaveChangesAsync().ConfigureAwait(false);
+
+                var userId = request.Keywords.First().UserId;
+
+                var keywords = await context.Keywords
+                    .Where(k => k.UserId == userId)
+                    .Include(k => k.User)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return keywords.Select(k => k.KeywordName).ToArray();
             }
         }
 
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {

@@ -41,11 +41,11 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var userId = User.Claims.GetUserId();
             var keywords = keywordNames.Select(k => new Keyword() { KeywordName = k, UserId = userId }).ToArray();
-            await mediator.Send(new CreateKeyword.Command(keywords)).ConfigureAwait(false);
+            var keywordStrings = await mediator.Send(new CreateKeyword.Query(keywords)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
-                null);
+                keywordStrings);
         }
 
         [HttpPut]
