@@ -44,7 +44,9 @@ export default {
       get() {
         return this.$store.state.snackbar.show
       },
-      set() {}
+      set() {
+        this.$store.dispatch('closeSnackbar')
+      }
     }
   }
 }

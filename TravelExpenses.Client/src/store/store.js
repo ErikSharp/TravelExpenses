@@ -56,6 +56,9 @@ export default new Vuex.Store({
     },
     SET_TITLE(state, title) {
       state.title = title
+    },
+    CLOSE_SNACKBAR(state) {
+      state.snackbar.show = false
     }
   },
   actions: {
@@ -106,6 +109,9 @@ export default new Vuex.Store({
         message: message,
         color: 'primary darken-3'
       })
+    },
+    closeSnackbar({ commit }) {
+      commit('CLOSE_SNACKBAR')
     }
   }
 })
