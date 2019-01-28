@@ -17,12 +17,7 @@
         </v-chip>
       </template>
       <template slot="item" slot-scope="data">
-        <v-checkbox
-          v-model="chosenKeywords"
-          color="primary"
-          :value="data.item"
-          :label="data.item"
-        />
+        <v-checkbox v-model="chosenKeywords" color="primary" :value="data.item" :label="data.item"/>
       </template>
     </v-select>
     <p>
@@ -30,12 +25,7 @@
     </p>
     <v-flex xs12>
       <v-layout row justify-center>
-        <v-btn
-          :loading="busy"
-          :disabled="!chosenKeywords.length"
-          color="primary"
-          @click="next"
-        >NEXT</v-btn>
+        <v-btn :loading="busy" :disabled="!chosenKeywords.length" color="primary" @click="next">NEXT</v-btn>
       </v-layout>
     </v-flex>
   </v-card>
@@ -59,15 +49,8 @@ export default {
       this.$store
         .dispatch('Keyword/addKeywords', this.chosenKeywords)
         .then(() => {
-          this.$store.dispatch('InitialSetup/setWindow', this.getNextWindow())
+          this.$store.dispatch('InitialSetup/setWindow', Windows.finish)
         })
-    },
-    getNextWindow() {
-      if (!this.$store.state.InitialSetup.baseData.hasKeyword) {
-        return Windows.keywords1
-      } else {
-        return Windows.finish
-      }
     },
     removeKeyword(item) {
       this.chosenKeywords.splice(this.chosenKeywords.indexOf(item), 1)

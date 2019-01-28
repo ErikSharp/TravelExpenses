@@ -21,9 +21,9 @@ export default {
       this.$store.dispatch('InitialSetup/setWindow', this.getNextWindow())
     },
     getNextWindow() {
-      if (!this.$store.state.InitialSetup.baseData.hasLocation) {
+      if (!this.$store.state.Location.locations.length) {
         return Windows.location
-      } else if (!this.$store.state.InitialSetup.baseData.hasCategory) {
+      } else if (!this.$store.state.Category.categories.length) {
         return Windows.categories1
       } else {
         return Windows.keywords1

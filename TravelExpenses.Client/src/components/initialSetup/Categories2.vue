@@ -63,7 +63,7 @@ export default {
         })
     },
     getNextWindow() {
-      if (!this.$store.state.InitialSetup.baseData.hasKeyword) {
+      if (!this.$store.state.Keyword.keywords.length) {
         return Windows.keywords1
       } else {
         return Windows.finish

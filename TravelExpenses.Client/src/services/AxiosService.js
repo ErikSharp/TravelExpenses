@@ -63,8 +63,5 @@ export default {
   },
   editLocation(location) {
     return apiClient.put('api/locations', location)
-  },
-  getBaseRequirements() {
-    return apiClient.get('api/utilities/base-requirements')
   }
 }

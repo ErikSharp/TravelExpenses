@@ -1,7 +1,7 @@
 import Windows from '@/common/enums/InitialSetupWindows.js'
-import AxiosService from '@/services/AxiosService.js'
 import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
+import { Promise } from 'bluebird'
 
 const baseTitle = 'Manage Your Moo-lah'
 
@@ -10,12 +10,7 @@ export default {
   state: {
     title: baseTitle,
     window: Windows.introduction,
-    loaded: false,
-    baseData: {
-      hasLocation: false,
-      hasCategory: false,
-      hasKeyword: false
-    }
+    loaded: false
   },
   mutations: {
     SET_WINDOW(state, window) {
@@ -31,21 +26,18 @@ export default {
 
       state.window = window
     },
-    SET_BASE_DATA(state, baseData) {
-      state.baseData = baseData
-    },
     SET_LOADED(state) {
       state.loaded = true
     }
   },
   actions: {
-    checkBaseRequirements({ state, commit }, callback) {
-      let missingBaseData =
-        state.hasLocation && state.hasCategory && state.hasKeyword
+    checkBaseRequirements({ state, commit, dispatch }, callback) {
+      if (!state.loaded) {
+        let locations = dispatch('Location/load', null, { root: true })
+        let keywords = dispatch('Keyword/load', null, { root: true })
+        let categories = dispatch('Category/load', null, { root: true })
 
-      if (!state.loaded || missingBaseData) {
-        AxiosService.getBaseRequirements().then(response => {
-          commit('SET_BASE_DATA', response.data)
+        Promise.all([locations, keywords, categories]).then(() => {
           commit('SET_LOADED')
           callback()
         })
@@ -65,11 +57,11 @@ export default {
     }
   },
   getters: {
-    missingBaseData: state => {
+    missingBaseData: (state, getters, rootState) => {
       return (
-        !state.baseData.hasLocation ||
-        !state.baseData.hasCategory ||
-        !state.baseData.hasKeyword
+        !rootState.Location.locations.length ||
+        !rootState.Category.categories.length ||
+        !rootState.Keyword.keywords.length
       )
     }
   }

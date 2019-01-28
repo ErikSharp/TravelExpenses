@@ -91,9 +91,9 @@ export default {
         })
     },
     getNextWindow() {
-      if (!this.$store.state.InitialSetup.baseData.hasCategory) {
+      if (!this.$store.state.Category.categories.length) {
         return Windows.categories1
-      } else if (!this.$store.state.InitialSetup.baseData.hasKeyword) {
+      } else if (!this.$store.state.Keyword.keywords.length) {
         return Windows.keywords1
       } else {
         return Windows.finish
