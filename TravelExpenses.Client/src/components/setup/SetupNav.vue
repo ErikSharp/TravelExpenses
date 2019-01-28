@@ -6,7 +6,7 @@
           <v-divider v-if="item.divider" :inset="item.inset" :key="index"></v-divider>
           <v-list-tile v-else :key="item.title" avatar @click="navigate(item.window)">
             <v-list-tile-avatar size="55" class="mr-3 mt-1">
-              <v-icon large class="purple white--text">{{item.icon}}</v-icon>
+              <v-icon large class="primary white--text">{{item.icon}}</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
