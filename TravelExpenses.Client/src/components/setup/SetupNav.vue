@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-list three-line>
+      <v-list class="pa-0" three-line>
         <template v-for="(item, index) in items">
           <v-divider v-if="item.divider" :inset="item.inset" :key="index"></v-divider>
           <v-list-tile v-else :key="item.title" avatar @click="navigate(item.window)">
