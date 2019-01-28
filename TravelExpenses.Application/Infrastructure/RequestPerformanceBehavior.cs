@@ -35,7 +35,7 @@ namespace TravelExpenses.Application.Infrastructure
 
                 // TODO: Add User Details
 
-                _logger.LogWarning("TravelExpenses Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", name, _timer.ElapsedMilliseconds, request);
+                _logger.LogWarning("TravelExpenses Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds)", name, _timer.ElapsedMilliseconds);
             }
 
             return response;
