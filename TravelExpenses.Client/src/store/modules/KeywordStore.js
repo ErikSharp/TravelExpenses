@@ -54,7 +54,8 @@ export default {
       commit('SET_ADD_KEYWORD_BUSY', true)
 
       return AxiosService.addKeyword(newKeywords)
-        .then(() => {
+        .then(response => {
+          commit('SET_KEYWORDS', response.data)
           dispatch(
             'showSaveMessage',
             `${
@@ -66,7 +67,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -79,7 +79,8 @@ export default {
       commit('SET_EDIT_KEYWORD_BUSY', true)
 
       return AxiosService.editKeyword(keyword)
-        .then(() => {
+        .then(response => {
+          commit('SET_KEYWORDS', response.data)
           dispatch(
             'showSaveMessage',
             `${keyword.keywordName} has been updated`,
@@ -87,7 +88,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })

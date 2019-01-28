@@ -42,7 +42,8 @@ export default {
       commit('SET_ADD_LOCATION_BUSY', true)
 
       return AxiosService.addLocation(newLocation)
-        .then(() => {
+        .then(response => {
+          commit('SET_LOCATIONS', response.data)
           dispatch(
             'showSaveMessage',
             `${newLocation.locationName} has been saved`,
@@ -50,7 +51,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -63,7 +63,8 @@ export default {
       commit('SET_EDIT_LOCATION_BUSY', true)
 
       return AxiosService.editLocation(location)
-        .then(() => {
+        .then(response => {
+          commit('SET_LOCATIONS', response.data)
           dispatch(
             'showSaveMessage',
             `${location.locationName} has been updated`,
@@ -71,7 +72,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })

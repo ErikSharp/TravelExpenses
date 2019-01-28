@@ -54,7 +54,8 @@ export default {
       commit('SET_ADD_CATEGORY_BUSY', true)
 
       return AxiosService.addCategories(newCategories)
-        .then(() => {
+        .then(response => {
+          commit('SET_CATEGORIES', response.data)
           dispatch(
             'showSaveMessage',
             `${
@@ -66,7 +67,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -79,7 +79,8 @@ export default {
       commit('SET_EDIT_CATEGORY_BUSY', true)
 
       return AxiosService.editCategory(category)
-        .then(() => {
+        .then(response => {
+          commit('SET_CATEGORIES', response.data)
           dispatch(
             'showSaveMessage',
             `${category.categoryName} has been updated`,
@@ -87,7 +88,6 @@ export default {
               root: true
             }
           )
-          dispatch('load')
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
