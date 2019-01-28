@@ -27,16 +27,12 @@
       <template slot="selection" slot-scope="data">{{ data.item.countryName }}</template>
       <template slot="item" slot-scope="data">{{ data.item.countryName }}</template>
     </v-autocomplete>
-    <v-container>
-      <v-layout row wrap>
-        <v-flex xs4 offset-xs2>
-          <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
-        </v-flex>
-        <v-flex xs4 offset-xs2>
-          <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
-        </v-flex>
+    <v-flex xs8 offset-xs2>
+      <v-layout row justify-space-around>
+        <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
+        <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
-    </v-container>
+    </v-flex>
   </div>
 </template>
 
