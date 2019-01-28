@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
@@ -15,7 +17,7 @@ namespace TravelExpenses.Application.Features.Categories
 {
     public class UpdateCategory
     {
-        public class Query : IRequest<string[]>
+        public class Query : IRequest<CategoryOut[]>
         {
             public Query(Category category)
             {
@@ -25,17 +27,20 @@ namespace TravelExpenses.Application.Features.Categories
             public Category Category { get; }
         }
 
-        public class Handler : IRequestHandler<Query, string[]>
+        public class Handler : IRequestHandler<Query, CategoryOut[]>
         {
             private readonly TravelExpensesContext context;
+            private readonly IMapper mapper;
 
             public Handler(
-                TravelExpensesContext context)
+                TravelExpensesContext context,
+                IMapper mapper)
             {
                 this.context = context;
+                this.mapper = mapper;
             }
 
-            public async Task<string[]> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CategoryOut[]> Handle(Query request, CancellationToken cancellationToken)
             {
                 var category = await context.Categories.Where(k =>
                     k.UserId == request.Category.UserId &&
@@ -60,7 +65,7 @@ namespace TravelExpenses.Application.Features.Categories
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                return categories.Select(c => c.CategoryName).ToArray();
+                return categories.Select(c => mapper.Map<CategoryOut>(c)).ToArray();
             }
         }
 

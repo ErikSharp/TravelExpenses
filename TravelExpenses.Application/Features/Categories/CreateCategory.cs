@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
@@ -14,7 +16,7 @@ namespace TravelExpenses.Application.Features.Categories
 {
     public class CreateCategory
     {
-        public class Query : IRequest<string[]>
+        public class Query : IRequest<CategoryOut[]>
         {
             public Query(Category[] categories)
             {
@@ -24,17 +26,20 @@ namespace TravelExpenses.Application.Features.Categories
             public Category[] Categories { get; }
         }
 
-        public class Handler : IRequestHandler<Query, string[]>
+        public class Handler : IRequestHandler<Query, CategoryOut[]>
         {
             private readonly TravelExpensesContext context;
+            private readonly IMapper mapper;
 
             public Handler(
-                TravelExpensesContext context)
+                TravelExpensesContext context,
+                IMapper mapper)
             {
                 this.context = context;
+                this.mapper = mapper;
             }
 
-            public async Task<string[]> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CategoryOut[]> Handle(Query request, CancellationToken cancellationToken)
             {
                 context.Categories.AddRange(request.Categories);
                 await context.SaveChangesAsync().ConfigureAwait(false);
@@ -47,7 +52,7 @@ namespace TravelExpenses.Application.Features.Categories
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                return categories.Select(c => c.CategoryName).ToArray();
+                return categories.Select(c => mapper.Map<CategoryOut>(c)).ToArray();
             }
         }
 
