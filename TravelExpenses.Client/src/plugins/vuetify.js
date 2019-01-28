@@ -6,6 +6,10 @@ import colors from 'vuetify/es5/util/colors'
 
 const env = process.env.VUE_APP_ENVIRONMENT || 'Development'
 
+if (env === 'Development') {
+  document.title = `DEV - ${document.title}`
+}
+
 Vue.use(Vuetify, {
   theme: {
     primary: env === 'Development' ? colors.blue.lighten2 : '#4527A0',
