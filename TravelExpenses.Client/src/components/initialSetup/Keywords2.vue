@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import Windows from '@/common/enums/InitialSetupWindows.js'
 import clone from 'lodash/clone'
 
 export default {
@@ -49,7 +48,7 @@ export default {
       this.$store
         .dispatch('Keyword/addKeywords', this.chosenKeywords)
         .then(() => {
-          this.$store.dispatch('InitialSetup/setWindow', Windows.finish)
+          this.$store.dispatch('InitialSetup/nextWindow')
         })
     },
     removeKeyword(item) {

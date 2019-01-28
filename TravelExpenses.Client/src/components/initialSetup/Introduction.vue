@@ -13,21 +13,10 @@
 </template>
 
 <script>
-import Windows from '@/common/enums/InitialSetupWindows.js'
-
 export default {
   methods: {
     next() {
-      this.$store.dispatch('InitialSetup/setWindow', this.getNextWindow())
-    },
-    getNextWindow() {
-      if (!this.$store.state.Location.locations.length) {
-        return Windows.location
-      } else if (!this.$store.state.Category.categories.length) {
-        return Windows.categories1
-      } else {
-        return Windows.keywords1
-      }
+      this.$store.dispatch('InitialSetup/nextWindow')
     }
   }
 }

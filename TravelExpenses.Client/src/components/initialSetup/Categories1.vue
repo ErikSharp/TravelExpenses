@@ -20,12 +20,10 @@
 </template>
 
 <script>
-import Windows from '@/common/enums/InitialSetupWindows.js'
-
 export default {
   methods: {
     next() {
-      this.$store.dispatch('InitialSetup/setWindow', Windows.categories2)
+      this.$store.dispatch('InitialSetup/nextWindow')
     }
   }
 }

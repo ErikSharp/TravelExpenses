@@ -12,12 +12,10 @@
 </template>
 
 <script>
-import Windows from '@/common/enums/InitialSetupWindows.js'
-
 export default {
   methods: {
     next() {
-      this.$store.dispatch('InitialSetup/setWindow', Windows.transactions)
+      this.$store.dispatch('InitialSetup/nextWindow')
     }
   }
 }

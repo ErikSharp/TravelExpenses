@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import Windows from '@/common/enums/InitialSetupWindows.js'
 import sortBy from 'lodash/sortBy'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -87,17 +86,8 @@ export default {
           countryId: this.selectedCountry.id
         })
         .then(() => {
-          this.$store.dispatch('InitialSetup/setWindow', this.getNextWindow())
+          this.$store.dispatch('InitialSetup/nextWindow')
         })
-    },
-    getNextWindow() {
-      if (!this.$store.state.Category.categories.length) {
-        return Windows.categories1
-      } else if (!this.$store.state.Keyword.keywords.length) {
-        return Windows.keywords1
-      } else {
-        return Windows.finish
-      }
     },
     filterCountry(item, queryText) {
       if (queryText.trim() === '') {

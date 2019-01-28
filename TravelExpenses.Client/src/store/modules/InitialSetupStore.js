@@ -45,13 +45,44 @@ export default {
         callback()
       }
     },
-    setWindow({ commit }, window) {
-      switch (window) {
-        case Windows.transactions:
-          Router.push({ name: HomeViews.Transactions })
+    nextWindow({ commit, state, rootState }) {
+      switch (state.window) {
+        case Windows.introduction:
+          if (!rootState.Location.locations.length) {
+            commit('SET_WINDOW', Windows.location)
+          } else if (!rootState.Category.categories.length) {
+            commit('SET_WINDOW', Windows.categories1)
+          } else {
+            commit('SET_WINDOW', Windows.keywords1)
+          }
           break
-        default:
-          commit('SET_WINDOW', window)
+        case Windows.location:
+          if (!rootState.Category.categories.length) {
+            commit('SET_WINDOW', Windows.categories1)
+          } else if (!rootState.Keyword.keywords.length) {
+            commit('SET_WINDOW', Windows.keywords1)
+          } else {
+            commit('SET_WINDOW', Windows.finish)
+          }
+          break
+        case Windows.categories1:
+          commit('SET_WINDOW', Windows.categories2)
+          break
+        case Windows.categories2:
+          if (!rootState.Keyword.keywords.length) {
+            commit('SET_WINDOW', Windows.keywords1)
+          } else {
+            commit('SET_WINDOW', Windows.finish)
+          }
+          break
+        case Windows.keywords1:
+          commit('SET_WINDOW', Windows.keywords2)
+          break
+        case Windows.keywords2:
+          commit('SET_WINDOW', Windows.finish)
+          break
+        case Windows.finish:
+          Router.push({ name: HomeViews.Transactions })
           break
       }
     }
