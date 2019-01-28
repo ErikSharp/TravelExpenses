@@ -132,7 +132,7 @@ export default {
       return errors
     },
     busy() {
-      return this.$store.state.Location.busy
+      return this.$store.state.Location.addLocationBusy
     }
   }
 }
