@@ -8,8 +8,8 @@ const env = process.env.VUE_APP_ENVIRONMENT || 'Development'
 
 Vue.use(Vuetify, {
   theme: {
-    primary: env === 'Development' ? '#4527A0' : colors.blue.lighten2,
-    secondary: env === 'Development' ? '#7B1FA2' : colors.blue.darken3,
+    primary: env === 'Development' ? colors.blue.lighten2 : '#4527A0',
+    secondary: env === 'Development' ? colors.blue.darken3 : '#7B1FA2',
     accent: '#efefef'
   }
 })
