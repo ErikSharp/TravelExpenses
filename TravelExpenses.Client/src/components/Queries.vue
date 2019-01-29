@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <h3>Queries</h3>
-  </div>
+  </v-container>
 </template>
 
 <script>
 export default {}
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

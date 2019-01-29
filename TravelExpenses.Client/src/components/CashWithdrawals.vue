@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <h1>Cash Withdrawals</h1>
     <v-window v-model="withdrawalWindow">
       <v-window-item>
@@ -9,7 +9,7 @@
         <new-withdrawal @done="allWithdrawals"></new-withdrawal>
       </v-window-item>
     </v-window>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style scoped>
-div {
+v-container {
   background: cornflowerblue;
 }
 </style>

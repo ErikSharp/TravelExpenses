@@ -1,20 +1,20 @@
 <template>
-  <div>
+  <v-container>
     <v-window v-model="setupWindow">
       <v-window-item>
-        <setup-nav />
+        <setup-nav/>
       </v-window-item>
       <v-window-item>
-        <locations />
+        <locations/>
       </v-window-item>
       <v-window-item>
-        <categories />
+        <categories/>
       </v-window-item>
       <v-window-item>
-        <keywords />
+        <keywords/>
       </v-window-item>
     </v-window>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -43,4 +43,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

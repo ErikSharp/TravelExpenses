@@ -1,32 +1,32 @@
 <template>
-  <div>
+  <v-container>
     <v-window v-model="reconcileWindowId">
       <v-window-item>
-        <reconcile-cash-calc />
+        <reconcile-cash-calc/>
       </v-window-item>
       <v-window-item>
-        <reconcile-summary />
+        <reconcile-summary/>
       </v-window-item>
       <v-window-item>
-        <reconcile-investigation />
+        <reconcile-investigation/>
       </v-window-item>
       <v-window-item>
         <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <transactions />
+          <transactions/>
         </button-wrapper>
       </v-window-item>
       <v-window-item>
         <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <cash-withdrawals />
+          <cash-withdrawals/>
         </button-wrapper>
       </v-window-item>
       <v-window-item>
         <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <reconcile-loss-gain />
+          <reconcile-loss-gain/>
         </button-wrapper>
       </v-window-item>
     </v-window>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -67,4 +67,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
