@@ -1,13 +1,25 @@
 <template>
   <div>
-    <button-wrapper v-if="screen === 0" :buttonText="buttonText" @buttonClicked="navToSummary">
-      <transactions/>
+    <button-wrapper
+      v-if="screen === 0"
+      :buttonText="buttonText"
+      @buttonClicked="navToSummary"
+    >
+      <transactions />
     </button-wrapper>
-    <button-wrapper v-if="screen === 1" :buttonText="buttonText" @buttonClicked="navToSummary">
-      <cash-withdrawals/>
+    <button-wrapper
+      v-if="screen === 1"
+      :buttonText="buttonText"
+      @buttonClicked="navToSummary"
+    >
+      <cash-withdrawals />
     </button-wrapper>
-    <button-wrapper v-if="screen === 2" :buttonText="buttonText" @buttonClicked="navToSummary">
-      <reconcile-loss-gain/>
+    <button-wrapper
+      v-if="screen === 2"
+      :buttonText="buttonText"
+      @buttonClicked="navToSummary"
+    >
+      <reconcile-loss-gain />
     </button-wrapper>
   </div>
 </template>
@@ -43,5 +55,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

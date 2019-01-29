@@ -4,7 +4,7 @@
     <transition name="fade">
       <v-container>
         <transition name="fade">
-          <router-view class="my-5" :key="$route.fullPath"/>
+          <router-view class="my-5" :key="$route.fullPath" />
         </transition>
       </v-container>
     </transition>

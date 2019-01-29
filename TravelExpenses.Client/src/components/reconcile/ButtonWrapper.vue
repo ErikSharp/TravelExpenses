@@ -1,7 +1,7 @@
 <template>
   <div>
-    <slot/>
-    <v-btn @click="notifyParent">{{buttonText}}</v-btn>
+    <slot />
+    <v-btn @click="notifyParent">{{ buttonText }}</v-btn>
   </div>
 </template>
 
@@ -21,5 +21,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

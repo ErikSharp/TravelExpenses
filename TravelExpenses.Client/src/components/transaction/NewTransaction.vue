@@ -60,16 +60,16 @@
         <template slot="selection" slot-scope="data">
           <div>
             <span>
-              <strong>{{data.item.isoCode}}</strong>
-              - {{data.item.currencyName}}
+              <strong>{{ data.item.isoCode }}</strong>
+              - {{ data.item.currencyName }}
             </span>
           </div>
         </template>
         <template slot="item" slot-scope="data">
           <div>
             <span>
-              <strong>{{data.item.isoCode}}</strong>
-              - {{data.item.currencyName}}
+              <strong>{{ data.item.isoCode }}</strong>
+              - {{ data.item.currencyName }}
             </span>
           </div>
         </template>
@@ -86,8 +86,12 @@
         @input="$v.category.$touch()"
         @blur="$v.category.$touch()"
       >
-        <template slot="selection" slot-scope="data">{{ data.item.categoryName }}</template>
-        <template slot="item" slot-scope="data">{{ data.item.categoryName }}</template>
+        <template slot="selection" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
       </v-select>
       <v-select
         :items="locations"
@@ -101,12 +105,27 @@
         @input="$v.location.$touch()"
         @blur="$v.location.$touch()"
       >
-        <template slot="selection" slot-scope="data">{{ getLocationString(data.item) }}</template>
-        <template slot="item" slot-scope="data">{{ getLocationString(data.item) }}</template>
+        <template slot="selection" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
       </v-select>
-      <v-select :items="keywords" v-model="chosenKeywords" label="Keywords" chips solo multiple>
+      <v-select
+        :items="keywords"
+        v-model="chosenKeywords"
+        label="Keywords"
+        chips
+        solo
+        multiple
+      >
         <template slot="selection" slot-scope="data">
-          <v-chip :selected="data.selected" close @input="removeKeyword(data.item)">
+          <v-chip
+            :selected="data.selected"
+            close
+            @input="removeKeyword(data.item)"
+          >
             <span>{{ data.item.keywordName }}</span>
           </v-chip>
         </template>
@@ -119,7 +138,13 @@
           />
         </template>
       </v-select>
-      <v-textarea hide-details solo label="Description" auto-grow v-model="memo"></v-textarea>
+      <v-textarea
+        hide-details
+        solo
+        label="Description"
+        auto-grow
+        v-model="memo"
+      ></v-textarea>
       <v-container class="py-0">
         <v-layout row wrap justify-start>
           <v-flex xs12 sm6>
@@ -132,12 +157,22 @@
             >
               <div
                 slot="label"
-                :class="{ 'white--text' : gpsLocation, 'gray--text' : !gpsLocation }"
-              >GPS Location</div>
+                :class="{
+                  'white--text': gpsLocation,
+                  'gray--text': !gpsLocation
+                }"
+              >
+                GPS Location
+              </div>
             </v-switch>
           </v-flex>
           <v-flex xs12 sm6>
-            <v-checkbox hide-details class="my-2 justify-center" dark v-model="paidWithCash">
+            <v-checkbox
+              hide-details
+              class="my-2 justify-center"
+              dark
+              v-model="paidWithCash"
+            >
               <div slot="label" class="white--text">Paid With Cash</div>
             </v-checkbox>
           </v-flex>
@@ -148,7 +183,8 @@
                 :loading="busy && !usingSaveAndNew"
                 :disabled="$v.$invalid || (busy && !usingSaveAndNew)"
                 @click="save"
-              >Save</v-btn>
+                >Save</v-btn
+              >
             </div>
           </v-flex>
           <v-flex xs12 sm4>
@@ -158,7 +194,8 @@
                 :loading="busy && usingSaveAndNew"
                 :disabled="$v.$invalid || (busy && usingSaveAndNew)"
                 @click="saveAndNew"
-              >Save & New</v-btn>
+                >Save & New</v-btn
+              >
             </div>
           </v-flex>
           <v-flex xs12 sm4>
@@ -397,7 +434,7 @@ export default {
       return errors
     },
     busy() {
-      const isBusy = this.$store.state.Transaction.busy
+      const isBusy = this.$store.state.Transaction.saveTransactionBusy
 
       if (!isBusy && this.usingSaveAndNew) {
         this.scrollToTop()
@@ -409,5 +446,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -24,12 +24,23 @@
       @input="$v.updatedCountry.$touch()"
       @blur="$v.updatedCountry.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{ data.item.countryName }}</template>
-      <template slot="item" slot-scope="data">{{ data.item.countryName }}</template>
+      <template slot="selection" slot-scope="data">{{
+        data.item.countryName
+      }}</template>
+      <template slot="item" slot-scope="data">{{
+        data.item.countryName
+      }}</template>
     </v-autocomplete>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
-        <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="edit">Edit</v-btn>
+        <v-btn
+          dark
+          color="primary"
+          :disabled="$v.$invalid"
+          :loading="busy"
+          @click="edit"
+          >Edit</v-btn
+        >
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
     </v-flex>
@@ -192,5 +203,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

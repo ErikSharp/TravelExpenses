@@ -10,7 +10,8 @@
     </v-flex>
     <p>Let's begin by adding the country and location you are travelling to.</p>
     <p>
-      <strong>e.g.</strong> I'm travelling to the USA and the location I'm going to is New York.
+      <strong>e.g.</strong> I'm travelling to the USA and the location I'm going
+      to is New York.
     </p>
     <v-autocomplete
       :items="countries"
@@ -25,8 +26,12 @@
       @input="$v.selectedCountry.$touch()"
       @blur="$v.selectedCountry.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{ data.item.countryName }}</template>
-      <template slot="item" slot-scope="data">{{ data.item.countryName }}</template>
+      <template slot="selection" slot-scope="data">{{
+        data.item.countryName
+      }}</template>
+      <template slot="item" slot-scope="data">{{
+        data.item.countryName
+      }}</template>
     </v-autocomplete>
     <v-text-field
       v-model.trim="location"
@@ -38,13 +43,22 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     ></v-text-field>
-    <p>Locations provide a more detailed way to query within a specific country.</p>
     <p>
-      <strong>Note:</strong> You will have the ability to add additional location by using the Setup menu with the application.
+      Locations provide a more detailed way to query within a specific country.
+    </p>
+    <p>
+      <strong>Note:</strong> You will have the ability to add additional
+      location by using the Setup menu with the application.
     </p>
     <v-flex xs12>
       <v-layout row justify-center>
-        <v-btn color="primary" :loading="busy" :disabled="$v.$invalid" @click="next">NEXT</v-btn>
+        <v-btn
+          color="primary"
+          :loading="busy"
+          :disabled="$v.$invalid"
+          @click="next"
+          >NEXT</v-btn
+        >
       </v-layout>
     </v-flex>
   </v-card>
@@ -138,5 +152,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

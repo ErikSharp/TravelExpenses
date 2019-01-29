@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Register</h3>
-    <credentials registering/>
+    <credentials registering />
     <p>
       Already have an account?
       <span class="click-text" @click="login">Log in here</span>
@@ -24,5 +24,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

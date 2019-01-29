@@ -3,16 +3,32 @@
     <v-flex xs12 class="mb-3">
       <v-layout row align-center>
         <v-avatar size="55" class="mr-3 elevation-4">
-          <v-icon large class="primary white--text">collections_bookmark</v-icon>
+          <v-icon large class="primary white--text"
+            >collections_bookmark</v-icon
+          >
         </v-avatar>
         <h1>Categories</h1>
       </v-layout>
     </v-flex>
-    <p>The following is a pre-defined list of typical Categories you might want to use.</p>
+    <p>
+      The following is a pre-defined list of typical Categories you might want
+      to use.
+    </p>
     <p>Refine the selection below to your liking:</p>
-    <v-select :items="categories" v-model="chosenCategories" label="Categories" chips solo multiple>
+    <v-select
+      :items="categories"
+      v-model="chosenCategories"
+      label="Categories"
+      chips
+      solo
+      multiple
+    >
       <template slot="selection" slot-scope="data">
-        <v-chip :selected="data.selected" close @input="removeCategory(data.item)">
+        <v-chip
+          :selected="data.selected"
+          close
+          @input="removeCategory(data.item)"
+        >
           <span>{{ data.item }}</span>
         </v-chip>
       </template>
@@ -26,7 +42,8 @@
       </template>
     </v-select>
     <p>
-      <strong>Note:</strong> You will be able to add additional Categories by using the Setup menu within the application.
+      <strong>Note:</strong> You will be able to add additional Categories by
+      using the Setup menu within the application.
     </p>
     <v-flex xs12>
       <v-layout row justify-center>
@@ -35,7 +52,8 @@
           :disabled="!chosenCategories.length"
           color="primary"
           @click="next"
-        >NEXT</v-btn>
+          >NEXT</v-btn
+        >
       </v-layout>
     </v-flex>
   </v-card>
@@ -77,5 +95,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

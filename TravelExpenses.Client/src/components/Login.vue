@@ -1,10 +1,12 @@
 <template>
   <div>
-    <credentials/>
-    <p>Forgot your password?
+    <credentials />
+    <p>
+      Forgot your password?
       <span class="click-text" @click="resetPassword">Reset</span>
     </p>
-    <p>Don't have an account?
+    <p>
+      Don't have an account?
       <span class="click-text" @click="register">Register</span>
     </p>
   </div>
@@ -28,5 +30,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

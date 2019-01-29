@@ -3,7 +3,9 @@
     <v-flex xs12 class="mb-3">
       <v-layout row align-center>
         <v-avatar size="55" class="mr-3 elevation-4">
-          <v-icon large class="primary white--text">collections_bookmark</v-icon>
+          <v-icon large class="primary white--text"
+            >collections_bookmark</v-icon
+          >
         </v-avatar>
         <h1>Categories</h1>
       </v-layout>
@@ -29,5 +31,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

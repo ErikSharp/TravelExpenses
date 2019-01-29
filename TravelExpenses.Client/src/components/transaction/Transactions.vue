@@ -2,7 +2,9 @@
   <div>
     <v-window v-model="transactionWindow">
       <v-window-item>
-        <recent-transactions @addTransaction="addTransaction"></recent-transactions>
+        <recent-transactions
+          @addTransaction="addTransaction"
+        ></recent-transactions>
       </v-window-item>
       <v-window-item>
         <new-transaction @done="returnToRecent"></new-transaction>
@@ -12,8 +14,8 @@
 </template>
 
 <script>
-import RecentTransactions from '@/components/RecentTransactions.vue'
-import NewTransaction from '@/components/NewTransaction.vue'
+import RecentTransactions from '@/components/transaction/RecentTransactions.vue'
+import NewTransaction from '@/components/transaction/NewTransaction.vue'
 
 export default {
   components: {
@@ -36,5 +38,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

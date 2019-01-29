@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar fixed dark color="primary">
-      <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
+      <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom left>
         <v-btn dark slot="activator" icon>
@@ -9,7 +9,11 @@
         </v-btn>
 
         <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i" @click="menuItemClicked(i)">
+          <v-list-tile
+            v-for="(item, i) in items"
+            :key="i"
+            @click="menuItemClicked(i)"
+          >
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -45,5 +49,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

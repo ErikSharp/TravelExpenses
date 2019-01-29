@@ -3,15 +3,26 @@
     <v-card>
       <v-list class="pa-0" three-line>
         <template v-for="(item, index) in items">
-          <v-divider v-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-          <v-list-tile v-else :key="item.title" avatar @click="navigate(item.window)">
+          <v-divider
+            v-if="item.divider"
+            :inset="item.inset"
+            :key="index"
+          ></v-divider>
+          <v-list-tile
+            v-else
+            :key="item.title"
+            avatar
+            @click="navigate(item.window)"
+          >
             <v-list-tile-avatar size="55" class="mr-3 mt-1">
-              <v-icon large class="primary white--text">{{item.icon}}</v-icon>
+              <v-icon large class="primary white--text">{{ item.icon }}</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
               <v-list-tile-title v-html="item.title"></v-list-tile-title>
-              <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+              <v-list-tile-sub-title
+                v-html="item.subtitle"
+              ></v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
@@ -59,5 +70,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

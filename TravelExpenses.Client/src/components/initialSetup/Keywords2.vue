@@ -8,24 +8,50 @@
         <h1>Keywords</h1>
       </v-layout>
     </v-flex>
-    <p>The following is a pre-defined list of typical Keywords you might want to use.</p>
+    <p>
+      The following is a pre-defined list of typical Keywords you might want to
+      use.
+    </p>
     <p>Refine the selection below to your liking:</p>
-    <v-select :items="keywords" v-model="chosenKeywords" label="Keywords" chips solo multiple>
+    <v-select
+      :items="keywords"
+      v-model="chosenKeywords"
+      label="Keywords"
+      chips
+      solo
+      multiple
+    >
       <template slot="selection" slot-scope="data">
-        <v-chip :selected="data.selected" close @input="removeKeyword(data.item)">
+        <v-chip
+          :selected="data.selected"
+          close
+          @input="removeKeyword(data.item)"
+        >
           <span>{{ data.item }}</span>
         </v-chip>
       </template>
       <template slot="item" slot-scope="data">
-        <v-checkbox v-model="chosenKeywords" color="primary" :value="data.item" :label="data.item"/>
+        <v-checkbox
+          v-model="chosenKeywords"
+          color="primary"
+          :value="data.item"
+          :label="data.item"
+        />
       </template>
     </v-select>
     <p>
-      <strong>Note:</strong> You will be able to add additional Keywords by using the Setup menu within the application.
+      <strong>Note:</strong> You will be able to add additional Keywords by
+      using the Setup menu within the application.
     </p>
     <v-flex xs12>
       <v-layout row justify-center>
-        <v-btn :loading="busy" :disabled="!chosenKeywords.length" color="primary" @click="next">NEXT</v-btn>
+        <v-btn
+          :loading="busy"
+          :disabled="!chosenKeywords.length"
+          color="primary"
+          @click="next"
+          >NEXT</v-btn
+        >
       </v-layout>
     </v-flex>
   </v-card>
@@ -67,5 +93,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

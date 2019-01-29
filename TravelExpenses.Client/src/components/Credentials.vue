@@ -39,7 +39,9 @@
       @input="$v.passwordConfirmation.$touch()"
       @blur="$v.passwordConfirmation.$touch()"
     ></v-text-field>
-    <v-btn :loading="busy" :disabled="$v.$invalid" @click="submit">{{getButtonText}}</v-btn>
+    <v-btn :loading="busy" :disabled="$v.$invalid" @click="submit">{{
+      getButtonText
+    }}</v-btn>
   </div>
 </template>
 
@@ -195,5 +197,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

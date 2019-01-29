@@ -28,6 +28,13 @@ export default {
   register(details) {
     return apiClient.post('api/users', details)
   },
+  getRecentTransactions(skip) {
+    return apiClient.get('api/transactions', {
+      params: {
+        skip: skip
+      }
+    })
+  },
   createTransaction(transaction) {
     return apiClient.post('api/transactions', transaction)
   },
