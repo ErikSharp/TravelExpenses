@@ -96,5 +96,10 @@ export default {
           commit('SET_EDIT_KEYWORD_BUSY', false)
         })
     }
+  },
+  getters: {
+    findKeyword: state => id => {
+      return state.keywords.find(c => c.id === id)
+    }
   }
 }

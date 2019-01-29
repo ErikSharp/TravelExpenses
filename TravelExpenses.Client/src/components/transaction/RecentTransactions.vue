@@ -10,7 +10,26 @@
         <div style="background: #261136" class="py-1 px-2">
           <v-card class="my-1" v-for="(transaction, i) in dateGroup" :key="i">
             <v-card-text class="white">
-              <pre>{{ transaction }}</pre>
+              <p>
+                <strong>Title:</strong>
+                {{ transaction.title }}
+              </p>
+              <p>
+                <strong>Category:</strong>
+                {{ getCategoryString(transaction.categoryId) }}
+              </p>
+              <p>
+                <strong>Amount:</strong>
+                {{ `${transaction.amount} ${getCurrencyIsoString(transaction.currencyId)}` }}
+              </p>
+              <p>
+                <strong>Keywords:</strong>
+                <v-chip
+                  small
+                  v-for="(id, i) in transaction.keywordIds"
+                  :key="i"
+                >{{ getKeywordName(id) }}</v-chip>
+              </p>
             </v-card-text>
           </v-card>
         </div>
@@ -51,6 +70,32 @@ export default {
     },
     getDateString(date) {
       return new Date(date).toLocaleDateString(locale, dateOptions)
+    },
+    getCategoryString(id) {
+      let category = this.$store.getters['Category/findCategory'](id)
+      if (category) {
+        return category.categoryName
+      }
+
+      return 'unknown'
+    },
+    getCurrencyIsoString(id) {
+      let currency = this.$store.getters['Currency/findCurrency'](id)
+      if (currency) {
+        return currency.isoCode
+      }
+
+      return ''
+    },
+    getKeywordName(id) {
+      console.log(id)
+      let keyword = this.$store.getters['Keyword/findKeyword'](id)
+      console.log(keyword)
+      if (keyword) {
+        return keyword.keywordName
+      }
+
+      return 'unknown'
     }
   },
   computed: {
@@ -77,6 +122,16 @@ export default {
 <style scoped>
 .v-expansion-panel {
   margin-top: 56px;
+}
+
+.v-card p {
+  vertical-align: center;
+  margin: 0;
+  height: 22px;
+}
+
+.v-chip {
+  margin: 0 3px 0 5px !important;
 }
 
 .button-background {

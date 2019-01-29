@@ -96,5 +96,10 @@ export default {
           commit('SET_EDIT_CATEGORY_BUSY', false)
         })
     }
+  },
+  getters: {
+    findCategory: state => id => {
+      return state.categories.find(c => c.id === id)
+    }
   }
 }

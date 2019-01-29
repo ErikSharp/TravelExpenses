@@ -22,5 +22,10 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
     }
+  },
+  getters: {
+    findCurrency: state => id => {
+      return state.currencies.find(c => c.id === id)
+    }
   }
 }
