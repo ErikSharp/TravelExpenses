@@ -9,7 +9,7 @@
         <div class="white--text" slot="header">{{ getDateString(date) }}</div>
         <div style="background: #261136" class="py-1 px-2">
           <v-card class="my-1" v-for="(transaction, i) in dateGroup" :key="i">
-            <v-card-text class="white">
+            <v-card-text class="white pa-2">
               <p>
                 <strong>Title:</strong>
                 {{ transaction.title }}
@@ -20,21 +20,26 @@
               </p>
               <p>
                 <strong>Amount:</strong>
-                {{ `${transaction.amount} ${getCurrencyIsoString(transaction.currencyId)}` }}
+                {{
+                `${transaction.amount} ${getCurrencyIsoString(
+                transaction.currencyId
+                )}`
+                }}
               </p>
-              <p>
+              <p style="display: inline">
                 <strong>Keywords:</strong>
-                <v-chip
-                  small
-                  v-for="(id, i) in transaction.keywordIds"
-                  :key="i"
-                >{{ getKeywordName(id) }}</v-chip>
               </p>
+              <v-chip
+                small
+                v-for="(id, i) in transaction.keywordIds"
+                :key="i"
+              >{{ getKeywordName(id) }}</v-chip>
             </v-card-text>
           </v-card>
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
       <v-layout justify-center>
         <v-btn class="primary my-3" @click="addTransaction">Add</v-btn>
@@ -88,9 +93,7 @@ export default {
       return ''
     },
     getKeywordName(id) {
-      console.log(id)
       let keyword = this.$store.getters['Keyword/findKeyword'](id)
-      console.log(keyword)
       if (keyword) {
         return keyword.keywordName
       }
@@ -125,16 +128,22 @@ export default {
 }
 
 .v-card p {
-  vertical-align: center;
   margin: 0;
   height: 22px;
 }
 
 .v-chip {
-  margin: 0 3px 0 5px !important;
+  margin: 0 3px 3px 5px !important;
 }
 
 .button-background {
+  position: fixed;
+  width: 100%;
+  bottom: 56px;
   background: rgba(0, 0, 0, 0.8);
+}
+
+.bottom-spacer {
+  height: 79px;
 }
 </style>
