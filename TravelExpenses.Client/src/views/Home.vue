@@ -3,7 +3,7 @@
     <home-header></home-header>
     <transition name="fade">
       <transition name="fade">
-        <router-view class="my-5" :key="$route.fullPath"/>
+        <router-view class="my-5" :key="$route.fullPath" />
       </transition>
     </transition>
     <v-bottom-nav :active.sync="homeView" :value="true" fixed color="primary">
