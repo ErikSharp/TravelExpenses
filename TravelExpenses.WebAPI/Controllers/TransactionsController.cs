@@ -33,5 +33,16 @@ namespace TravelExpenses.WebAPI.Controllers
                 new Uri(Request.Path, UriKind.Relative),
                 null);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRecent(
+            [FromQuery(Name = "skip")] int skip,
+            [FromHeader(Name = "Authorization")] string token)
+        {
+            var userId = User.Claims.GetUserId();
+            var transactions = await mediator.Send(new GetRecentTransactions.Query(userId, skip)).ConfigureAwait(false);
+
+            return Ok(transactions);
+        }
     }
 }

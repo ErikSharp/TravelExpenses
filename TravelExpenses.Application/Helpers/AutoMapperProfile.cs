@@ -27,6 +27,14 @@ namespace TravelExpenses.Application.Helpers
                 .ForMember(dest => dest.TransactionKeywords,
                     e => e.MapFrom(source => source.KeywordIds.Select(id => new TransactionKeyword { KeywordId = id })));
 
+            CreateMap<Transaction, TransactionOut>()
+                .ForMember(dest => dest.TransDate,
+                    e => e.MapFrom(source =>
+                        source.TransDate.ToString(CreateTransaction.DateStringFormat)))
+                .ForMember(dest => dest.KeywordIds,
+                    e => e.MapFrom(source =>
+                        source.TransactionKeywords.Select(tk => tk.KeywordId)));
+
             CreateMap<Country, CountryOut>();
             CreateMap<Currency, CurrencyOut>();
             CreateMap<Keyword, KeywordOut>();
