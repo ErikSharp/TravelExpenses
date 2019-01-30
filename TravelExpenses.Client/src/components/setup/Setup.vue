@@ -36,8 +36,11 @@ export default {
     }
   },
   computed: {
-    setupWindow() {
-      return this.$store.state.SetupData.setupWindow
+    setupWindow: {
+      get() {
+        return this.$store.state.SetupData.setupWindow
+      },
+      set() {}
     }
   }
 }
