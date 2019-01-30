@@ -5,7 +5,8 @@ export default {
   state: {
     saveTransactionBusy: false,
     recentTransactionsBusy: false,
-    recentTransactions: []
+    recentTransactions: [],
+    noMoreTransactions: false
   },
   mutations: {
     SET_SAVE_TRANSACTION_BUSY(state, busy) {
@@ -19,6 +20,10 @@ export default {
     },
     CLEAR_RECENT_TRANSACTIONS(state) {
       state.recentTransactions = []
+      state.noMoreTransactions = false
+    },
+    SET_NO_MORE_TRANSACTIONS(state) {
+      state.noMoreTransactions = true
     }
   },
   actions: {
@@ -47,7 +52,11 @@ export default {
 
       return AxiosService.getRecentTransactions(skip)
         .then(response => {
-          commit('APPEND_TO_RECENT_TRANSACTIONS', response.data)
+          if (response.data.length) {
+            commit('APPEND_TO_RECENT_TRANSACTIONS', response.data)
+          } else {
+            commit('SET_NO_MORE_TRANSACTIONS')
+          }
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
@@ -55,6 +64,10 @@ export default {
         .then(() => {
           commit('SET_RECENT_TRANSACTIONS_BUSY', false)
         })
+    },
+    getNextTransactions({ state, dispatch }) {
+      let length = state.recentTransactions.length
+      dispatch('getRecentTransactions', length)
     },
     reloadRecentTransactions({ commit, dispatch }) {
       commit('CLEAR_RECENT_TRANSACTIONS')

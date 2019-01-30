@@ -12,7 +12,11 @@
             <v-flex>
               <v-layout align-center justify-start row fill-height>
                 <v-flex shrink>
-                  <v-avatar size="70" class="mx-2" :class="getColor()">
+                  <v-avatar
+                    size="70"
+                    class="mx-2 elevation-5"
+                    :class="getColor()"
+                  >
                     <v-icon size="45" class="white--text">{{
                       getIcon()
                     }}</v-icon>
@@ -53,6 +57,16 @@
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-layout justify-center>
+      <v-btn
+        flat
+        :loading="busy"
+        :disabled="noMoreTransactions"
+        class="primary"
+        @click="loadMore"
+        >Load More</v-btn
+      >
+    </v-layout>
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
       <v-layout justify-center justify-space-between class="mx-5">
@@ -81,9 +95,6 @@ const dateOptions = {
 const locale = navigator.language || 'en-US'
 
 export default {
-  created() {
-    this.$store.dispatch('Transaction/reloadRecentTransactions')
-  },
   data() {
     return {
       panel: []
@@ -119,6 +130,9 @@ export default {
         case 4:
           return 'beach_access'
       }
+    },
+    loadMore() {
+      this.$store.dispatch('Transaction/getNextTransactions')
     },
     addTransaction() {
       this.$emit('addTransaction')
@@ -157,6 +171,12 @@ export default {
         this.$store.state.Transaction.recentTransactions,
         t => t.transDate
       )
+    },
+    busy() {
+      return this.$store.state.Transaction.recentTransactionsBusy
+    },
+    noMoreTransactions() {
+      return this.$store.state.Transaction.noMoreTransactions
     }
   },
   watch: {
