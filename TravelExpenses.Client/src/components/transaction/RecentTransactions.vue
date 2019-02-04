@@ -1,14 +1,19 @@
 <template>
   <div class="mt-5">
-    <v-expansion-panel v-model="panel" expand>
+    <v-expansion-panel dark v-model="panel" expand>
       <v-expansion-panel-content
         class="primary mt-1"
         v-for="(dateGroup, date) in recentTransactions"
         :key="date"
       >
-        <div class="white--text" slot="header">{{ getDateString(date) }}</div>
+        <div slot="header">{{ getDateString(date) }}</div>
         <div style="background: #261136" class="py-1 px-2">
-          <v-card class="my-1" v-for="(transaction, i) in dateGroup" :key="i">
+          <v-card
+            light
+            class="my-1"
+            v-for="(transaction, i) in dateGroup"
+            :key="i"
+          >
             <v-flex>
               <v-layout align-center justify-start row fill-height>
                 <v-flex shrink>
@@ -23,7 +28,7 @@
                   </v-avatar>
                 </v-flex>
                 <v-flex>
-                  <v-card-text class="white py-1 px-0">
+                  <v-card-text class="white py-1 px-0 border-right">
                     <p>
                       <strong>Title:</strong>
                       {{ transaction.title }}
@@ -211,6 +216,14 @@ export default {
   width: 100%;
   bottom: 56px;
   background: rgba(0, 0, 0, 0.8);
+}
+
+.v-expansion-panel .v-card {
+  border-radius: 10px;
+}
+
+.border-right {
+  border-radius: 10px;
 }
 
 .bottom-spacer {
