@@ -6,6 +6,7 @@ export default {
     saveTransactionBusy: false,
     recentTransactionsBusy: false,
     recentTransactions: [],
+    recentTransactionsStale: false,
     noMoreTransactions: false
   },
   mutations: {
@@ -21,9 +22,13 @@ export default {
     CLEAR_RECENT_TRANSACTIONS(state) {
       state.recentTransactions = []
       state.noMoreTransactions = false
+      state.recentTransactionsStale = false
     },
     SET_NO_MORE_TRANSACTIONS(state) {
       state.noMoreTransactions = true
+    },
+    SET_RECENT_TRANSACTIONS_STALE(state) {
+      state.recentTransactionsStale = true
     }
   },
   actions: {
@@ -32,6 +37,7 @@ export default {
 
       return AxiosService.createTransaction(transaction)
         .then(() => {
+          commit('SET_RECENT_TRANSACTIONS_STALE')
           dispatch('showSaveMessage', `${transaction.title} has been saved`, {
             root: true
           })
