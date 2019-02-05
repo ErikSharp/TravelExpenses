@@ -19,7 +19,7 @@ namespace TravelExpenses.Persistence.Configurations
                 .HasOne(tk => tk.Transaction)
                 .WithMany(t => t.TransactionKeywords)
                 .HasForeignKey(tk => tk.TransactionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(tk => tk.Keyword)
