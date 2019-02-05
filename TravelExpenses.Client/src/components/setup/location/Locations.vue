@@ -31,7 +31,7 @@
       </template>
     </v-list>
     <hr class="my-4" />
-    <v-window v-model="editWindow">
+    <v-window touchless v-model="editWindow">
       <v-window-item>
         <add-location @cancel="cancelAdd" />
       </v-window-item>

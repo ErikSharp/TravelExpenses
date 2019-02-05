@@ -1,32 +1,34 @@
 <template>
   <div>
     <v-toolbar dark color="primary">
-      <v-toolbar-title class="white--text">{{
+      <v-toolbar-title class="white--text">
+        {{
         $store.state.InitialSetup.title
-      }}</v-toolbar-title>
+        }}
+      </v-toolbar-title>
     </v-toolbar>
     <v-container>
-      <v-window v-model="$store.state.InitialSetup.window">
+      <v-window touchless v-model="$store.state.InitialSetup.window">
         <v-window-item>
-          <introduction />
+          <introduction/>
         </v-window-item>
         <v-window-item>
-          <location />
+          <location/>
         </v-window-item>
         <v-window-item>
-          <categories1 />
+          <categories1/>
         </v-window-item>
         <v-window-item>
-          <categories2 />
+          <categories2/>
         </v-window-item>
         <v-window-item>
-          <keywords1 />
+          <keywords1/>
         </v-window-item>
         <v-window-item>
-          <keywords2 />
+          <keywords2/>
         </v-window-item>
         <v-window-item>
-          <finish />
+          <finish/>
         </v-window-item>
       </v-window>
     </v-container>

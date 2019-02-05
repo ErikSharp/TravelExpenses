@@ -1,10 +1,8 @@
 <template>
   <div>
-    <v-window v-model="transactionWindow">
+    <v-window touchless v-model="transactionWindow">
       <v-window-item>
-        <recent-transactions
-          @addTransaction="addTransaction"
-        ></recent-transactions>
+        <recent-transactions @addTransaction="addTransaction"></recent-transactions>
       </v-window-item>
       <v-window-item>
         <new-transaction @done="returnToRecent"></new-transaction>

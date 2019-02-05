@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1>Cash Withdrawals</h1>
-    <v-window v-model="withdrawalWindow">
+    <v-window touchless v-model="withdrawalWindow">
       <v-window-item>
         <all-withdrawals @addNew="newWithdrawal"></all-withdrawals>
       </v-window-item>

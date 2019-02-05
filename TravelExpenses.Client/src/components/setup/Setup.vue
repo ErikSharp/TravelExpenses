@@ -1,17 +1,17 @@
 <template>
   <v-container>
-    <v-window v-model="setupWindow">
+    <v-window touchless v-model="setupWindow">
       <v-window-item>
-        <setup-nav />
+        <setup-nav/>
       </v-window-item>
       <v-window-item>
-        <locations />
+        <locations/>
       </v-window-item>
       <v-window-item>
-        <categories />
+        <categories/>
       </v-window-item>
       <v-window-item>
-        <keywords />
+        <keywords/>
       </v-window-item>
     </v-window>
   </v-container>

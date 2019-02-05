@@ -3,18 +3,15 @@
     <v-container>
       <h1>Manage Your Moo-lah</h1>
       <h3>Easily keep track of your expenses while you travel</h3>
-      <v-window v-model="authStep">
+      <v-window touchless v-model="authStep">
         <v-window-item>
-          <login
-            @register="navToRegister"
-            @resetPassword="navToResetPassword"
-          />
+          <login @register="navToRegister" @resetPassword="navToResetPassword"/>
         </v-window-item>
         <v-window-item>
-          <reset-password @navToLogin="navToLogin" />
+          <reset-password @navToLogin="navToLogin"/>
         </v-window-item>
         <v-window-item>
-          <register @navToLogin="navToLogin" />
+          <register @navToLogin="navToLogin"/>
         </v-window-item>
       </v-window>
     </v-container>
