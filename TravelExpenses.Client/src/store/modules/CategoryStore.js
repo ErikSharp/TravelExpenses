@@ -1,8 +1,6 @@
 import AxiosService from '@/services/AxiosService.js'
-
-export default {
-  namespaced: true,
-  state: {
+function initialState() {
+  return {
     busy: false,
     addCategoryBusy: false,
     editCategoryBusy: false,
@@ -19,8 +17,18 @@ export default {
       'Deposit',
       'Non-trip'
     ]
-  },
+  }
+}
+export default {
+  namespaced: true,
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_BUSY(state, busy) {
       state.busy = busy
     },

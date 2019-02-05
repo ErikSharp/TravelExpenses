@@ -42,6 +42,7 @@ export default {
       switch (itemIndex) {
         case 0:
           this.$store.dispatch('Authentication/logout')
+          break
       }
     }
   },

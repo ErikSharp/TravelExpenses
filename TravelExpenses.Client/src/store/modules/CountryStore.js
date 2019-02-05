@@ -1,11 +1,21 @@
 import AxiosService from '@/services/AxiosService.js'
 
+function initialState() {
+  return {
+    countries: []
+  }
+}
+
 export default {
   namespaced: true,
-  state: {
-    countries: []
-  },
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_COUNTRIES(state, countries) {
       state.countries = countries
     }

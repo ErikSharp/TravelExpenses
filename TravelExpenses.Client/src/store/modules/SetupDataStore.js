@@ -1,12 +1,22 @@
 import SetupWindow from '@/common/enums/SetupWindows.js'
 import { firstLetterUpper } from '@/common/StringUtilities.js'
 
+function initialState() {
+  return {
+    setupWindow: SetupWindow.navigation
+  }
+}
+
 export default {
   namespaced: true,
-  state: {
-    setupWindow: SetupWindow.navigation
-  },
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_SETUP_WINDOW(state, window) {
       state.setupWindow = window
     }

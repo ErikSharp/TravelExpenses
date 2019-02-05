@@ -1,14 +1,24 @@
 import AxiosService from '@/services/AxiosService.js'
 
-export default {
-  namespaced: true,
-  state: {
+function initialState() {
+  return {
     busy: false,
     addLocationBusy: false,
     editLocationBusy: false,
     locations: []
-  },
+  }
+}
+
+export default {
+  namespaced: true,
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_BUSY(state, busy) {
       state.busy = busy
     },

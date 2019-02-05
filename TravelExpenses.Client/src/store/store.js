@@ -112,6 +112,18 @@ export default new Vuex.Store({
     },
     closeSnackbar({ commit }) {
       commit('CLOSE_SNACKBAR')
+    },
+    resetAllModulesState({ commit }) {
+      commit('Authentication/RESET')
+      commit('InitialSetup/RESET')
+      commit('Reconcile/RESET')
+      commit('SetupData/RESET')
+      commit('Transaction/RESET')
+      commit('Location/RESET')
+      commit('Country/RESET')
+      commit('Currency/RESET')
+      commit('Category/RESET')
+      commit('Keyword/RESET')
     }
   }
 })

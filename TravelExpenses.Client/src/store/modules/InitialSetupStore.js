@@ -3,21 +3,23 @@ import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import { Promise } from 'bluebird'
 
-const baseTitle = 'Manage Your Moo-lah'
+function initialState() {
+  return {
+    title: 'Manage Your Moo-lah',
+    window: Windows.introduction,
+    loaded: false
+  }
+}
 
 export default {
   namespaced: true,
-  state: {
-    title: baseTitle,
-    window: Windows.introduction,
-    loaded: false
-  },
+  state: initialState,
   mutations: {
     SET_WINDOW(state, window) {
       switch (window) {
         case Windows.introduction:
         case Windows.finish:
-          state.title = baseTitle
+          state.title = initialState().title
           break
         default:
           state.title = 'Initial Setup'
@@ -30,15 +32,13 @@ export default {
       state.loaded = true
     },
     RESET(state) {
-      state.loaded = false
-      state.title = baseTitle
-      state.window = Windows.introduction
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
     }
   },
   actions: {
-    reset({ commit }) {
-      commit('RESET')
-    },
     checkBaseRequirements({ state, commit, dispatch }, callback) {
       if (!state.loaded) {
         let locations = dispatch('Location/load', null, { root: true })

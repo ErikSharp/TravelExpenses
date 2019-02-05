@@ -2,14 +2,24 @@ import LocalStorage from '@/services/LocalStorageService.js'
 import Axios from '@/services/AxiosService.js'
 import Router from '@/router'
 
-export default {
-  namespaced: true,
-  state: {
+function initialState() {
+  return {
     busy: false,
     authToken: '',
     persistToken: true
-  },
+  }
+}
+
+export default {
+  namespaced: true,
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_TOKEN(state, token) {
       state.authToken = token
     },
@@ -90,10 +100,9 @@ export default {
         commit('SET_BUSY', false)
       }
     },
-    logout({ commit, dispatch }) {
-      commit('SET_TOKEN', null)
+    logout({ dispatch }) {
       LocalStorage.clearToken()
-      dispatch('InitialSetup/reset', null, { root: true })
+      dispatch('resetAllModulesState', null, { root: true })
       Router.push({ name: 'authentication' })
     }
   },

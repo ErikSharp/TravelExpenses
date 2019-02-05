@@ -1,11 +1,21 @@
 import AxiosService from '@/services/AxiosService.js'
 
+function initialState() {
+  return {
+    currencies: []
+  }
+}
+
 export default {
   namespaced: true,
-  state: {
-    currencies: []
-  },
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_CURRENCIES(state, currencies) {
       state.currencies = currencies
     }

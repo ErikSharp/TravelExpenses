@@ -1,16 +1,26 @@
 import AxiosService from '@/services/AxiosService.js'
 
-export default {
-  namespaced: true,
-  state: {
+function initialState() {
+  return {
     saveTransactionBusy: false,
     recentTransactionsBusy: false,
     recentTransactions: [],
     recentTransactionsStale: false,
     noMoreTransactions: false,
     selectedTransaction: {}
-  },
+  }
+}
+
+export default {
+  namespaced: true,
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_SAVE_TRANSACTION_BUSY(state, busy) {
       state.saveTransactionBusy = busy
     },

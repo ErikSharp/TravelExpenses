@@ -1,9 +1,19 @@
+function initialState() {
+  return {
+    reconcileWindowId: 0
+  }
+}
+
 export default {
   namespaced: true,
-  state: {
-    reconcileWindowId: 0
-  },
+  state: initialState,
   mutations: {
+    RESET(state) {
+      const s = initialState()
+      Object.keys(s).forEach(key => {
+        state[key] = s[key]
+      })
+    },
     SET_RECONCILE_WINDOW_ID(state, id) {
       state.reconcileWindowId = id
     }
