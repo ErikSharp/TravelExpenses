@@ -1,47 +1,49 @@
 <template>
   <div>
-    <v-text-field
-      v-model.trim="username"
-      :error-messages="usernameErrors"
-      v-if="registering"
-      placeholder="Username"
-      prepend-inner-icon="person"
-      @input="$v.username.$touch()"
-      @blur="$v.username.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model.trim="email"
-      :error-messages="emailErrors"
-      placeholder="Email"
-      prepend-inner-icon="email"
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model.trim="password"
-      :error-messages="passwordErrors"
-      placeholder="Password"
-      prepend-inner-icon="vpn_key"
-      :append-icon="visibilityIcon"
-      :type="passwordInputType"
-      @click:append="toggleVisibility"
-      @input="$v.password.$touch()"
-      @blur="$v.password.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-if="registering"
-      v-model.trim="passwordConfirmation"
-      :error-messages="passwordConfirmationErrors"
-      placeholder="Confirm Password"
-      prepend-inner-icon="vpn_key"
-      :append-icon="getConfirmIcon"
-      :type="passwordInputType"
-      @input="$v.passwordConfirmation.$touch()"
-      @blur="$v.passwordConfirmation.$touch()"
-    ></v-text-field>
-    <v-btn :loading="busy" :disabled="$v.$invalid" @click="submit">{{
-      getButtonText
-    }}</v-btn>
+    <v-form @submit.prevent="submit">
+      <v-text-field
+        v-model.trim="username"
+        :error-messages="usernameErrors"
+        v-if="registering"
+        placeholder="Username"
+        prepend-inner-icon="person"
+        @input="$v.username.$touch()"
+        @blur="$v.username.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-model.trim="email"
+        :error-messages="emailErrors"
+        placeholder="Email"
+        prepend-inner-icon="email"
+        @input="$v.email.$touch()"
+        @blur="$v.email.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-model.trim="password"
+        :error-messages="passwordErrors"
+        placeholder="Password"
+        prepend-inner-icon="vpn_key"
+        :append-icon="visibilityIcon"
+        :type="passwordInputType"
+        @click:append="toggleVisibility"
+        @input="$v.password.$touch()"
+        @blur="$v.password.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-if="registering"
+        v-model.trim="passwordConfirmation"
+        :error-messages="passwordConfirmationErrors"
+        placeholder="Confirm Password"
+        prepend-inner-icon="vpn_key"
+        :append-icon="getConfirmIcon"
+        :type="passwordInputType"
+        @input="$v.passwordConfirmation.$touch()"
+        @blur="$v.passwordConfirmation.$touch()"
+      ></v-text-field>
+      <v-btn type="submit" :loading="busy" :disabled="$v.$invalid">
+        {{ getButtonText }}
+      </v-btn>
+    </v-form>
   </div>
 </template>
 
