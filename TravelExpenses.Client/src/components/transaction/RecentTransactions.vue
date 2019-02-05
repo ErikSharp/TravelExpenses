@@ -1,5 +1,14 @@
 <template>
   <div class="mt-5">
+    <v-layout v-show="!Object.keys(recentTransactions).length" justify-center>
+      <v-progress-circular
+        class="mt-4"
+        size="70"
+        width="7"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </v-layout>
     <v-expansion-panel dark v-model="panel" expand>
       <v-expansion-panel-content
         class="primary mt-1"
@@ -18,6 +27,7 @@
     </v-expansion-panel>
     <v-layout justify-center>
       <v-btn
+        v-show="Object.keys(recentTransactions).length"
         flat
         :loading="recentTransactionsBusy"
         :disabled="noMoreTransactions"
@@ -29,30 +39,24 @@
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
       <v-layout justify-center justify-space-between class="mx-5">
+        <v-btn flat class="primary my-3" @click="addTransaction">Add</v-btn>
         <v-btn
           flat
-          :disabled="saveTransactionBusy"
-          class="primary my-3"
-          @click="addTransaction"
-          >Add</v-btn
-        >
-        <v-btn
-          flat
-          :disabled="!transactionSelected || saveTransactionBusy"
+          :disabled="!transactionSelected"
           class="primary my-3"
           @click="addTransaction"
           >Edit</v-btn
         >
         <v-dialog
           v-model="deleteDialog"
-          :disabled="!transactionSelected || saveTransactionBusy"
+          :disabled="!transactionSelected"
           persistent
           max-width="290"
         >
           <v-btn
             slot="activator"
             flat
-            :disabled="!transactionSelected || saveTransactionBusy"
+            :disabled="!transactionSelected"
             class="primary my-3"
             >Delete</v-btn
           >
@@ -67,8 +71,19 @@
             >
             <v-card-actions>
               <v-layout justify-space-around>
-                <v-btn color="red" dark @click="deleteTransaction">YES</v-btn>
-                <v-btn color="primary" @click="deleteDialog = false">NO</v-btn>
+                <v-btn
+                  color="red"
+                  :loading="saveTransactionBusy"
+                  dark
+                  @click="deleteTransaction"
+                  >YES</v-btn
+                >
+                <v-btn
+                  color="primary"
+                  :disabled="saveTransactionBusy"
+                  @click="deleteDialog = false"
+                  >NO</v-btn
+                >
               </v-layout>
             </v-card-actions>
           </v-card>
@@ -111,8 +126,9 @@ export default {
       this.$emit('addTransaction')
     },
     deleteTransaction() {
-      this.deleteDialog = false
-      this.$store.dispatch('Transaction/deleteSelectedTransaction')
+      this.$store.dispatch('Transaction/deleteSelectedTransaction', () => {
+        this.deleteDialog = false
+      })
     },
     getDateString(date) {
       return new Date(date).toLocaleDateString(locale, dateOptions)

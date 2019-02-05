@@ -90,7 +90,7 @@ export default {
         commit('SET_SELECTED_TRANSACTION', transaction)
       }
     },
-    deleteSelectedTransaction({ state, commit, dispatch }) {
+    deleteSelectedTransaction({ state, commit, dispatch }, completed) {
       if (state.selectedTransaction) {
         commit('SET_SAVE_TRANSACTION_BUSY', true)
 
@@ -104,6 +104,9 @@ export default {
           })
           .then(() => {
             commit('SET_SAVE_TRANSACTION_BUSY', false)
+            if (completed) {
+              completed()
+            }
           })
       }
     }
