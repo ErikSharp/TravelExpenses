@@ -90,9 +90,10 @@ export default {
         commit('SET_BUSY', false)
       }
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
       commit('SET_TOKEN', null)
       LocalStorage.clearToken()
+      dispatch('InitialSetup/reset', null, { root: true })
       Router.push({ name: 'authentication' })
     }
   },

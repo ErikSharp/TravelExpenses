@@ -28,9 +28,17 @@ export default {
     },
     SET_LOADED(state) {
       state.loaded = true
+    },
+    RESET(state) {
+      state.loaded = false
+      state.title = baseTitle
+      state.window = Windows.introduction
     }
   },
   actions: {
+    reset({ commit }) {
+      commit('RESET')
+    },
     checkBaseRequirements({ state, commit, dispatch }, callback) {
       if (!state.loaded) {
         let locations = dispatch('Location/load', null, { root: true })
