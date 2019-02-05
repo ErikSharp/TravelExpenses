@@ -89,6 +89,23 @@ export default {
       } else {
         commit('SET_SELECTED_TRANSACTION', transaction)
       }
+    },
+    deleteSelectedTransaction({ state, commit, dispatch }) {
+      if (state.selectedTransaction) {
+        commit('SET_SAVE_TRANSACTION_BUSY', true)
+
+        return AxiosService.deleteTransaction(state.selectedTransaction.id)
+          .then(() => {
+            commit('SET_SELECTED_TRANSACTION', {})
+            dispatch('reloadRecentTransactions')
+          })
+          .catch(error => {
+            dispatch('showErrorMessage', error, { root: true })
+          })
+          .then(() => {
+            commit('SET_SAVE_TRANSACTION_BUSY', false)
+          })
+      }
     }
   }
 }

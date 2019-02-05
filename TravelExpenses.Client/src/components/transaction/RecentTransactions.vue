@@ -19,7 +19,7 @@
     <v-layout justify-center>
       <v-btn
         flat
-        :loading="busy"
+        :loading="recentTransactionsBusy"
         :disabled="noMoreTransactions"
         class="primary"
         @click="loadMore"
@@ -29,21 +29,50 @@
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
       <v-layout justify-center justify-space-between class="mx-5">
-        <v-btn flat class="primary my-3" @click="addTransaction">Add</v-btn>
         <v-btn
           flat
-          :disabled="!transactionSelected"
+          :disabled="saveTransactionBusy"
+          class="primary my-3"
+          @click="addTransaction"
+          >Add</v-btn
+        >
+        <v-btn
+          flat
+          :disabled="!transactionSelected || saveTransactionBusy"
           class="primary my-3"
           @click="addTransaction"
           >Edit</v-btn
         >
-        <v-btn
-          flat
-          :disabled="!transactionSelected"
-          class="primary my-3"
-          @click="addTransaction"
-          >Delete</v-btn
+        <v-dialog
+          v-model="deleteDialog"
+          :disabled="!transactionSelected || saveTransactionBusy"
+          persistent
+          max-width="290"
         >
+          <v-btn
+            slot="activator"
+            flat
+            :disabled="!transactionSelected || saveTransactionBusy"
+            class="primary my-3"
+            >Delete</v-btn
+          >
+          <v-card>
+            <v-avatar size="70" class="mx-2 elevation-5 red">
+              <v-icon size="45" class="white--text">warning</v-icon>
+            </v-avatar>
+            <v-card-title class="headline">Delete Transaction</v-card-title>
+            <v-card-text
+              >There is no way to undo this procedure. Do you wish to
+              proceed?</v-card-text
+            >
+            <v-card-actions>
+              <v-layout justify-space-around>
+                <v-btn color="red" dark @click="deleteTransaction">YES</v-btn>
+                <v-btn color="primary" @click="deleteDialog = false">NO</v-btn>
+              </v-layout>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-flex>
   </div>
@@ -53,6 +82,7 @@
 /* eslint-disable no-console */
 import groupBy from 'lodash/groupBy'
 import TransactionCard from '@/components/transaction/TransactionCard.vue'
+import { mapState } from 'vuex'
 
 const dateOptions = {
   weekday: 'long',
@@ -69,7 +99,8 @@ export default {
   },
   data() {
     return {
-      panel: []
+      panel: [],
+      deleteDialog: false
     }
   },
   methods: {
@@ -79,22 +110,25 @@ export default {
     addTransaction() {
       this.$emit('addTransaction')
     },
+    deleteTransaction() {
+      this.deleteDialog = false
+      this.$store.dispatch('Transaction/deleteSelectedTransaction')
+    },
     getDateString(date) {
       return new Date(date).toLocaleDateString(locale, dateOptions)
     }
   },
   computed: {
+    ...mapState('Transaction', [
+      'recentTransactionsBusy',
+      'noMoreTransactions',
+      'saveTransactionBusy'
+    ]),
     recentTransactions() {
       return groupBy(
         this.$store.state.Transaction.recentTransactions,
         t => t.transDate
       )
-    },
-    busy() {
-      return this.$store.state.Transaction.recentTransactionsBusy
-    },
-    noMoreTransactions() {
-      return this.$store.state.Transaction.noMoreTransactions
     },
     transactionSelected() {
       return !!this.$store.state.Transaction.selectedTransaction.title
