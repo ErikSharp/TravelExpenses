@@ -14,6 +14,9 @@
             :key="i"
             @click="menuItemClicked(i)"
           >
+            <v-list-tile-avatar>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-avatar>
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -28,7 +31,8 @@ export default {
     return {
       items: [
         {
-          title: 'Logout'
+          title: 'Logout',
+          icon: 'lock'
         }
       ]
     }
@@ -49,4 +53,12 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-list {
+  padding: 0;
+}
+
+.v-list__tile__avatar {
+  margin: 0 -10px;
+}
+</style>
