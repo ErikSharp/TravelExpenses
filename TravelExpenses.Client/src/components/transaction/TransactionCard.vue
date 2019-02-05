@@ -49,7 +49,7 @@ export default {
     transaction: Object
   },
   created() {
-    this.setIcon()
+    this.setIcon(this.transaction)
   },
   data() {
     return {
@@ -88,44 +88,56 @@ export default {
 
       return ''
     },
-    setIcon() {
-      let color = Math.floor(Math.random() * 5)
-      switch (color) {
-        case 0:
+    setIcon(transaction) {
+      let cat = this.$store.state.Category.categories.find(
+        c => c.id === transaction.categoryId
+      )
+
+      switch (cat.categoryName) {
+        case 'Transportation':
           this.iconColor = 'indigo'
+          this.icon = 'commute'
+          break
+        case 'Dining':
+          this.iconColor = 'orange'
           this.icon = 'fastfood'
           break
-        case 1:
-          this.iconColor = 'purple'
-          this.icon = 'shopping_cart'
+        case 'Groceries':
+          this.iconColor = 'green darken-2'
+          this.icon = 'local_grocery_store'
           break
-        case 2:
-          this.iconColor = 'green'
-          this.icon = 'airplanemode_active'
+        case 'Entertainment':
+          this.iconColor = 'pink lighten-2'
+          this.icon = 'theaters'
           break
-        case 3:
-          this.iconColor = 'red'
+        case 'Accommodations':
+          this.iconColor = 'purple lighten-2'
+          this.icon = 'local_hotel'
+          break
+        case 'Utilities':
+          this.iconColor = 'green lighten-1'
+          this.icon = 'power'
+          break
+        case 'Medical':
+          this.iconColor = 'red darken-1'
           this.icon = 'local_hospital'
           break
-        case 4:
-          this.iconColor = 'orange'
-          this.icon = 'beach_access'
+        case 'Fees':
+          this.iconColor = 'blue lighten-2'
+          this.icon = 'local_atm'
           break
-      }
-    },
-    getIcon() {
-      let icon = Math.floor(Math.random() * 5)
-      switch (icon) {
-        case 0:
-          return 'fastfood'
-        case 1:
-          return 'shopping_cart'
-        case 2:
-          return 'airplanemode_active'
-        case 3:
-          return 'local_hospital'
-        case 4:
-          return 'beach_access'
+        case 'Deposit':
+          this.iconColor = 'cyan lighten-2'
+          this.icon = 'attach_money'
+          break
+        case 'Non-trip':
+          this.iconColor = 'orange'
+          this.icon = 'card_giftcard'
+          break
+        default:
+          this.iconColor = 'blue'
+          this.icon = 'live_help'
+          break
       }
     }
   },
