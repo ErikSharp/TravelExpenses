@@ -19,23 +19,31 @@ export let routerGuard = (
   getToken,
   getMissingSetupData
 ) => {
+  // console.log(
+  //   `routerGuard enter (redirectFlag: ${redirectFlag}, to.name: ${to.name})`
+  // )
   if (redirectFlag) {
     redirectFlag = false
     proceed()
+    return
   }
 
   let destination = to.name
 
   getToken(token => {
+    // console.log(`getToken: ${token ? 'have token' : 'no token'}`)
     if (token) {
+      // console.log(`to.name: ${to.name}`)
       if (to.name === HomeViews.Authentication) {
         destination = HomeViews.Transactions
       }
 
       getMissingSetupData(isMissingData => {
+        // console.log(`getMissingSetupData: isMissingData: ${isMissingData}`)
         if (isMissingData) {
           nextDesination(redirect, HomeViews.InitialSetup)
         } else {
+          // console.log(`destination: ${destination}`)
           if (destination === HomeViews.InitialSetup) {
             nextDesination(redirect, HomeViews.Transactions)
           } else {
