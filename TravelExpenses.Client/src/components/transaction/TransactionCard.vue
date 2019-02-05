@@ -33,9 +33,9 @@
             <p style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
-              {{ getKeywordName(id) }}
-            </v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
+              getKeywordName(id)
+            }}</v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -170,11 +170,6 @@ export default {
 }
 
 .selected {
-  background: cornflowerblue;
-}
-
-.selected .v-card__text {
-  transition: background 0.21s;
-  background: cornflowerblue !important;
+  border: solid #7b1fa2 5px;
 }
 </style>
