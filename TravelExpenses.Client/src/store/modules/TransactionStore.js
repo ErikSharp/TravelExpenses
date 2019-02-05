@@ -7,7 +7,8 @@ export default {
     recentTransactionsBusy: false,
     recentTransactions: [],
     recentTransactionsStale: false,
-    noMoreTransactions: false
+    noMoreTransactions: false,
+    selectedTransaction: {}
   },
   mutations: {
     SET_SAVE_TRANSACTION_BUSY(state, busy) {
@@ -29,6 +30,9 @@ export default {
     },
     SET_RECENT_TRANSACTIONS_STALE(state) {
       state.recentTransactionsStale = true
+    },
+    SET_SELECTED_TRANSACTION(state, transaction) {
+      state.selectedTransaction = transaction
     }
   },
   actions: {
@@ -78,6 +82,13 @@ export default {
     reloadRecentTransactions({ commit, dispatch }) {
       commit('CLEAR_RECENT_TRANSACTIONS')
       dispatch('getRecentTransactions')
+    },
+    setSelectedTransaction({ state, commit }, transaction) {
+      if (state.selectedTransaction == transaction) {
+        commit('SET_SELECTED_TRANSACTION', {})
+      } else {
+        commit('SET_SELECTED_TRANSACTION', transaction)
+      }
     }
   }
 }
