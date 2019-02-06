@@ -1,9 +1,10 @@
 <template>
   <div>
     <home-header></home-header>
+    <div class="header-spacer" />
     <transition name="fade">
       <transition name="fade">
-        <router-view class="my-5" :key="$route.fullPath" />
+        <router-view class="mb-5" :key="$route.fullPath" />
       </transition>
     </transition>
     <v-bottom-nav :active.sync="homeView" :value="true" fixed color="primary">
@@ -62,13 +63,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.header-spacer {
+  height: 56px;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s;
 }
+
 .fade-enter-active {
   transition-delay: 0.25s;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
