@@ -1,6 +1,8 @@
 <template>
   <v-card class="pa-3">
-    <h1 class="mb-3">Thank you for choosing to use Manage your Moo-lah</h1>
+    <h1 class="mb-3 text-xs-center">
+      Thank you for choosing to use Manage your Moo-lah
+    </h1>
     <p class="text-xs-center mb-0">You're all down with setup.</p>
     <p class="text-xs-center">Now let's create some transactions...</p>
     <v-flex xs12>
