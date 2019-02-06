@@ -119,6 +119,8 @@
         chips
         solo
         multiple
+        @input="$v.chosenKeywords.$touch()"
+        @blur="$v.chosenKeywords.$touch()"
       >
         <template slot="selection" slot-scope="data">
           <v-chip
@@ -144,67 +146,63 @@
         label="Description"
         auto-grow
         v-model="memo"
+        @input="$v.memo.$touch()"
+        @blur="$v.memo.$touch()"
       ></v-textarea>
-      <v-container class="py-0">
-        <v-layout row wrap justify-start>
-          <v-flex xs12 sm6>
-            <v-switch
-              hide-details
-              class="my-2 justify-center"
-              dark
-              color="white"
-              v-model="gpsLocation"
+      <v-flex xs10 offset-xs1>
+        <v-layout justify-center justify-space-between>
+          <v-switch
+            hide-details
+            class="my-2 justify-center"
+            dark
+            color="white"
+            v-model="gpsLocation"
+            validate-on-blur
+            @change="$v.gpsLocation.$touch()"
+          >
+            <div
+              slot="label"
+              :class="{
+                'white--text': gpsLocation,
+                'gray--text': !gpsLocation
+              }"
             >
-              <div
-                slot="label"
-                :class="{
-                  'white--text': gpsLocation,
-                  'gray--text': !gpsLocation
-                }"
-              >
-                GPS Location
-              </div>
-            </v-switch>
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-checkbox
-              hide-details
-              class="my-2 justify-center"
-              dark
-              v-model="paidWithCash"
-            >
-              <div slot="label" class="white--text">Paid With Cash</div>
-            </v-checkbox>
-          </v-flex>
-          <v-flex xs12 sm4>
-            <div class="text-xs-center">
-              <v-btn
-                dark
-                :loading="busy && !usingSaveAndNew"
-                :disabled="$v.$invalid || (busy && !usingSaveAndNew)"
-                @click="save"
-                >Save</v-btn
-              >
+              GPS Location
             </div>
-          </v-flex>
-          <v-flex v-if="false" xs12 sm4>
-            <div class="text-xs-center">
-              <v-btn
-                dark
-                :loading="busy && usingSaveAndNew"
-                :disabled="$v.$invalid || (busy && usingSaveAndNew)"
-                @click="saveAndNew"
-                >Save & New</v-btn
-              >
-            </div>
-          </v-flex>
-          <v-flex xs12 sm4>
-            <div class="text-xs-center">
-              <v-btn dark @click="cancel">Cancel</v-btn>
-            </div>
-          </v-flex>
+          </v-switch>
+          <v-checkbox
+            hide-details
+            class="my-2 justify-center"
+            dark
+            v-model="paidWithCash"
+            @change="$v.paidWithCash.$touch()"
+          >
+            <div slot="label" class="white--text">Paid With Cash</div>
+          </v-checkbox>
         </v-layout>
-      </v-container>
+      </v-flex>
+      <v-flex xs10 offset-xs1>
+        <v-layout justify-center justify-space-between>
+          <v-btn
+            dark
+            :loading="busy && !usingSaveAndNew"
+            :disabled="
+              $v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty
+            "
+            @click="save"
+            >Save</v-btn
+          >
+          <v-btn
+            v-if="!edit"
+            dark
+            :loading="busy && usingSaveAndNew"
+            :disabled="$v.$invalid || (busy && usingSaveAndNew)"
+            @click="saveAndNew"
+            >Save & New</v-btn
+          >
+          <v-btn dark @click="cancel">Cancel</v-btn>
+        </v-layout>
+      </v-flex>
     </v-container>
   </div>
 </template>
@@ -275,7 +273,7 @@ export default {
         required,
         decimal,
         minValue: minValue(0.01),
-        maxValue: maxValue(214748)
+        maxValue: maxValue(922337203685477.58)
       },
       currency: {
         required
@@ -285,7 +283,11 @@ export default {
       },
       location: {
         required
-      }
+      },
+      chosenKeywords: {},
+      memo: {},
+      gpsLocation: {},
+      paidWithCash: {}
     }
 
     return result
@@ -468,7 +470,7 @@ export default {
   },
   watch: {
     transactionToEdit(val) {
-      if (this.edit) {
+      if (this.edit && val.id) {
         this.id = val.id
         this.title = val.title
         this.date = val.transDate
@@ -482,6 +484,7 @@ export default {
         this.memo = val.memo
         this.gpsLocation = val.gpsLocation
         this.paidWithCash = val.paidWithCash
+        this.$v.$reset()
       }
     }
   }
