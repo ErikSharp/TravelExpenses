@@ -26,12 +26,12 @@
       @input="$v.selectedCountry.$touch()"
       @blur="$v.selectedCountry.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{
-        data.item.countryName
-      }}</template>
-      <template slot="item" slot-scope="data">{{
-        data.item.countryName
-      }}</template>
+      <template slot="selection" slot-scope="data">
+        {{ data.item.countryName }}
+      </template>
+      <template slot="item" slot-scope="data">
+        {{ data.item.countryName }}
+      </template>
     </v-autocomplete>
     <v-text-field
       v-model.trim="location"
@@ -48,7 +48,7 @@
     </p>
     <p>
       <strong>Note:</strong> You will have the ability to add additional
-      location by using the Setup menu with the application.
+      locations by using the Setup menu with the application.
     </p>
     <v-flex xs12>
       <v-layout row justify-center>
