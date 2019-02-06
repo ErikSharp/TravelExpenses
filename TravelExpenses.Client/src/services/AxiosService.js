@@ -38,6 +38,9 @@ export default {
   createTransaction(transaction) {
     return apiClient.post('api/transactions', transaction)
   },
+  editTransaction(transaction) {
+    return apiClient.put('api/transactions', transaction)
+  },
   deleteTransaction(transactionId) {
     return apiClient.delete(`api/transactions/${transactionId}`)
   },

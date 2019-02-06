@@ -46,15 +46,33 @@ export default {
     }
   },
   actions: {
-    saveTransaction({ dispatch, commit }, transaction) {
+    saveTransaction({ dispatch }, transaction) {
+      dispatch('innerSaveTransaction', {
+        transaction: transaction,
+        editing: false
+      })
+    },
+    editTransaction({ dispatch }, transaction) {
+      dispatch('innerSaveTransaction', {
+        transaction: transaction,
+        editing: true
+      })
+    },
+    innerSaveTransaction({ dispatch, commit }, data) {
       commit('SET_SAVE_TRANSACTION_BUSY', true)
 
-      return AxiosService.createTransaction(transaction)
+      return AxiosService.editTransaction(data.transaction)
         .then(() => {
           commit('SET_RECENT_TRANSACTIONS_STALE')
-          dispatch('showSaveMessage', `${transaction.title} has been saved`, {
-            root: true
-          })
+          dispatch(
+            'showSaveMessage',
+            `${data.transaction.title} has been ${
+              data.editing ? 'changed' : 'saved'
+            }`,
+            {
+              root: true
+            }
+          )
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
