@@ -5,13 +5,21 @@
       v-if="!Object.keys(recentTransactions).length && !recentTransactionsBusy"
     >
       <h1 class="text-xs-center white--text">No transactions</h1>
-      <p class="text-xs-center white--text">Press the Add button below to create your first.</p>
+      <p class="text-xs-center white--text">
+        Press the Add button below to create your first.
+      </p>
     </div>
     <v-layout
       v-show="!Object.keys(recentTransactions).length && recentTransactionsBusy"
       justify-center
     >
-      <v-progress-circular class="mt-5" size="70" width="7" color="secondary" indeterminate></v-progress-circular>
+      <v-progress-circular
+        class="mt-5"
+        size="70"
+        width="7"
+        color="secondary"
+        indeterminate
+      ></v-progress-circular>
     </v-layout>
     <v-expansion-panel dark v-model="panel" expand>
       <v-expansion-panel-content
@@ -37,7 +45,8 @@
         :disabled="noMoreTransactions"
         class="primary"
         @click="loadMore"
-      >Load More</v-btn>
+        >Load More</v-btn
+      >
     </v-layout>
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
@@ -48,20 +57,29 @@
           :disabled="!transactionSelected"
           class="primary my-3"
           @click="addTransaction"
-        >Edit</v-btn>
+          >Edit</v-btn
+        >
         <v-dialog
           v-model="deleteDialog"
           :disabled="!transactionSelected"
           persistent
           max-width="290"
         >
-          <v-btn slot="activator" flat :disabled="!transactionSelected" class="primary my-3">Delete</v-btn>
+          <v-btn
+            slot="activator"
+            flat
+            :disabled="!transactionSelected"
+            class="primary my-3"
+            >Delete</v-btn
+          >
           <v-card>
             <v-avatar size="70" class="mx-2 elevation-5 red">
               <v-icon size="45" class="white--text">warning</v-icon>
             </v-avatar>
             <v-card-title class="headline">Delete Transaction</v-card-title>
-            <v-card-text>There is no way to undo this procedure. Do you wish to proceed?</v-card-text>
+            <v-card-text>
+              There is no way to undo this procedure. Do you wish to proceed?
+            </v-card-text>
             <v-card-actions>
               <v-layout justify-space-around>
                 <v-btn
@@ -69,12 +87,14 @@
                   :loading="saveTransactionBusy"
                   dark
                   @click="deleteTransaction"
-                >YES</v-btn>
+                  >YES</v-btn
+                >
                 <v-btn
                   color="primary"
                   :disabled="saveTransactionBusy"
                   @click="deleteDialog = false"
-                >NO</v-btn>
+                  >NO</v-btn
+                >
               </v-layout>
             </v-card-actions>
           </v-card>
@@ -105,7 +125,7 @@ export default {
   },
   data() {
     return {
-      panel: [],
+      panel: [true],
       deleteDialog: false
     }
   },
