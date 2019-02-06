@@ -2,8 +2,12 @@
   <div>
     <v-window touchless v-model="transactionWindow">
       <v-window-item>
+        <new-transaction @done="returnToRecent"></new-transaction>
+      </v-window-item>
+      <v-window-item>
         <recent-transactions
           @addTransaction="addTransaction"
+          @editTransaction="editTransaction"
         ></recent-transactions>
       </v-window-item>
       <v-window-item>
@@ -24,15 +28,28 @@ export default {
   },
   data() {
     return {
-      transactionWindow: 0
+      transactionWindow: 1
     }
   },
   methods: {
     addTransaction() {
-      this.transactionWindow = 1
+      this.transactionWindow = 2
+      this.scrollToTop()
+    },
+    editTransaction() {
+      this.transactionWindow = 0
+      this.scrollToTop()
     },
     returnToRecent() {
-      this.transactionWindow = 0
+      this.transactionWindow = 1
+      this.scrollToTop()
+    },
+    scrollToTop() {
+      this.$vuetify.goTo(0, {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      })
     }
   }
 }
