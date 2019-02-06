@@ -86,12 +86,12 @@
         @input="$v.category.$touch()"
         @blur="$v.category.$touch()"
       >
-        <template slot="selection" slot-scope="data">
-          {{ data.item.categoryName }}
-        </template>
-        <template slot="item" slot-scope="data">
-          {{ data.item.categoryName }}
-        </template>
+        <template slot="selection" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
       </v-select>
       <v-select
         :items="locations"
@@ -105,12 +105,12 @@
         @input="$v.location.$touch()"
         @blur="$v.location.$touch()"
       >
-        <template slot="selection" slot-scope="data">
-          {{ getLocationString(data.item) }}
-        </template>
-        <template slot="item" slot-scope="data">
-          {{ getLocationString(data.item) }}
-        </template>
+        <template slot="selection" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
       </v-select>
       <v-select
         :items="keywords"
@@ -187,7 +187,7 @@
               >
             </div>
           </v-flex>
-          <v-flex xs12 sm4>
+          <v-flex v-if="false" xs12 sm4>
             <div class="text-xs-center">
               <v-btn
                 dark
@@ -210,6 +210,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import {
   required,
   minLength,
@@ -223,6 +224,9 @@ import sortBy from 'lodash/sortBy'
 import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    edit: Boolean
+  },
   created() {
     if (!this.$store.state.Country.countries.length) {
       this.$store.dispatch('Country/load')
@@ -242,6 +246,7 @@ export default {
   },
   data() {
     return {
+      id: 0,
       title: '',
       date: '',
       dateMenu: false,
@@ -456,6 +461,28 @@ export default {
       }
 
       return isBusy
+    },
+    transactionToEdit() {
+      return this.$store.state.Transaction.selectedTransaction
+    }
+  },
+  watch: {
+    transactionToEdit(val) {
+      if (this.edit) {
+        this.id = val.id
+        this.title = val.title
+        this.date = val.transDate
+        this.amount = val.amount
+        this.currency = this.currencies.find(c => c.id === val.currencyId)
+        this.category = this.categories.find(c => c.id === val.categoryId)
+        this.location = this.locations.find(l => l.id === val.locationId)
+        this.chosenKeywords = val.keywordIds.map(id =>
+          this.keywords.find(k => k.id === id)
+        )
+        this.memo = val.memo
+        this.gpsLocation = val.gpsLocation
+        this.paidWithCash = val.paidWithCash
+      }
     }
   }
 }

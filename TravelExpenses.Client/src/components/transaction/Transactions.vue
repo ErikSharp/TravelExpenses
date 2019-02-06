@@ -2,12 +2,12 @@
   <div>
     <v-window touchless v-model="transactionWindow">
       <v-window-item>
-        <new-transaction @done="returnToRecent"></new-transaction>
+        <new-transaction edit @done="returnToRecent"></new-transaction>
       </v-window-item>
       <v-window-item>
         <recent-transactions
           @addTransaction="addTransaction"
-          @editTransaction="editTransaction"
+          @editTransaction="editTransaction()"
         ></recent-transactions>
       </v-window-item>
       <v-window-item>
@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      transactionWindow: 1
+      transactionWindow: 1,
+      transactionToEdit: {}
     }
   },
   methods: {
