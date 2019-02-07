@@ -86,12 +86,12 @@
         @input="$v.category.$touch()"
         @blur="$v.category.$touch()"
       >
-        <template slot="selection" slot-scope="data">{{
-          data.item.categoryName
-        }}</template>
-        <template slot="item" slot-scope="data">{{
-          data.item.categoryName
-        }}</template>
+        <template slot="selection" slot-scope="data">
+          {{ data.item.categoryName }}
+        </template>
+        <template slot="item" slot-scope="data">
+          {{ data.item.categoryName }}
+        </template>
       </v-select>
       <v-select
         :items="locations"
@@ -105,12 +105,12 @@
         @input="$v.location.$touch()"
         @blur="$v.location.$touch()"
       >
-        <template slot="selection" slot-scope="data">{{
-          getLocationString(data.item)
-        }}</template>
-        <template slot="item" slot-scope="data">{{
-          getLocationString(data.item)
-        }}</template>
+        <template slot="selection" slot-scope="data">
+          {{ getLocationString(data.item) }}
+        </template>
+        <template slot="item" slot-scope="data">
+          {{ getLocationString(data.item) }}
+        </template>
       </v-select>
       <v-select
         :items="keywords"
@@ -322,8 +322,6 @@ export default {
       if (this.edit) {
         transactionToSave['id'] = this.id
       }
-
-      console.log(transactionToSave)
 
       this.$store.dispatch(
         `Transaction/${this.edit ? 'edit' : 'save'}Transaction`,

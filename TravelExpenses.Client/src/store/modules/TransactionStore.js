@@ -54,7 +54,6 @@ export default {
       })
     },
     editTransaction({ dispatch }, data) {
-      console.log('editTransaction')
       dispatch('innerSaveTransaction', {
         transaction: data.transaction,
         complete: data.complete,
@@ -66,7 +65,7 @@ export default {
 
       let axiosOp = data.editing
         ? AxiosService.editTransaction
-        : AxiosService.saveTransaction
+        : AxiosService.createTransaction
 
       return axiosOp(data.transaction)
         .then(() => {
