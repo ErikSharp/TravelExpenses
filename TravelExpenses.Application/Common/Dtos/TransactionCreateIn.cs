@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TravelExpenses.Application.Common.Dtos
 {
-    public class TransactionIn
+    public class TransactionCreateIn
     {
         public string TransDate { get; set; }
         public decimal Amount { get; set; }

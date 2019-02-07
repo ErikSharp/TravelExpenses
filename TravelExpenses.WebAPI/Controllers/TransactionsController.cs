@@ -23,7 +23,7 @@ namespace TravelExpenses.WebAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateTransaction(
-            [FromBody]TransactionIn transaction, 
+            [FromBody]TransactionCreateIn transaction, 
             [FromHeader(Name = "Authorization")]string token)
         {
             var userId = User.Claims.GetUserId();
@@ -32,6 +32,17 @@ namespace TravelExpenses.WebAPI.Controllers
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
                 null);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditTransaction(
+            [FromBody]TransactionEditIn transaction,
+            [FromHeader(Name = "Authorization")]string token)
+        {
+            var userId = User.Claims.GetUserId();
+            await mediator.Send(new UpdateTransaction.Command(transaction, userId)).ConfigureAwait(false);
+
+            return Ok();
         }
 
         [HttpGet]

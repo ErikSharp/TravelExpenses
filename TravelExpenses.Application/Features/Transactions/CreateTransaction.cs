@@ -23,13 +23,13 @@ namespace TravelExpenses.Application.Features.Transactions
 
         public class Command : IRequest
         {
-            public Command(TransactionIn transactionIn, int tokenUserId)
+            public Command(TransactionCreateIn transactionIn, int tokenUserId)
             {
                 TransactionIn = transactionIn;
                 TokenUserId = tokenUserId;
             }
 
-            public TransactionIn TransactionIn { get; }
+            public TransactionCreateIn TransactionIn { get; }
             public int TokenUserId { get; }
         }
 
@@ -76,16 +76,12 @@ namespace TravelExpenses.Application.Features.Transactions
 
             private bool ParseAsDate(string dateString)
             {
-                try
-                {
-                    DateTime.ParseExact(dateString, DateStringFormat, CultureInfo.InvariantCulture);                    
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-
-                return true;
+                return DateTime.TryParseExact(
+                    dateString,
+                    DateStringFormat,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var result);
             }
         }
     }

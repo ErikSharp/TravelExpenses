@@ -20,7 +20,14 @@ namespace TravelExpenses.Application.Helpers
 
             CreateMap<User, UserOut>();
 
-            CreateMap<TransactionIn, Transaction>()
+            CreateMap<TransactionCreateIn, Transaction>()
+                .ForMember(dest => dest.TransDate,
+                    e => e.MapFrom(source =>
+                        DateTime.ParseExact(source.TransDate, CreateTransaction.DateStringFormat, CultureInfo.InvariantCulture)))
+                .ForMember(dest => dest.TransactionKeywords,
+                    e => e.MapFrom(source => source.KeywordIds.Select(id => new TransactionKeyword { KeywordId = id })));
+
+            CreateMap<TransactionEditIn, Transaction>()
                 .ForMember(dest => dest.TransDate,
                     e => e.MapFrom(source =>
                         DateTime.ParseExact(source.TransDate, CreateTransaction.DateStringFormat, CultureInfo.InvariantCulture)))
