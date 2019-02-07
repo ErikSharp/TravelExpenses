@@ -33,9 +33,9 @@
             <p style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
-              getKeywordName(id)
-            }}</v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
+              {{ getKeywordName(id) }}
+            </v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -83,7 +83,7 @@ export default {
     getCurrencyIsoString(id) {
       let currency = this.$store.getters['Currency/findCurrency'](id)
       if (currency) {
-        return currency.isoCode
+        return `${currency.isoCode} - ${currency.currencyName}`
       }
 
       return ''
@@ -155,6 +155,7 @@ export default {
 .v-card p {
   margin: 0;
   height: 22px;
+  overflow: hidden;
 }
 
 .v-chip {
@@ -171,5 +172,10 @@ export default {
 
 .selected {
   border: solid #7b1fa2 5px;
+}
+
+/* chip text was going over add edit delete buttons */
+.v-chip {
+  z-index: 0;
 }
 </style>
