@@ -46,22 +46,29 @@ export default {
     }
   },
   actions: {
-    saveTransaction({ dispatch }, transaction) {
+    saveTransaction({ dispatch }, data) {
       dispatch('innerSaveTransaction', {
-        transaction: transaction,
+        transaction: data.transaction,
+        complete: data.complete,
         editing: false
       })
     },
-    editTransaction({ dispatch }, transaction) {
+    editTransaction({ dispatch }, data) {
+      console.log('editTransaction')
       dispatch('innerSaveTransaction', {
-        transaction: transaction,
+        transaction: data.transaction,
+        complete: data.complete,
         editing: true
       })
     },
     innerSaveTransaction({ dispatch, commit }, data) {
       commit('SET_SAVE_TRANSACTION_BUSY', true)
 
-      return AxiosService.editTransaction(data.transaction)
+      let axiosOp = data.editing
+        ? AxiosService.editTransaction
+        : AxiosService.saveTransaction
+
+      return axiosOp(data.transaction)
         .then(() => {
           commit('SET_RECENT_TRANSACTIONS_STALE')
           dispatch(
@@ -79,6 +86,7 @@ export default {
         })
         .then(() => {
           commit('SET_SAVE_TRANSACTION_BUSY', false)
+          data.complete()
         })
     },
     getRecentTransactions({ commit, dispatch }, skip) {
