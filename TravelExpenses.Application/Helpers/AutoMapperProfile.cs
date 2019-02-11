@@ -42,6 +42,11 @@ namespace TravelExpenses.Application.Helpers
                     e => e.MapFrom(source =>
                         source.TransactionKeywords.Select(tk => tk.KeywordId)));
 
+            CreateMap<CashWithdrawalCreateIn, CashWithdrawal>()
+                .ForMember(dest => dest.TransDate,
+                    e => e.MapFrom(source =>
+                        DateTime.ParseExact(source.TransDate, CreateTransaction.DateStringFormat, CultureInfo.InvariantCulture)));
+
             CreateMap<Country, CountryOut>();
             CreateMap<Currency, CurrencyOut>();
             CreateMap<Keyword, KeywordOut>();
