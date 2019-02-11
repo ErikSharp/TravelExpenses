@@ -11,5 +11,6 @@ namespace TravelExpenses.Domain.Entities
         public string CurrencyName { get; set; }
         
         public ICollection<Transaction> Transactions { get; private set; }
+        public ICollection<CashWithdrawal> CashWithdrawals { get; private set; }
     }
 }
