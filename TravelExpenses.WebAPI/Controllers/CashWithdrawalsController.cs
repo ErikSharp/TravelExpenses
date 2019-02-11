@@ -10,7 +10,7 @@ using TravelExpenses.WebAPI.Extensions;
 namespace TravelExpenses.WebAPI.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/cash-withdrawals")]
     [ApiController]
     public class CashWithdrawalsController : ControllerBase
     {
