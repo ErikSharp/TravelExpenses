@@ -44,6 +44,22 @@ export default {
   deleteTransaction(transactionId) {
     return apiClient.delete(`api/transactions/${transactionId}`)
   },
+  getRecentCashWithdrawals(skip) {
+    return apiClient.get('api/cash-withdrawals', {
+      params: {
+        skip: skip
+      }
+    })
+  },
+  createCashWithdrawal(cashWithdrawal) {
+    return apiClient.post('api/cash-withdrawals', cashWithdrawal)
+  },
+  editCashWithdrawal(cashWithdrawal) {
+    return apiClient.put('api/cash-withdrawals', cashWithdrawal)
+  },
+  deleteCashWithdrawal(cashWithdrawalId) {
+    return apiClient.delete(`api/cash-withdrawals/${cashWithdrawalId}`)
+  },
   getCountries() {
     return apiClient.get('api/countries')
   },

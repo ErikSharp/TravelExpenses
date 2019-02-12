@@ -6,6 +6,7 @@ import Reconcile from '@/store/modules/ReconcileStore.js'
 import SetupData from '@/store/modules/SetupDataStore.js'
 import InitialSetup from '@/store/modules/InitialSetupStore.js'
 import Transaction from '@/store/modules/TransactionStore.js'
+import CashWithdrawal from '@/store/modules/CashWithdrawalStore.js'
 import Location from '@/store/modules/LocationStore.js'
 import Country from '@/store/modules/CountryStore.js'
 import Currency from '@/store/modules/CurrencyStore.js'
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     SetupData,
     InitialSetup,
     Transaction,
+    CashWithdrawal,
     Location,
     Country,
     Currency,

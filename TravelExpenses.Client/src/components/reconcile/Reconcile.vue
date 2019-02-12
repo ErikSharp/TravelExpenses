@@ -35,7 +35,7 @@ import ReconcileSummary from '@/components/reconcile/ReconcileSummary.vue'
 import ReconcileInvestigation from '@/components/reconcile/ReconcileInvestigation.vue'
 import ButtonWrapper from '@/components/reconcile/ButtonWrapper.vue'
 import Transactions from '@/components/transaction/Transactions.vue'
-import CashWithdrawals from '@/components/CashWithdrawals.vue'
+import CashWithdrawals from '@/components/cashWithdrawal/CashWithdrawals.vue'
 import ReconcileLossGain from '@/components/reconcile/ReconcileLossGain.vue'
 import Windows from '@/common/enums/ReconcileWindows.js'
 
