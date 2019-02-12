@@ -34,16 +34,16 @@ namespace TravelExpenses.WebAPI.Controllers
                 null);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> EditTransaction(
-        //    [FromBody]TransactionEditIn transaction,
-        //    [FromHeader(Name = "Authorization")]string token)
-        //{
-        //    var userId = User.Claims.GetUserId();
-        //    await mediator.Send(new UpdateTransaction.Command(transaction, userId)).ConfigureAwait(false);
+        [HttpPut]
+        public async Task<IActionResult> EditTransaction(
+            [FromBody]CashWithdrawalDto cashWithdrawal,
+            [FromHeader(Name = "Authorization")]string token)
+        {
+            var userId = User.Claims.GetUserId();
+            await mediator.Send(new UpdateCashWithdrawal.Command(cashWithdrawal, userId)).ConfigureAwait(false);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetRecent(
