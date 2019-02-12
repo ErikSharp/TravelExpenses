@@ -56,13 +56,13 @@ namespace TravelExpenses.WebAPI.Controllers
             return Ok(transactions);
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteTransaction(int id)
-        //{
-        //    var userId = User.Claims.GetUserId();
-        //    await mediator.Send(new DeleteTransaction.Command(id, userId)).ConfigureAwait(false);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCashWithdrawal(int id)
+        {
+            var userId = User.Claims.GetUserId();
+            await mediator.Send(new DeleteCashWithdrawal.Command(id, userId)).ConfigureAwait(false);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
 }

@@ -15,19 +15,19 @@ using TravelExpenses.Application.Exceptions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features.Transactions
+namespace TravelExpenses.Application.Features.CashWithdrawals
 {
-    public class DeleteTransaction
+    public class DeleteCashWithdrawal
     {
         public class Command : IRequest
         {
-            public Command(int transactionId, int tokenUserId)
+            public Command(int cashWithdrawalId, int tokenUserId)
             {
-                TransactionId = transactionId;
+                CashWithdrawalId = cashWithdrawalId;
                 TokenUserId = tokenUserId;
             }
 
-            public int TransactionId { get; }
+            public int CashWithdrawalId { get; }
             public int TokenUserId { get; }
         }
 
@@ -44,26 +44,25 @@ namespace TravelExpenses.Application.Features.Transactions
             {
                 this.context = context;
                 this.mapper = mapper;
-                this.logger = loggerFactory.CreateLogger<DeleteTransaction>();
+                this.logger = loggerFactory.CreateLogger<DeleteCashWithdrawal>();
             }
 
             protected override async Task Handle(Command request, CancellationToken response)
             {
-                var transaction = await context.Transactions
+                var cashWithdrawal = await context.CashWithdrawals
                     .Include(t => t.User)
-                    .Include(t => t.TransactionKeywords)
-                    .SingleOrDefaultAsync(t => t.Id == request.TransactionId && t.UserId == request.TokenUserId)
+                    .SingleOrDefaultAsync(t => t.Id == request.CashWithdrawalId && t.UserId == request.TokenUserId)
                     .ConfigureAwait(false);
 
-                if (transaction != null)
-                {                    
-                    context.Transactions.Remove(transaction);
+                if (cashWithdrawal != null)
+                {
+                    context.CashWithdrawals.Remove(cashWithdrawal);
 
                     await context.SaveChangesAsync();
                 }
                 else
                 {
-                    throw new NotFoundException($"Transaction {request.TransactionId} not found");
+                    throw new NotFoundException($"Cash Withdrawal {request.CashWithdrawalId} not found");
                 }
             }
         }
