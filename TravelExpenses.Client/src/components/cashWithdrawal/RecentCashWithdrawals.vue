@@ -1,5 +1,14 @@
 <template>
   <div>
+    <v-dialog v-model="memoDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Memo</v-card-title>
+        <v-card-text>{{ memo }}</v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="memoDialog = false">CLOSE</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div
       class="helper-text"
       v-if="
@@ -89,9 +98,10 @@
               <v-card-title class="headline"
                 >Delete Cash Withdrawal</v-card-title
               >
-              <v-card-text>
-                There is no way to undo this procedure. Do you wish to proceed?
-              </v-card-text>
+              <v-card-text
+                >There is no way to undo this procedure. Do you wish to
+                proceed?</v-card-text
+              >
               <v-card-actions>
                 <v-layout justify-space-around>
                   <v-btn
@@ -108,15 +118,6 @@
                     >NO</v-btn
                   >
                 </v-layout>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="memoDialog" max-width="290">
-            <v-card>
-              <v-card-title class="headline">Memo</v-card-title>
-              <v-card-text>{{ memo }}</v-card-text>
-              <v-card-actions>
-                <v-btn color="primary" @click="memoDialog = false">CLOSE</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
