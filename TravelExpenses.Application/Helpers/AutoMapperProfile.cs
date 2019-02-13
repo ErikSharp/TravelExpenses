@@ -47,7 +47,11 @@ namespace TravelExpenses.Application.Helpers
                     e => e.MapFrom(source =>
                         DateTime.ParseExact(source.TransDate, CreateTransaction.DateStringFormat, CultureInfo.InvariantCulture)));
 
-            CreateMap<CashWithdrawal, CashWithdrawalDto>();
+            CreateMap<CashWithdrawal, CashWithdrawalDto>()
+                .ForMember(dest => dest.TransDate,
+                    e => e.MapFrom(source =>
+                        source.TransDate.ToString(CreateTransaction.DateStringFormat)));
+
             CreateMap<CashWithdrawalDto, CashWithdrawal>();
 
             CreateMap<Country, CountryOut>();
