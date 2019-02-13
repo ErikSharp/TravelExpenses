@@ -82,9 +82,10 @@
                 <v-icon size="45" class="white--text">warning</v-icon>
               </v-avatar>
               <v-card-title class="headline">Delete Transaction</v-card-title>
-              <v-card-text>
-                There is no way to undo this procedure. Do you wish to proceed?
-              </v-card-text>
+              <v-card-text
+                >There is no way to undo this procedure. Do you wish to
+                proceed?</v-card-text
+              >
               <v-card-actions>
                 <v-layout justify-space-around>
                   <v-btn
@@ -128,6 +129,9 @@ const locale = navigator.language || 'en-US'
 export default {
   components: {
     TransactionCard
+  },
+  mounted() {
+    this.$store.dispatch('Transaction/reloadRecentTransactions')
   },
   data() {
     return {

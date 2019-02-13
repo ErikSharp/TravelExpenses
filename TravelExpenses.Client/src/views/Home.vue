@@ -47,7 +47,6 @@ export default {
   },
   created() {
     this.$store.dispatch('setHomeView', this.$router.currentRoute.name)
-    this.$store.dispatch('Transaction/reloadRecentTransactions')
   },
   computed: {
     homeView: {
