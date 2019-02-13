@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-2">
     <v-form @submit.prevent="submit">
       <v-text-field
         v-model.trim="username"
@@ -40,9 +40,20 @@
         @input="$v.passwordConfirmation.$touch()"
         @blur="$v.passwordConfirmation.$touch()"
       ></v-text-field>
-      <v-btn type="submit" :loading="busy" :disabled="$v.$invalid">
-        {{ getButtonText }}
-      </v-btn>
+      <v-checkbox
+        class="ma-0"
+        color="primary"
+        v-model="stayLoggedIn"
+        label="Stay logged in"
+      />
+      <v-btn
+        class="mt-0"
+        color="primary"
+        type="submit"
+        :loading="busy"
+        :disabled="$v.$invalid"
+        >{{ getButtonText }}</v-btn
+      >
     </v-form>
   </div>
 </template>
@@ -194,6 +205,14 @@ export default {
     },
     busy() {
       return this.$store.state.Authentication.busy
+    },
+    stayLoggedIn: {
+      get() {
+        return this.$store.state.Authentication.persistToken
+      },
+      set(value) {
+        this.$store.dispatch('Authentication/setPersistToken', value)
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ function initialState() {
   return {
     busy: false,
     authToken: '',
-    persistToken: true
+    persistToken: false
   }
 }
 
@@ -25,9 +25,15 @@ export default {
     },
     SET_BUSY(state, busy) {
       state.busy = busy
+    },
+    SET_PERSIST_TOKEN(state, persistToken) {
+      state.persistToken = persistToken
     }
   },
   actions: {
+    setPersistToken({ commit }, persistToken) {
+      commit('SET_PERSIST_TOKEN', persistToken)
+    },
     checkLocalStorageForToken({ commit }) {
       let token = LocalStorage.getToken()
       if (token) {
