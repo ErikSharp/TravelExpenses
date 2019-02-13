@@ -51,8 +51,8 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                     .Include(c => c.User)
                     .OrderByDescending(t => t.TransDate)
                     .ThenByDescending(t => t.Id)
-                    .Take(appSettings.RecentTransactionsTakeAmount)
                     .Skip(request.Skip)
+                    .Take(appSettings.RecentTransactionsTakeAmount)
                     .ToListAsync()
                     .ConfigureAwait(false);
 

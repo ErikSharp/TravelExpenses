@@ -59,11 +59,18 @@ namespace TravelExpenses.WebAPI
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly);
-            
+
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUser.Validator>());
+                //.AddJsonOptions(options =>
+                //{
+                //    options.SerializerSettings.Error = (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
+                //    {
+                //        Console.WriteLine("Hello");
+                //    };
+                //});
 
             var connectionString = Configuration.GetConnectionString("MyDbConnection");
 

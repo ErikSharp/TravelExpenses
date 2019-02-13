@@ -69,7 +69,7 @@ namespace TravelExpenses.Application.Features.Transactions
                     RuleFor(c => c.TransactionIn.LocationId).GreaterThan(0);
                     RuleFor(c => c.TransactionIn.CurrencyId).GreaterThan(0);
                     RuleFor(c => c.TransactionIn.CategoryId).GreaterThan(0);
-                    RuleFor(c => c.TransactionIn.Title).NotEmpty().Length(3, 255);
+                    RuleFor(c => c.TransactionIn.Title).NotEmpty().Length(2, 255);
                     RuleForEach(c => c.TransactionIn.KeywordIds).GreaterThan(0);                    
                 });
             }

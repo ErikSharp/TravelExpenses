@@ -263,7 +263,7 @@ export default {
     const result = {
       title: {
         required,
-        minLength: minLength(3),
+        minLength: minLength(2),
         maxLength: maxLength(255)
       },
       date: {

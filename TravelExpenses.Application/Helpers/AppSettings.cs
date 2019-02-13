@@ -8,6 +8,7 @@ namespace TravelExpenses.Application.Helpers
     {
         public string Secret { get; set; }
         public int RecentTransactionsTakeAmount { get; set; }
+        public int ErikUserId { get; set; }
     }
 }
 
