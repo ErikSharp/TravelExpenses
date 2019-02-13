@@ -23,7 +23,7 @@
             </p>
             <p>
               <strong>Amount:</strong>
-              {{ `${cashWithdrawal.amount}` }}
+              {{ `${cashWithdrawal.amount.toLocaleString()}` }}
             </p>
             <p>
               <strong>Currency:</strong>

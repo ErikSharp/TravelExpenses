@@ -25,7 +25,7 @@
             <p>
               <strong>Amount:</strong>
               {{
-                `${transaction.amount} ${getCurrencyIsoString(
+                `${transaction.amount.toLocaleString()} ${getCurrencyIsoString(
                   transaction.currencyId
                 )}`
               }}
@@ -33,9 +33,9 @@
             <p style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
-              {{ getKeywordName(id) }}
-            </v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
+              getKeywordName(id)
+            }}</v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
