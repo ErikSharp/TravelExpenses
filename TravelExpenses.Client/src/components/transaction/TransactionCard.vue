@@ -3,7 +3,10 @@
     light
     class="my-1"
     @click="selectTransaction()"
-    :class="{ selected: transactionSelected }"
+    :class="{
+      selected: transactionSelected,
+      'py-1': !transaction.keywordIds.length
+    }"
   >
     <v-flex>
       <v-layout align-center justify-start row fill-height>
@@ -30,12 +33,12 @@
                 )}`
               }}
             </p>
-            <p style="display: inline">
+            <p v-if="transaction.keywordIds.length" style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
-              getKeywordName(id)
-            }}</v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
+              {{ getKeywordName(id) }}
+            </v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
