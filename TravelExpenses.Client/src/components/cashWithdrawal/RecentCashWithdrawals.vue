@@ -37,7 +37,7 @@
             v-for="(cashWithdrawal, i) in dateGroup"
             :key="i"
             :cashWithdrawal="cashWithdrawal"
-            @showMemo="showMemo()"
+            @showMemo="showMemo($event)"
           />
         </div>
       </v-expansion-panel-content>
@@ -89,10 +89,9 @@
               <v-card-title class="headline"
                 >Delete Cash Withdrawal</v-card-title
               >
-              <v-card-text
-                >There is no way to undo this procedure. Do you wish to
-                proceed?</v-card-text
-              >
+              <v-card-text>
+                There is no way to undo this procedure. Do you wish to proceed?
+              </v-card-text>
               <v-card-actions>
                 <v-layout justify-space-around>
                   <v-btn
@@ -115,7 +114,7 @@
           <v-dialog v-model="memoDialog" max-width="290">
             <v-card>
               <v-card-title class="headline">Memo</v-card-title>
-              <v-card-text>{{ selectedCashWithdrawalMemo }}</v-card-text>
+              <v-card-text>{{ memo }}</v-card-text>
               <v-card-actions>
                 <v-btn color="primary" @click="memoDialog = false">CLOSE</v-btn>
               </v-card-actions>
@@ -150,14 +149,16 @@ export default {
     return {
       panel: [true],
       deleteDialog: false,
-      memoDialog: false
+      memoDialog: false,
+      memo: ''
     }
   },
   mounted() {
     this.$store.dispatch('CashWithdrawal/reloadRecentCashWithdrawals')
   },
   methods: {
-    showMemo() {
+    showMemo(memo) {
+      this.memo = memo
       this.memoDialog = true
     },
     loadMore() {
@@ -195,9 +196,6 @@ export default {
     },
     cashWithdrawalSelected() {
       return !!this.$store.state.CashWithdrawal.selectedCashWithdrawal.title
-    },
-    selectedCashWithdrawalMemo() {
-      return this.$store.state.CashWithdrawal.selectedCashWithdrawal.memo || ''
     }
   },
   watch: {

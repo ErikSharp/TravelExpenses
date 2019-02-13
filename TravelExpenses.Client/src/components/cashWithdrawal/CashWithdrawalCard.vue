@@ -29,7 +29,10 @@
               <strong>Currency:</strong>
               {{ getCurrencyString(cashWithdrawal.currencyId) }}
             </p>
-            <v-btn class="primary" v-if="cashWithdrawal.memo" @click="showMemo"
+            <v-btn
+              class="primary"
+              v-if="cashWithdrawal.memo"
+              @click.stop="showMemo"
               >Memo</v-btn
             >
           </v-card-text>
@@ -51,7 +54,7 @@ export default {
   },
   methods: {
     showMemo() {
-      this.$emit('showMemo')
+      this.$emit('showMemo', this.cashWithdrawal.memo)
     },
     selectCashWithdrawal() {
       this.$store.dispatch(
