@@ -36,6 +36,7 @@ export default {
       state.recentCashWithdrawals = []
       state.noMoreCashWithdrawals = false
       state.recentCashWithdrawalsStale = false
+      state.selectedCashWithdrawal = {}
     },
     SET_NO_MORE_CASH_WITHDRAWALS(state) {
       state.noMoreCashWithdrawals = true
