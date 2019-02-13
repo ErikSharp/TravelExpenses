@@ -34,7 +34,7 @@ namespace TravelExpenses.Application.Helpers
                 {
                     new Claim("userId", user.Id.ToString())
                 }),
-                Expires = dateTime.UtcNow.AddDays(7),
+                //Expires = dateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

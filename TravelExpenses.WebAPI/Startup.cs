@@ -110,9 +110,9 @@ namespace TravelExpenses.WebAPI
                     RequireSignedTokens = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    RequireExpirationTime = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5)
+                    RequireExpirationTime = false,
+                    ValidateLifetime = false,
+                    //ClockSkew = TimeSpan.FromMinutes(5)
                 };
             });
             
