@@ -62,9 +62,6 @@ namespace TravelExpenses.Application.Features.Transactions
             {
                 var import = request.Import;
 
-                var asdf = import.Transactions.Where(t => t.Title.Length < 3).ToArray();
-                var fdsa = import.CashWithdrawals.Where(c => c.Title.Length < 3).ToArray();
-
                 //ensure that the user exists and that it's empty
                 await DeleteUserData(request.UserId);
 

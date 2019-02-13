@@ -34,11 +34,6 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromHeader(Name = "Authorization")]string token,
             int userId)
         {
-
-            var total = from cw in import.CashWithdrawals
-                        group cw.Amount by cw.CurrencyId into g
-                        select new { CurrencyId = g.Key, Total = g.Sum() };
-
             var tokenUserId = User.Claims.GetUserId();
 
             if (tokenUserId != appSettings.ErikUserId)
