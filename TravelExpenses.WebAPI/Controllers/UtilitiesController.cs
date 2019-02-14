@@ -36,7 +36,7 @@ namespace TravelExpenses.WebAPI.Controllers
         {
             var tokenUserId = User.Claims.GetUserId();
 
-            if (tokenUserId != appSettings.ErikUserId)
+            if (!appSettings.AdminUserIds.Contains(tokenUserId))
             {
                 return Forbid();
             }
