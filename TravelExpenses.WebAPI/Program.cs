@@ -76,6 +76,7 @@ namespace TravelExpenses.WebAPI
                         fileSizeLimitBytes: 1_000_000,
                         rollOnFileSizeLimit: true,
                         shared: true,
+                        outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                         flushToDiskInterval: TimeSpan.FromSeconds(3));
                 }
 
