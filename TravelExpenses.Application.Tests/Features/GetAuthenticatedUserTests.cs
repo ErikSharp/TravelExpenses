@@ -103,16 +103,11 @@ namespace TravelExpenses.Application.Tests.Features
 
             var tokenGenerator = new Mock<ITokenGenerator>();
             tokenGenerator.Setup(tg => tg.CreateTokenString(It.IsAny<User>())).Returns("token");
-            
-            var loggerMock = new Mock<ILogger>();
-            var loggerFactoryMock = new Mock<ILoggerFactory>();
-            loggerFactoryMock.Setup(fac => fac.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
 
             return new Handler(
                 context,
                 mapper,
-                tokenGenerator.Object,
-                loggerFactoryMock.Object);
+                tokenGenerator.Object);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,31 +13,32 @@ namespace TravelExpenses.Application.Infrastructure
 {
     public class RequestPerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly Stopwatch _timer;
-        private readonly ILogger<TRequest> _logger;
-
-        public RequestPerformanceBehavior(ILogger<TRequest> logger)
+        private readonly int thresholdMs;
+        public RequestPerformanceBehavior(IConfiguration configuration)
         {
-            _timer = new Stopwatch();
+            var configThreshold = configuration.GetValue<int>("AppSettings:LongRunningThresholdMs");
+            if (configThreshold == 0)
+            {
+                Log.Warning("Could not get configuration from AppSettings:LongRunningThresholdMs so defaulting to 500ms");
+                configThreshold = 500;
+            }
 
-            _logger = logger;
+            thresholdMs = configThreshold;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _timer.Start();
+            var timer = Stopwatch.StartNew();
 
             var response = await next();
 
-            _timer.Stop();
+            timer.Stop();
 
-            if (_timer.ElapsedMilliseconds > 500)
+            if (timer.ElapsedMilliseconds > thresholdMs)
             {
                 var name = typeof(TRequest).DeclaringType.Name;
 
-                // TODO: Add User Details
-
-                _logger.LogWarning("TravelExpenses Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds)", name, _timer.ElapsedMilliseconds);
+                Log.Warning("TravelExpenses Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds)", name, timer.ElapsedMilliseconds);
             }
 
             return response;

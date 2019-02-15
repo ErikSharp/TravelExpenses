@@ -4,6 +4,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Interfaces;
 using TravelExpenses.Domain.Entities;
@@ -28,23 +29,20 @@ namespace TravelExpenses.Application.Features.Users
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
             private readonly ITokenGenerator tokenGenerator;
-            private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
                 IMapper mapper,
-                ITokenGenerator tokenGenerator,
-                ILoggerFactory loggerFactory)
+                ITokenGenerator tokenGenerator)
             {
                 this.context = context;
                 this.mapper = mapper;
                 this.tokenGenerator = tokenGenerator;
-                this.logger = loggerFactory.CreateLogger(nameof(Handler));
             }
 
             public async Task<UserOut> Handle(Query request, CancellationToken cancellationToken)
             {
-                logger.LogDebug($"Looking for not disabled user with email: {request.LoginDetails.Email}");
+                Log.Debug($"Looking for not disabled user with email: {request.LoginDetails.Email}");
 
                 var user = await context.Users.AsNoTracking().SingleOrDefaultAsync(x => 
                     x.Email == request.LoginDetails.Email)
@@ -52,12 +50,12 @@ namespace TravelExpenses.Application.Features.Users
                 
                 if (user == null)
                 {
-                    logger.LogDebug($"User {request.LoginDetails.Email} was not found");
+                    Log.Debug($"User {request.LoginDetails.Email} was not found");
                     return null;
                 }
                 else
                 {
-                    logger.LogDebug($"User {request.LoginDetails.Email} was found");
+                    Log.Debug($"User {request.LoginDetails.Email} was found");
                 }
 
                 bool passMatchesHash =
@@ -65,12 +63,12 @@ namespace TravelExpenses.Application.Features.Users
 
                 if (!passMatchesHash)
                 {
-                    logger.LogInformation($"Login for {request.LoginDetails.Email} used the wrong password");
+                    Log.Information($"Login for {request.LoginDetails.Email} used the wrong password");
                     return null;
                 }
                 else
                 {
-                    logger.LogDebug($"Login for {request.LoginDetails.Email} had the correct password");
+                    Log.Debug($"Login for {request.LoginDetails.Email} had the correct password");
                 }
 
                 return CreateUserWithToken(user);                

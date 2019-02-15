@@ -53,11 +53,11 @@ namespace TravelExpenses.WebAPI.HealthChecks
                 }
                 catch (Exception ex)
                 {
-                    return HealthCheckResult.Failed("The connection to the database has failed", ex, data);
+                    return HealthCheckResult.Unhealthy("The connection to the database has failed", ex, data);
                 }
             }           
 
-            return HealthCheckResult.Passed($"The connection and querying of the database has passed", data);
+            return HealthCheckResult.Healthy($"The connection and querying of the database has passed", data);
         }
     }
 }

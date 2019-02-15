@@ -28,7 +28,7 @@ namespace TravelExpenses.WebAPI.HealthChecks
             var data = new Dictionary<string, object>();
             data.Add("environment", name);
 
-            return Task.FromResult(HealthCheckResult.Passed("The environment the server is running in", data));
+            return Task.FromResult(HealthCheckResult.Healthy("The environment the server is running in", data));
         }
     }
 }

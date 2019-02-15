@@ -32,16 +32,13 @@ namespace TravelExpenses.Application.Features.Locations
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
-            private readonly ILogger logger; 
 
             public Handler(
                 TravelExpensesContext context,
-                ILoggerFactory loggerFactory,
                 IMapper mapper)
             {
                 this.context = context;
                 this.mapper = mapper;
-                this.logger = loggerFactory.CreateLogger(nameof(Handler));
             }
 
             public async Task<LocationOut[]> Handle(Query request, CancellationToken response)

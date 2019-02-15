@@ -44,18 +44,15 @@ namespace TravelExpenses.Application.Features.Transactions
             private readonly TravelExpensesContext context;
             private readonly IMediator mediator;
             private readonly IMapper mapper;
-            private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
                 IMediator mediator,
-                ILoggerFactory loggerFactory,
                 IMapper mapper)
             {
                 this.context = context;
                 this.mediator = mediator;
                 this.mapper = mapper;
-                this.logger = loggerFactory.CreateLogger<CreateTransaction>();
             }
 
             protected async override Task Handle(Command request, CancellationToken response)

@@ -76,13 +76,13 @@ namespace TravelExpenses.WebAPI.HealthChecks
 
             if (allocated >= options.Threshold)
             {
-                return Task.FromResult(HealthCheckResult.Failed(
+                return Task.FromResult(HealthCheckResult.Unhealthy(
                     description: "reports degraded status if allocated bytes >= 1gb",
                     data: data));
             }
             else
             {
-                return Task.FromResult(HealthCheckResult.Passed(
+                return Task.FromResult(HealthCheckResult.Healthy(
                     data: data));
             }
 

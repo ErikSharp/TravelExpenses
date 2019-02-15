@@ -38,16 +38,13 @@ namespace TravelExpenses.Application.Features.Transactions
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
-            private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
-                ILoggerFactory loggerFactory,
                 IMapper mapper)
             {
                 this.context = context;
                 this.mapper = mapper;
-                this.logger = loggerFactory.CreateLogger<UpdateTransaction>();
             }
 
             protected override async Task Handle(Command request, CancellationToken response)

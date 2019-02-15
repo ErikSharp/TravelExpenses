@@ -18,7 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.AzureAppServices;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -39,12 +38,26 @@ namespace TravelExpenses.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            LogConfiguration();
+
+            void LogConfiguration()
+            {
+                var entries = configuration.AsEnumerable().OrderBy(i => i.Key).Select(c => $"{c.Key} = {c.Value}");
+                var result = string.Join(Environment.NewLine, entries);
+
+                Log.Information($"Configuration: {Environment.NewLine}{result}");
+            }
+
+            this.configuration = configuration;
+            this.env = env;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,17 +65,17 @@ namespace TravelExpenses.WebAPI
             services.AddMemoryCache();
             services.AddCors();
 
-            services.AddTransient<IDateTime, MachineDateTime>();
-            services.AddTransient<ITokenGenerator, TokenGenerator>();
+            services.AddSingleton<IDateTime, MachineDateTime>();
+            services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddMediatR(typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly);
+            RegisterMediatrBehaviors();            
+
+            var featuresAssembly = typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly;
+            services.AddMediatR(featuresAssembly);
 
             services
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUser.Validator>());
                 //.AddJsonOptions(options =>
                 //{
@@ -72,14 +85,12 @@ namespace TravelExpenses.WebAPI
                 //    };
                 //});
 
-            var connectionString = Configuration.GetConnectionString("MyDbConnection");
+            var connectionString = configuration.GetConnectionString("MyDbConnection");
 
             services.AddDbContext<TravelExpensesContext>
                 (options => options.UseSqlServer(connectionString));
 
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-            if (environment != null && environment != "Development")
+            if (env.IsProduction() || env.IsStaging())
             {
                 // Automatically perform database migration
                 // The integration tests cannot run this command
@@ -94,7 +105,7 @@ namespace TravelExpenses.WebAPI
             services.AddAutoMapper();
 
             //configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettingsSection = configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
             //configure jwt authentication
@@ -128,9 +139,17 @@ namespace TravelExpenses.WebAPI
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            void RegisterMediatrBehaviors()
+            {
+                // These will run in this order
+                services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(RequestLoggerBehavior<,>));
+                services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
+                services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            }
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // https://www.blinkingcaret.com/2018/01/24/angular-and-asp-net-core/
             app.Use(async (HttpContext context, Func<Task> next) =>
@@ -151,14 +170,6 @@ namespace TravelExpenses.WebAPI
 
             if (env.IsDevelopment())
             {
-                Log.Logger = new LoggerConfiguration()
-                    .Enrich.With(new ThreadIdEnricher())
-                    .ReadFrom
-                    .Configuration(Configuration)
-                    .CreateLogger();
-                
-                loggerFactory.AddSerilog();
-
                 // As we are calling npm run serve in VS Code, it will be on a different port than the Web API and requires CORS config
                 app.UseCors(builder => 
                     builder.WithOrigins("http://localhost:8080")
@@ -168,17 +179,7 @@ namespace TravelExpenses.WebAPI
             else
             {
                 app.UseHsts();
-
-                loggerFactory.AddAzureWebAppDiagnostics(
-                    new AzureAppServicesDiagnosticsSettings
-                    {
-                        OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
-                    });
             }
-
-            var logger = loggerFactory.CreateLogger<Startup>();
-
-            logger.LogDebug("The logger is now available");
 
             app.ConfigureCustomExceptionMiddleware();            
 

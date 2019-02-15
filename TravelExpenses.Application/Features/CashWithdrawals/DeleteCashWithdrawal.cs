@@ -35,16 +35,13 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
-            private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
-                ILoggerFactory loggerFactory,
                 IMapper mapper)
             {
                 this.context = context;
                 this.mapper = mapper;
-                this.logger = loggerFactory.CreateLogger<DeleteCashWithdrawal>();
             }
 
             protected override async Task Handle(Command request, CancellationToken response)

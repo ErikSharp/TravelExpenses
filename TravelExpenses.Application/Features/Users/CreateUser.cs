@@ -35,7 +35,6 @@ namespace TravelExpenses.Application.Features.Users
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
             private readonly ITokenGenerator tokenGenerator;
-            private readonly ILogger logger;
 
             public Handler(
                 TravelExpensesContext context,
@@ -46,7 +45,6 @@ namespace TravelExpenses.Application.Features.Users
                 this.context = context;
                 this.mapper = mapper;
                 this.tokenGenerator = tokenGenerator;
-                this.logger = loggerFactory.CreateLogger(nameof(Handler));
             }
 
             public async Task<UserOut> Handle(Command request, CancellationToken cancellationToken)

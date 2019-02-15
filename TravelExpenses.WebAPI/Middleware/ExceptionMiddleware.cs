@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,9 @@ namespace TravelExpenses.WebAPI.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
 
         public ExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<ExceptionMiddleware>();
             _next = next;
         }
 
@@ -33,7 +32,7 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (ValidationException ex)
             {
-                _logger.LogInformation($"ValidationException: {ex.ToString()}");
+                Log.Warning(ex, "ValidationException");
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
@@ -41,6 +40,8 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (UserAlreadyExistsException ex)
             {
+                Log.Warning(ex, ex.GetType().Name);
+
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.Conflict,
@@ -48,6 +49,8 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (SecurityException ex)
             {
+                Log.Warning(ex, ex.GetType().Name);
+
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.BadRequest,
@@ -55,7 +58,7 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (NotFoundException ex)
             {
-                _logger.LogWarning($"NotFoundException: {ex.ToString()}");
+                Log.Warning(ex, ex.GetType().Name);
 
                 await HandleExceptionAsync(
                     httpContext,
@@ -65,7 +68,7 @@ namespace TravelExpenses.WebAPI.Middleware
             catch (DbUpdateException ex)
             {
                 var e = ex.InnerException ?? ex;
-                _logger.LogInformation($"DbUpdateException: {e.ToString()}");
+                Log.Warning(e, ex.GetType().Name);
 
                 await HandleExceptionAsync(
                     httpContext,
@@ -74,6 +77,8 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (InfrastructureException ex)
             {
+                Log.Error(ex, ex.GetType().Name);
+
                 await HandleExceptionAsync(
                     httpContext,
                     HttpStatusCode.InternalServerError,
@@ -81,7 +86,7 @@ namespace TravelExpenses.WebAPI.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Exception: {ex}");
+                Log.Error(ex, ex.GetType().Name);
                 await HandleExceptionAsync(
                     httpContext, 
                     HttpStatusCode.InternalServerError, 

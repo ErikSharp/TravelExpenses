@@ -17,28 +17,28 @@ namespace TravelExpenses.WebAPI.Extensions
         /// <summary>
         /// Got this from https://code-maze.com/global-error-handling-aspnetcore/
         /// </summary>
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILogger logger)
-        {
-            app.UseExceptionHandler(appError =>
-            {
-                appError.Run(async context =>
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
+        //public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILogger logger)
+        //{
+        //    app.UseExceptionHandler(appError =>
+        //    {
+        //        appError.Run(async context =>
+        //        {
+        //            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        //            context.Response.ContentType = "application/json";
 
-                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if (contextFeature != null)
-                    {
-                        logger.LogError($"Something went wrong: {contextFeature.Error}");
+        //            var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        //            if (contextFeature != null)
+        //            {
+        //                logger.LogError($"Something went wrong: {contextFeature.Error}");
 
-                        await context.Response.WriteAsync(new ErrorDetails
-                        {
-                            Message = "Internal Server Error."
-                        }.ToString());
-                    }
-                });
-            });
-        }
+        //                await context.Response.WriteAsync(new ErrorDetails
+        //                {
+        //                    Message = "Internal Server Error."
+        //                }.ToString());
+        //            }
+        //        });
+        //    });
+        //}
 
         /// <summary>
         /// This allows you to use a custom middleware for exceptions that is much
