@@ -21,10 +21,11 @@ using TravelExpenses.Application.Features.Countries;
 using TravelExpenses.Application.Features.Currencies;
 using TravelExpenses.Application.Features.Keywords;
 using TravelExpenses.Application.Features.Locations;
+using TravelExpenses.Application.Features.Transactions;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.Persistence;
 
-namespace TravelExpenses.Application.Features.Transactions
+namespace TravelExpenses.Application.Features.Utilities
 {
     public class ImportUser
     {
@@ -44,16 +45,13 @@ namespace TravelExpenses.Application.Features.Transactions
         {
             private readonly TravelExpensesContext context;
             private readonly IMediator mediator;
-            private readonly IMapper mapper;
 
             public Handler(
                 TravelExpensesContext context,
-                IMediator mediator,
-                IMapper mapper)
+                IMediator mediator)
             {
                 this.context = context;
                 this.mediator = mediator;
-                this.mapper = mapper;
             }
 
             protected async override Task Handle(Command request, CancellationToken response)

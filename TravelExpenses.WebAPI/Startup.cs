@@ -27,6 +27,7 @@ using TravelExpenses.Application.Features.Users;
 using TravelExpenses.Application.Helpers;
 using TravelExpenses.Application.Infrastructure;
 using TravelExpenses.Application.Interfaces;
+using TravelExpenses.Application.Utilities;
 using TravelExpenses.Common;
 using TravelExpenses.Infrastructure;
 using TravelExpenses.Persistence;
@@ -71,6 +72,8 @@ namespace TravelExpenses.WebAPI
 
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
+            services.AddScoped<INameGenerator, NameGenerator>();
 
             RegisterMediatrBehaviors();            
 
