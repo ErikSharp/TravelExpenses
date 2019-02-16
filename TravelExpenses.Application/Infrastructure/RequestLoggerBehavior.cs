@@ -14,10 +14,21 @@ namespace TravelExpenses.Application.Infrastructure
     {
         public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            Log.Information(
-                "TravelExpenses Request: {Name} {@Request}",
-                typeof(TRequest).DeclaringType.Name,
-                request);
+            var name = typeof(TRequest).DeclaringType.Name;
+
+            if (name != "ImportUser")
+            {
+                Log.Debug(
+                    "TravelExpenses Request: {Name} {@Request}",
+                    typeof(TRequest).DeclaringType.Name,
+                    request);
+            }
+            else
+            {
+                Log.Debug(
+                    "TravelExpenses Request: {Name}",
+                    typeof(TRequest).DeclaringType.Name);
+            }
 
             return next();
         }

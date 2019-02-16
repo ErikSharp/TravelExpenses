@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -140,8 +141,16 @@ namespace TravelExpenses.Application.Features.Transactions
                 }
 
                 //enter transactions
+                int transCounter = 0;
                 foreach (var t in import.Transactions)
                 {
+                    transCounter++;
+
+                    if (transCounter % 50 == 0)
+                    {
+                        Log.Information($"ImportUser: on transaction {transCounter}");
+                    }
+
                     var foo = import.TransactionKeywords.Where(tk => tk.TransactionId == t.Id);
                     var newTransKeywords = foo.Select(f => keywordMap[f.KeywordId]).ToArray();
 

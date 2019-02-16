@@ -33,6 +33,7 @@ using TravelExpenses.Persistence;
 using TravelExpenses.WebAPI.Extensions;
 using TravelExpenses.WebAPI.HealthChecks;
 using TravelExpenses.WebAPI.Middleware;
+using TravelExpenses.WebAPI.Utilities;
 
 namespace TravelExpenses.WebAPI
 {
@@ -68,6 +69,9 @@ namespace TravelExpenses.WebAPI
             services.AddSingleton<IDateTime, MachineDateTime>();
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
             RegisterMediatrBehaviors();            
 
             var featuresAssembly = typeof(GetAuthenticatedUser.Handler).GetTypeInfo().Assembly;
@@ -87,6 +91,7 @@ namespace TravelExpenses.WebAPI
 
             var connectionString = configuration.GetConnectionString("MyDbConnection");
 
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.2#entity-framework-contexts
             services.AddDbContext<TravelExpensesContext>
                 (options => options.UseSqlServer(connectionString));
 
