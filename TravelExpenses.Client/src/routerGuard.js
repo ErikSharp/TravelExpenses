@@ -47,7 +47,11 @@ export let routerGuard = (
           if (destination === HomeViews.InitialSetup) {
             nextDesination(redirect, HomeViews.Transactions)
           } else {
-            proceed()
+            if (destination == to.name) {
+              proceed()
+            } else {
+              nextDesination(redirect, destination)
+            }
           }
         }
       })
