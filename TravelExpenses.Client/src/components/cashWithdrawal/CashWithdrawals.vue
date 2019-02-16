@@ -35,14 +35,17 @@ export default {
   methods: {
     addCashWithdrawal() {
       this.cashWithdrawalWindow = 2
+      this.$store.dispatch('setTitle', 'Add Cash Withdrawal', { root: true })
       this.scrollToTop()
     },
     editCashWithdrawal() {
       this.cashWithdrawalWindow = 0
+      this.$store.dispatch('setTitle', 'Edit Cash Withdrawal', { root: true })
       this.scrollToTop()
     },
     returnToRecent() {
       this.cashWithdrawalWindow = 1
+      this.$store.dispatch('setTitle', 'Cash Withdrawals', { root: true })
       this.scrollToTop()
     },
     scrollToTop() {

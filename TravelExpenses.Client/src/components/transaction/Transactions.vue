@@ -35,14 +35,17 @@ export default {
   methods: {
     addTransaction() {
       this.transactionWindow = 2
+      this.$store.dispatch('setTitle', 'Add Transaction', { root: true })
       this.scrollToTop()
     },
     editTransaction() {
       this.transactionWindow = 0
+      this.$store.dispatch('setTitle', 'Edit Transaction', { root: true })
       this.scrollToTop()
     },
     returnToRecent() {
       this.transactionWindow = 1
+      this.$store.dispatch('setTitle', 'Transactions', { root: true })
       this.scrollToTop()
     },
     scrollToTop() {
