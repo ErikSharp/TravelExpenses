@@ -150,7 +150,7 @@ namespace TravelExpenses.Application.Features.Utilities
                 var rand = new Random();
                 for (int i = 0; i < transactionCount; i++)
                 {
-                    var dayDecrement = OneIn(3) ? dayCounter - rand.Next(1, 4) : dayCounter;
+                    dayCounter = OneIn(3) ? dayCounter - rand.Next(1, 4) : dayCounter;
                     var trans = new TransactionCreateIn
                     {
                         TransDate = DateTime.Today.AddDays(dayCounter).ToString("yyyy-MM-dd"),
@@ -182,7 +182,7 @@ namespace TravelExpenses.Application.Features.Utilities
                 dayCounter = 0;
                 for (int i = 0; i < withdrawalCount; i++)
                 {
-                    var dayDecrement = OneIn(3) ? dayCounter - rand.Next(1, 4) : dayCounter;
+                    dayCounter = OneIn(3) ? dayCounter - rand.Next(1, 4) : dayCounter;
 
                     var withdrawal = new CashWithdrawalCreateIn
                     {
