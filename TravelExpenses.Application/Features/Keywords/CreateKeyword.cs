@@ -18,12 +18,14 @@ namespace TravelExpenses.Application.Features.Keywords
     {
         public class Query : IRequest<KeywordOut[]>
         {
-            public Query(Keyword[] keywords)
+            public Query(string[] keywords, int userId)
             {
                 Keywords = keywords;
+                UserId = userId;
             }
 
-            public Keyword[] Keywords { get; }
+            public string[] Keywords { get; }
+            public int UserId { get; }
         }
 
         public class Handler : IRequestHandler<Query, KeywordOut[]>
@@ -41,18 +43,20 @@ namespace TravelExpenses.Application.Features.Keywords
 
             public async Task<KeywordOut[]> Handle(Query request, CancellationToken cancellationToken)
             {
-                context.Keywords.AddRange(request.Keywords);
+                var keywordsIn = request.Keywords
+                    .Select(k => new Keyword() { KeywordName = k, UserId = request.UserId })
+                    .ToArray();
+
+                context.Keywords.AddRange(keywordsIn);
                 await context.SaveChangesAsync().ConfigureAwait(false);
-
-                var userId = request.Keywords.First().UserId;
-
-                var keywords = await context.Keywords
-                    .Where(k => k.UserId == userId)
+                
+                var keywordsOut = await context.Keywords
+                    .Where(k => k.UserId == request.UserId)
                     .Include(k => k.User)
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                return keywords.Select(k => mapper.Map<KeywordOut>(k)).ToArray();
+                return keywordsOut.Select(k => mapper.Map<KeywordOut>(k)).ToArray();
             }
         }
 
@@ -63,11 +67,11 @@ namespace TravelExpenses.Application.Features.Keywords
                 RuleForEach(c => c.Keywords).SetValidator(new KeywordValidator());
             }
 
-            public class KeywordValidator : AbstractValidator<Keyword>
+            public class KeywordValidator : AbstractValidator<string>
             {
                 public KeywordValidator()
                 {
-                    RuleFor(c => c.KeywordName).NotEmpty().Length(3, 255);
+                    RuleFor(c => c).NotEmpty().Length(3, 255);
                 }
             }
         }

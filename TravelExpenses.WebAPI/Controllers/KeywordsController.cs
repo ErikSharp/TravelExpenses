@@ -40,8 +40,8 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromBody]string[] keywordNames)
         {
             var userId = User.Claims.GetUserId();
-            var keywords = keywordNames.Select(k => new Keyword() { KeywordName = k, UserId = userId }).ToArray();
-            var keywordStrings = await mediator.Send(new CreateKeyword.Query(keywords)).ConfigureAwait(false);
+            
+            var keywordStrings = await mediator.Send(new CreateKeyword.Query(keywordNames, userId)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),

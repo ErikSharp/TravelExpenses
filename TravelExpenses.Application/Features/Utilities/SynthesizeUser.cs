@@ -92,10 +92,7 @@ namespace TravelExpenses.Application.Features.Utilities
                     "Dentist"
                 };
 
-                var keywords = await mediator.Send(new CreateKeyword.Query(
-                    keywordNames.Select(k =>
-                        new Keyword { KeywordName = k, UserId = userId }).ToArray()
-                )).ConfigureAwait(false);
+                var keywords = await mediator.Send(new CreateKeyword.Query(keywordNames, userId)).ConfigureAwait(false);
 
                 var countries = context.Countries
                     .Where(c => 

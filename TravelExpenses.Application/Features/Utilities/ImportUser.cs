@@ -82,13 +82,9 @@ namespace TravelExpenses.Application.Features.Utilities
                 }
 
                 //enter keywords
-                var keywords = import.Keywords.Select(k => new Keyword
-                {
-                    KeywordName = k.Keyword,
-                    UserId = request.UserId
-                }).ToArray();
+                var keywords = import.Keywords.Select(k => k.Keyword).ToArray();
 
-                var newKeywords = await mediator.Send(new CreateKeyword.Query(keywords)).ConfigureAwait(false);
+                var newKeywords = await mediator.Send(new CreateKeyword.Query(keywords, request.UserId)).ConfigureAwait(false);
 
                 var keywordMap = new Dictionary<int, int>();
                 foreach (var kw in import.Keywords)
