@@ -29,7 +29,7 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromBody]CurrencyTotalsRequest request)
         {
             var userId = User.Claims.GetUserId();
-            var totals = await mediator.Send(new GetCurrencyTotals.Query(request)).ConfigureAwait(false);
+            var totals = await mediator.Send(new GetCurrencyTotals.Query(request, userId)).ConfigureAwait(false);
 
             return Ok(totals);
         }

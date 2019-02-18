@@ -14,12 +14,14 @@ namespace TravelExpenses.Application.Features.Reconcile
     {
         public class Query : IRequest<CurrencyTotals>
         {
-            public Query(CurrencyTotalsRequest request)
+            public Query(CurrencyTotalsRequest request, int userId)
             {
                 Request = request;
+                UserId = userId;
             }
 
             public CurrencyTotalsRequest Request { get; }
+            public int UserId { get; }
         }
 
         public class Handler : IRequestHandler<Query, CurrencyTotals>
@@ -37,7 +39,7 @@ namespace TravelExpenses.Application.Features.Reconcile
 
                 var totalSpent = context.Transactions
                     .Where(t => 
-                        t.UserId == request.UserId && 
+                        t.UserId == query.UserId && 
                         t.LocationId == request.LocationId &&
                         t.CurrencyId == request.CurrencyId &&
                         t.PaidWithCash)
@@ -45,8 +47,8 @@ namespace TravelExpenses.Application.Features.Reconcile
 
                 var totalWithdrawn = context.CashWithdrawals
                     .Where(t =>
-                        t.UserId == request.UserId &&
-                        //t.LocationId == request.LocationId &&
+                        t.UserId == query.UserId &&
+                        t.LocationId == request.LocationId &&
                         t.CurrencyId == request.CurrencyId)
                     .Sum(t => t.Amount);
 
