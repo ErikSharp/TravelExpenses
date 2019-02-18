@@ -174,6 +174,7 @@ namespace TravelExpenses.Application.Features.Utilities
                         TransDate = cw.TransDate,
                         Amount = cw.Amount,
                         CurrencyId = ccyMap[cw.CurrencyId],
+                        LocationId = locationMap[cw.LocationId],
                         Memo = cw.Memo,
                         UserId = request.UserId
                     };
@@ -211,32 +212,5 @@ namespace TravelExpenses.Application.Features.Utilities
                 await context.SaveChangesAsync();
             }
         }
-
-        //public class Validator : AbstractValidator<Command>
-        //{
-        //    public Validator()
-        //    {
-        //        RuleFor(x => x.TransactionIn).NotNull().DependentRules(() =>
-        //        {
-        //            RuleFor(c => c.TransactionIn.TransDate).Must(ParseAsDate);
-        //            RuleFor(c => c.TransactionIn.UserId).Equal(c => c.TokenUserId);
-        //            RuleFor(c => c.TransactionIn.LocationId).GreaterThan(0);
-        //            RuleFor(c => c.TransactionIn.CurrencyId).GreaterThan(0);
-        //            RuleFor(c => c.TransactionIn.CategoryId).GreaterThan(0);
-        //            RuleFor(c => c.TransactionIn.Title).NotEmpty().Length(3, 255);
-        //            RuleForEach(c => c.TransactionIn.KeywordIds).GreaterThan(0);
-        //        });
-        //    }
-
-        //    private bool ParseAsDate(string dateString)
-        //    {
-        //        return DateTime.TryParseExact(
-        //            dateString,
-        //            DateStringFormat,
-        //            CultureInfo.InvariantCulture,
-        //            DateTimeStyles.None,
-        //            out var result);
-        //    }
-        //}
     }
 }

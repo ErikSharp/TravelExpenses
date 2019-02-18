@@ -36,5 +36,10 @@ export default {
           dispatch('showErrorMessage', error, { root: true })
         })
     }
+  },
+  getters: {
+    findCountry: state => id => {
+      return state.countries.find(c => c.id === id)
+    }
   }
 }

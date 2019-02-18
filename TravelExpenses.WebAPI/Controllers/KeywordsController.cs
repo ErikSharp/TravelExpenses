@@ -17,7 +17,6 @@ namespace TravelExpenses.WebAPI.Controllers
     public class KeywordsController : ControllerBase
     {
         private readonly IMediator mediator;
-        private object k;
 
         public KeywordsController(IMediator mediator)
         {

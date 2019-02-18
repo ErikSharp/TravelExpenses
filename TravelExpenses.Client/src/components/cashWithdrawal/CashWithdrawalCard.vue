@@ -29,6 +29,10 @@
               <strong>Currency:</strong>
               {{ getCurrencyString(cashWithdrawal.currencyId) }}
             </p>
+            <p>
+              <strong>Location:</strong>
+              {{ getLocationString(cashWithdrawal.locationId) }}
+            </p>
             <v-btn
               class="primary"
               v-if="cashWithdrawal.memo"
@@ -66,6 +70,22 @@ export default {
       let currency = this.$store.getters['Currency/findCurrency'](id)
       if (currency) {
         return `${currency.isoCode} - ${currency.currencyName}`
+      }
+
+      return ''
+    },
+    getLocationString(id) {
+      let location = this.$store.getters['Location/findLocation'](id)
+      if (location) {
+        let country = this.$store.getters['Country/findCountry'](
+          location.countryId
+        )
+
+        if (country) {
+          return `${location.locationName} - ${country.countryName}`
+        } else {
+          return location.locationName
+        }
       }
 
       return ''

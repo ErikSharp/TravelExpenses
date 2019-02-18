@@ -10,6 +10,7 @@ namespace TravelExpenses.Application.Common.Dtos.Import
         public string TransDate { get; set; }
         public decimal Amount { get; set; }
         public int CurrencyId { get; set; }
+        public int LocationId { get; set; }
         public string Memo { get; set; }
     }
 }

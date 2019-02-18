@@ -90,5 +90,10 @@ export default {
           commit('SET_EDIT_LOCATION_BUSY', false)
         })
     }
+  },
+  getters: {
+    findLocation: state => id => {
+      return state.locations.find(l => l.id === id)
+    }
   }
 }

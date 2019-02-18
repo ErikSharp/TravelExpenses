@@ -14,5 +14,6 @@ namespace TravelExpenses.Domain.Entities
         public User User { get; set; }
 
         public ICollection<Transaction> Transactions { get; private set; }
+        public ICollection<CashWithdrawal> CashWithdrawals { get; set; }
     }
 }
