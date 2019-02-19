@@ -294,7 +294,10 @@ export default {
   },
   methods: {
     getLocationString(locationObj) {
-      const country = this.countries.find(c => c.id === locationObj.countryId)
+      const country = this.$store.getters['Country/findCountry'](
+        locationObj.countryId
+      )
+
       if (country) {
         return `${locationObj.locationName}, ${country.countryName}`
       } else {
@@ -383,9 +386,6 @@ export default {
     },
     locations() {
       return sortBy(this.$store.state.Location.locations, l => l.locationName)
-    },
-    countries() {
-      return sortBy(this.$store.state.Country.countries, c => c.countryName)
     },
     keywords() {
       return sortBy(this.$store.state.Keyword.keywords, k => k.keywordName)
