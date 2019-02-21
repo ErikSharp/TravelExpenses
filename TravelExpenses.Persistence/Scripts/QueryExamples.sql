@@ -12,3 +12,16 @@ inner join app.[Currency] c on t.CurrencyId = c.Id
 where t.UserId = 1029 and t.CategoryId in (1351, 1348, 1353, 1354, 1347, 1346, 1352)
 group by l.LocationName, c.CurrencyName
 order by l.LocationName, DaysDuration desc
+
+-- This is the actual one that we would use on the server
+select 
+	l.Id as LocationId, 
+	c.Id as CurrencyId, 
+	SUM(t.Amount) as Total, 
+	MIN(t.TransDate) as MinTransDate,
+	MAX(t.TransDate) as MaxTransDate
+from app.[Transaction] t
+inner join app.[Location] l on t.LocationId = l.Id
+inner join app.[Currency] c on t.CurrencyId = c.Id
+where t.UserId = 1029 and t.CategoryId in (1351, 1348, 1353, 1354, 1347, 1346, 1352)
+group by l.Id, c.Id
