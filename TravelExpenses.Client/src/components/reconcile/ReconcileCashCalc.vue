@@ -42,14 +42,14 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
-      <template slot="item" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
+      <template slot="selection" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
+      <template slot="item" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
     </v-select>
-    <enter-amount currencyString="MXN" />
+    <enter-amount :currency="currency" />
     <v-btn @click="navToSummary">Done</v-btn>
   </div>
 </template>

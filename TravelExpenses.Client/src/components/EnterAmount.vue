@@ -1,45 +1,130 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
-    <v-btn slot="activator" flat class="primary my-3">Enter Amount</v-btn>
+    <v-btn slot="activator" flat class="primary my-3">{{ buttonText }}</v-btn>
     <v-card>
       <v-card-title>
-        User the calculator below to enter the amount{{
-          currencyString ? ` of ${currencyString} on-hand` : ''
-        }}
+        <p
+          v-html="
+            `Use the calculator below to enter the amount${
+              currency
+                ? ` of <strong>${currency.isoCode}</strong> - ${
+                    currency.currencyName
+                  } on-hand`
+                : ''
+            }`
+          "
+        ></p>
       </v-card-title>
       <v-container grid-list-md class="pt-0">
         <v-text-field
           class="readout font-weight-bold"
           readonly
           solo
-          value="Erik"
+          :value="readout"
         ></v-text-field>
         <v-layout row wrap>
           <v-flex xs4 v-for="n in 12" :key="n">
-            <v-btn large round class="input px-0 font-weight-bold display-1">{{
-              getKeyString(n)
-            }}</v-btn>
+            <v-btn
+              large
+              round
+              :disabled="buttonDisabled(n)"
+              @click="onKeyPress(n)"
+              class="input px-0 font-weight-bold display-1"
+              >{{ getKeyString(n) }}</v-btn
+            >
           </v-flex>
         </v-layout>
       </v-container>
       <v-card-actions>
-        <v-btn color="primary" @click="dialog = false">CLOSE</v-btn>
+        <v-btn @click="onBackspaceClick()">
+          <v-icon>backspace</v-icon>
+        </v-btn>
+        <v-btn color="primary" @click="enter()">ENTER</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import sum from 'lodash/sum'
+import round from 'lodash/round'
+
 export default {
   props: {
-    currencyString: String
+    currency: Object
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      inInt: true,
+      hasValue: false,
+      readout: '',
+      buttonText: 'Enter Amount'
     }
   },
   methods: {
+    enter() {
+      if (this.readout) {
+        this.evaluateAndEmitResult()
+      }
+
+      this.dialog = false
+    },
+    evaluateAndEmitResult() {
+      let numbers = []
+      let numberString = ''
+      for (let i = 0; i < this.readout.length; i++) {
+        let char = this.readout.charAt(i)
+
+        if (char === '+') {
+          numbers.push(+numberString)
+          numberString = ''
+        } else {
+          numberString += char
+        }
+      }
+
+      if (numberString) {
+        numbers.push(+numberString)
+      }
+
+      if (numbers.length) {
+        this.buttonText = round(sum(numbers), 3)
+      }
+    },
+    onKeyPress(index) {
+      const key = this.getKeyString(index)
+      this.readout += key
+      this.evaluateReadout()
+    },
+    evaluateReadout() {
+      let inInt = true
+      let hasValue = false
+
+      for (let i = 0; i < this.readout.length; i++) {
+        let char = this.readout.charAt(i)
+        hasValue = true
+
+        switch (char) {
+          case '.':
+            inInt = false
+            break
+          case '+':
+            inInt = true
+            hasValue = false
+            break
+          default:
+            break
+        }
+      }
+
+      this.inInt = inInt
+      this.hasValue = hasValue
+    },
+    onBackspaceClick() {
+      this.readout = this.readout.substring(0, this.readout.length - 1)
+      this.evaluateReadout()
+    },
     getKeyString(index) {
       switch (index) {
         case 1:
@@ -67,6 +152,21 @@ export default {
         case 12:
           return '.'
       }
+    },
+    buttonDisabled(index) {
+      const key = this.getKeyString(index)
+      let result = false
+
+      switch (key) {
+        case '.':
+          result = !this.inInt
+          break
+        case '+':
+          result = !this.hasValue
+          break
+      }
+
+      return result
     }
   }
 }
