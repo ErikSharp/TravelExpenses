@@ -94,7 +94,13 @@ export default {
     },
     onKeyPress(index) {
       const key = this.getKeyString(index)
-      this.readout += key
+
+      if (key === '+') {
+        this.readout += ' + '
+      } else {
+        this.readout += key
+      }
+
       this.evaluateReadout()
     },
     evaluateReadout() {
@@ -122,7 +128,14 @@ export default {
       this.hasValue = hasValue
     },
     onBackspaceClick() {
-      this.readout = this.readout.substring(0, this.readout.length - 1)
+      if (
+        this.readout.substring(this.readout.length - 1, this.readout.length) ===
+        ' '
+      ) {
+        this.readout = this.readout.substring(0, this.readout.length - 3)
+      } else {
+        this.readout = this.readout.substring(0, this.readout.length - 1)
+      }
       this.evaluateReadout()
     },
     getKeyString(index) {
