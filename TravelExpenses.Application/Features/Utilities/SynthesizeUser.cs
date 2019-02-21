@@ -187,6 +187,7 @@ namespace TravelExpenses.Application.Features.Utilities
                         TransDate = DateTime.Today.AddDays(dayCounter).ToString("yyyy-MM-dd"),
                         Amount = rand.Next(1, 10) * 100,
                         CurrencyId = currencyIds.OrderBy(c => Guid.NewGuid()).First(),
+                        LocationId = locations.OrderBy(l => Guid.NewGuid()).First().Id,
                         Memo = OneIn(4) ? ipsum.Substring(0, (int)(ipsum.Length * rand.NextDouble())) : null,
                         UserId = userId
                     };
