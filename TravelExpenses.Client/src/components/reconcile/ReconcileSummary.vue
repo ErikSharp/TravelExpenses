@@ -17,7 +17,7 @@
             <h3 class="text-xs-right">
               {{
                 reconcileSummary.totalWithdrawn
-                  ? reconcileSummary.totalWithdrawn.toLocaleString()
+                  ? formatNumber(reconcileSummary.totalWithdrawn)
                   : ''
               }}
             </h3>
@@ -31,7 +31,7 @@
             <h3>
               {{
                 reconcileSummary.totalSpent
-                  ? reconcileSummary.totalSpent.toLocaleString()
+                  ? formatNumber(reconcileSummary.totalSpent)
                   : ''
               }}
             </h3>
@@ -42,7 +42,7 @@
             <h3>Cash on-hand should be:</h3>
           </v-flex>
           <v-flex shrink>
-            <h3>{{ shouldBe.toLocaleString() }}</h3>
+            <h3>{{ formatNumber(shouldBe) }}</h3>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -50,7 +50,7 @@
             <h3>Cash on-hand actual:</h3>
           </v-flex>
           <v-flex shrink>
-            <h3>{{ cashOnHand.toLocaleString() }}</h3>
+            <h3>{{ formatNumber(cashOnHand) }}</h3>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -59,7 +59,7 @@
           </v-flex>
           <v-flex shrink>
             <h3 :class="{ 'red--text': difference !== 0 }">
-              {{ difference.toLocaleString() }}
+              {{ formatNumber(difference) }}
             </h3>
           </v-flex>
         </v-layout>
@@ -80,16 +80,16 @@
           <v-layout row align-center>
             <h3 class="red--text mr-2" style="display: inline">
               {{
-                `You ${difference > 0 ? 'have' : 'are'} ${Math.abs(
+                `You ${difference > 0 ? 'have' : 'are'} formatNumber(${Math.abs(
                   difference
-                ).toLocaleString()} ${currencyObj.isoCode} ${
+                )}) ${currencyObj.isoCode} ${
                   difference > 0 ? 'too much' : 'short'
                 }`
               }}
             </h3>
-            <v-icon large color="red">{{
-              difference > 0 ? 'trending_up' : 'trending_down'
-            }}</v-icon>
+            <v-icon large color="red">
+              {{ difference > 0 ? 'trending_up' : 'trending_down' }}
+            </v-icon>
           </v-layout>
         </div>
       </v-card-text>
@@ -106,6 +106,7 @@
 import Windows from '@/common/enums/ReconcileWindows.js'
 import { mapState } from 'vuex'
 import round from 'lodash/round'
+import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 
 export default {
   methods: {
@@ -114,6 +115,9 @@ export default {
         'Reconcile/setReconcileWindowId',
         Windows.investigation
       )
+    },
+    formatNumber(numValue) {
+      return toLocaleStringWithEndingZero(numValue)
     }
   },
   computed: {
