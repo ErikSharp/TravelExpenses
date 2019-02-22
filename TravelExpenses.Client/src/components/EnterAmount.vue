@@ -1,6 +1,12 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
-    <v-btn slot="activator" flat class="primary my-3">{{ buttonText }}</v-btn>
+    <v-btn
+      slot="activator"
+      flat
+      class="primary my-0"
+      :class="{ title: buttonText !== 'ENTER AMOUNT' }"
+      >{{ buttonText }}</v-btn
+    >
     <v-card>
       <v-card-title>
         <p
@@ -39,7 +45,7 @@
         <v-btn @click="onBackspaceClick()">
           <v-icon>backspace</v-icon>
         </v-btn>
-        <v-btn color="primary" @click="enter()">ENTER</v-btn>
+        <v-btn dark color="primary" @click="enter()">ENTER</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -59,7 +65,7 @@ export default {
       inInt: true,
       hasValue: false,
       readout: '',
-      buttonText: 'Enter Amount'
+      buttonText: 'ENTER AMOUNT'
     }
   },
   methods: {
@@ -89,7 +95,7 @@ export default {
       }
 
       if (numbers.length) {
-        this.buttonText = round(sum(numbers), 3)
+        this.buttonText = round(sum(numbers), 3).toLocaleString()
       }
     },
     onKeyPress(index) {

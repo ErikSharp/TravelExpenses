@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="white--text">Cash calculator</h3>
+    <h3 class="white--text mb-2">Cash calculator</h3>
     <v-select
       :items="currencies"
       v-model="currency"
@@ -42,15 +42,20 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{
-        getLocationString(data.item)
-      }}</template>
-      <template slot="item" slot-scope="data">{{
-        getLocationString(data.item)
-      }}</template>
+      <template slot="selection" slot-scope="data">
+        {{ getLocationString(data.item) }}
+      </template>
+      <template slot="item" slot-scope="data">
+        {{ getLocationString(data.item) }}
+      </template>
     </v-select>
-    <enter-amount :currency="currency" />
-    <v-btn @click="navToSummary">Done</v-btn>
+    <v-layout justify-end align-center>
+      <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
+      <enter-amount :currency="currency" />
+    </v-layout>
+    <v-layout justify-center>
+      <v-btn @click="navToSummary" class="primary mt-5">RECONCILE</v-btn>
+    </v-layout>
   </div>
 </template>
 
