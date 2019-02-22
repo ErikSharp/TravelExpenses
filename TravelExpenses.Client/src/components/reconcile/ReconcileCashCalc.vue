@@ -42,12 +42,12 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{
-        getLocationString(data.item)
-      }}</template>
-      <template slot="item" slot-scope="data">{{
-        getLocationString(data.item)
-      }}</template>
+      <template slot="selection" slot-scope="data">
+        {{ getLocationString(data.item) }}
+      </template>
+      <template slot="item" slot-scope="data">
+        {{ getLocationString(data.item) }}
+      </template>
     </v-select>
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
@@ -72,7 +72,7 @@
 <script>
 import Windows from '@/common/enums/ReconcileWindows.js'
 import EnterAmount from '@/components/EnterAmount.vue'
-import { required, minValue, numeric } from 'vuelidate/lib/validators'
+import { required, minValue } from 'vuelidate/lib/validators'
 import sortBy from 'lodash/sortBy'
 import { mapState } from 'vuex'
 
@@ -89,7 +89,6 @@ export default {
         required
       },
       cashOnHand: {
-        numeric,
         minValue: minValue(0.001)
       }
     }

@@ -98,7 +98,7 @@ export default {
       locationId,
       currencyId
     }
-    console.log(payload)
+
     return apiClient.put('api/reconcile/currency-totals', payload)
   }
 }
