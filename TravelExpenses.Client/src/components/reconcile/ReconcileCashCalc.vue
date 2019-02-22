@@ -42,19 +42,29 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
-      <template slot="item" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
+      <template slot="selection" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
+      <template slot="item" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
     </v-select>
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
-      <enter-amount :currency="currency" />
+      <enter-amount
+        :currency="currency"
+        @amountEntered="onAmountEntered($event)"
+      />
     </v-layout>
     <v-layout justify-center>
-      <v-btn @click="navToSummary" class="primary mt-5">RECONCILE</v-btn>
+      <v-btn
+        @click="beginReconcile"
+        :loading="reconcileBusy"
+        :disabled="$v.$invalid"
+        dark
+        class="primary mt-5"
+        >RECONCILE</v-btn
+      >
     </v-layout>
   </div>
 </template>
@@ -62,18 +72,13 @@
 <script>
 import Windows from '@/common/enums/ReconcileWindows.js'
 import EnterAmount from '@/components/EnterAmount.vue'
-import { required } from 'vuelidate/lib/validators'
+import { required, minValue, numeric } from 'vuelidate/lib/validators'
 import sortBy from 'lodash/sortBy'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     EnterAmount
-  },
-  data() {
-    return {
-      currency: {},
-      location: {}
-    }
   },
   validations() {
     const result = {
@@ -82,14 +87,23 @@ export default {
       },
       location: {
         required
+      },
+      cashOnHand: {
+        numeric,
+        minValue: minValue(0.001)
       }
     }
 
     return result
   },
   methods: {
-    navToSummary() {
-      this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
+    onAmountEntered(amount) {
+      this.$store.dispatch('Reconcile/setCashOnHand', amount)
+    },
+    beginReconcile() {
+      this.$store.dispatch('Reconcile/getReconcileSummary', () => {
+        this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
+      })
     },
     getLocationString(locationObj) {
       const country = this.$store.getters['Country/findCountry'](
@@ -104,6 +118,8 @@ export default {
     }
   },
   computed: {
+    ...mapState('Currency', ['currencies']),
+    ...mapState('Reconcile', ['cashOnHand', 'reconcileBusy']),
     currencyErrors() {
       const errors = []
 
@@ -120,8 +136,33 @@ export default {
       !this.$v.location.required && errors.push('A location is required')
       return errors
     },
-    currencies() {
-      return this.$store.state.Currency.currencies
+    cashOnHandErrors() {
+      const errors = []
+
+      if (!this.$v.cashOnHand.$dirty) return errors
+
+      !this.$v.cashOnHand.numeric && errors.push('The amount must be numeric')
+
+      !this.$v.cashOnHand.minValue &&
+        errors.push('The amount must be greater than zero')
+
+      return errors
+    },
+    currency: {
+      get() {
+        return this.$store.state.Reconcile.currency
+      },
+      set(value) {
+        this.$store.dispatch('Reconcile/setCurrency', value)
+      }
+    },
+    location: {
+      get() {
+        return this.$store.state.Reconcile.location
+      },
+      set(value) {
+        this.$store.dispatch('Reconcile/setLocation', value)
+      }
     },
     locations() {
       return sortBy(this.$store.state.Location.locations, l => l.locationName)

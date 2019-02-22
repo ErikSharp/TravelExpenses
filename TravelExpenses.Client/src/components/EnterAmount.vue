@@ -95,7 +95,9 @@ export default {
       }
 
       if (numbers.length) {
-        this.buttonText = round(sum(numbers), 3).toLocaleString()
+        let result = round(sum(numbers), 3)
+        this.buttonText = result.toLocaleString()
+        this.$emit('amountEntered', result)
       }
     },
     onKeyPress(index) {
