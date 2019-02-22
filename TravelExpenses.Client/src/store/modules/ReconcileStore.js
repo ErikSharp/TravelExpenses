@@ -1,4 +1,4 @@
-import { timeout } from 'q'
+import AxiosService from '@/services/AxiosService.js'
 
 function initialState() {
   return {
@@ -6,7 +6,8 @@ function initialState() {
     cashOnHand: 0,
     reconcileBusy: false,
     currency: {},
-    location: {}
+    location: {},
+    reconcileSummary: {}
   }
 }
 
@@ -49,11 +50,26 @@ export default {
     setCashOnHand({ commit }, amount) {
       commit('SET_CASH_ON_HAND', amount)
     },
-    getReconcileSummary({ commit }, callback) {
+    getReconcileSummary({ dispatch, commit, state }, callback) {
       commit('SET_RECONCILE_BUSY', true)
-      setTimeout(() => {
-        callback()
-      }, 3000)
+
+      return AxiosService.getReconcileSummary(
+        state.locationId,
+        state.currencyId,
+        state.cashOnHand
+      )
+        .then(response => {
+          state.reconcileSummary = response.data
+
+          //only go forward if we got data back
+          callback()
+        })
+        .catch(error => {
+          dispatch('showErrorMessage', error, { root: true })
+        })
+        .then(() => {
+          commit('SET_RECONCILE_BUSY', false)
+        })
     }
   }
 }
