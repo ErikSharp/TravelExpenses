@@ -11,7 +11,7 @@
         <v-divider class="mb-3"></v-divider>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `Total ${currencyObj.currencyName} withdrawn:` }}</h3>
+            <h3>{{ `${currencyObj.currencyName} withdrawn:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3 class="text-xs-right">
@@ -25,7 +25,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `Total ${currencyObj.currencyName} spent:` }}</h3>
+            <h3>{{ `${currencyObj.currencyName} spent:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3>
@@ -39,7 +39,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>Cash on-hand should be:</h3>
+            <h3>Cash expected:</h3>
           </v-flex>
           <v-flex shrink>
             <h3>{{ formatNumber(shouldBe) }}</h3>
@@ -47,7 +47,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>Cash on-hand actual:</h3>
+            <h3>Cash actual:</h3>
           </v-flex>
           <v-flex shrink>
             <h3>{{ formatNumber(cashOnHand) }}</h3>
@@ -87,9 +87,9 @@
                 }`
               }}
             </h3>
-            <v-icon large color="red">{{
-              difference > 0 ? 'trending_up' : 'trending_down'
-            }}</v-icon>
+            <v-icon large color="red">
+              {{ difference > 0 ? 'trending_up' : 'trending_down' }}
+            </v-icon>
           </v-layout>
         </div>
       </v-card-text>
