@@ -35,6 +35,9 @@ export default {
     },
     SET_LOCATION(state, location) {
       state.location = location
+    },
+    SET_RECONCILE_SUMMARY(state, summary) {
+      state.reconcileSummary = summary
     }
   },
   actions: {
@@ -54,12 +57,11 @@ export default {
       commit('SET_RECONCILE_BUSY', true)
 
       return AxiosService.getReconcileSummary(
-        state.locationId,
-        state.currencyId,
-        state.cashOnHand
+        state.location.id,
+        state.currency.id
       )
         .then(response => {
-          state.reconcileSummary = response.data
+          commit('SET_RECONCILE_SUMMARY', response.data)
 
           //only go forward if we got data back
           callback()

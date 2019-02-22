@@ -23,7 +23,7 @@ namespace TravelExpenses.WebAPI.Controllers
             this.mediator = mediator;
         }
 
-        [HttpGet("currency-totals")]
+        [HttpPut("currency-totals")]
         public async Task<IActionResult> GetCurrencyTotals(
             [FromHeader(Name = "Authorization")]string token,
             [FromBody]CurrencyTotalsRequest request)

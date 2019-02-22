@@ -93,11 +93,12 @@ export default {
   editLocation(location) {
     return apiClient.put('api/locations', location)
   },
-  getReconcileSummary(locationId, currencyId, cashOnHand) {
-    return apiClient.get('api/reconcile', {
+  getReconcileSummary(locationId, currencyId) {
+    const payload = {
       locationId,
-      currencyId,
-      cashOnHand
-    })
+      currencyId
+    }
+    console.log(payload)
+    return apiClient.put('api/reconcile/currency-totals', payload)
   }
 }
