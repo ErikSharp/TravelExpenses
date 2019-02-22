@@ -80,16 +80,16 @@
           <v-layout row align-center>
             <h3 class="red--text mr-2" style="display: inline">
               {{
-                `You ${difference > 0 ? 'have' : 'are'} formatNumber(${Math.abs(
-                  difference
-                )}) ${currencyObj.isoCode} ${
+                `You ${difference > 0 ? 'have' : 'are'} ${formatNumber(
+                  Math.abs(difference)
+                )} ${currencyObj.isoCode} ${
                   difference > 0 ? 'too much' : 'short'
                 }`
               }}
             </h3>
-            <v-icon large color="red">
-              {{ difference > 0 ? 'trending_up' : 'trending_down' }}
-            </v-icon>
+            <v-icon large color="red">{{
+              difference > 0 ? 'trending_up' : 'trending_down'
+            }}</v-icon>
           </v-layout>
         </div>
       </v-card-text>
