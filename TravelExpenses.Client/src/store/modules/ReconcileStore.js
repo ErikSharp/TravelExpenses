@@ -61,10 +61,23 @@ export default {
         state.currency.id
       )
         .then(response => {
-          commit('SET_RECONCILE_SUMMARY', response.data)
+          if (!response.data.totalWithdrawn) {
+            dispatch(
+              'showSnackbar',
+              {
+                message: `There are no cash withdrawal records for ${
+                  state.location.locationName
+                } (${state.currency.currencyName})`,
+                color: 'red'
+              },
+              { root: true }
+            )
+          } else {
+            commit('SET_RECONCILE_SUMMARY', response.data)
 
-          //only go forward if we got data back
-          callback()
+            //only go forward if we got data back
+            callback()
+          }
         })
         .catch(error => {
           dispatch('showErrorMessage', error, { root: true })
