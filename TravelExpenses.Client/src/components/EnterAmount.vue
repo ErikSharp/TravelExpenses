@@ -21,7 +21,7 @@
           "
         ></p>
       </v-card-title>
-      <v-container grid-list-md class="pt-0">
+      <v-container grid-list-md class="pt-0 pb-2">
         <v-text-field
           class="readout font-weight-bold"
           readonly
@@ -42,10 +42,16 @@
         </v-layout>
       </v-container>
       <v-card-actions>
-        <v-btn @click="onBackspaceClick()">
-          <v-icon>backspace</v-icon>
-        </v-btn>
-        <v-btn dark color="primary" @click="enter()">ENTER</v-btn>
+        <v-layout justify-center>
+          <div>
+            <v-btn @click="onBackspaceClick()" class="mr-3">
+              <v-icon>backspace</v-icon>
+            </v-btn>
+            <v-btn dark color="primary" @click="enter()" class="ml-3"
+              >ENTER</v-btn
+            >
+          </div>
+        </v-layout>
       </v-card-actions>
     </v-card>
   </v-dialog>
