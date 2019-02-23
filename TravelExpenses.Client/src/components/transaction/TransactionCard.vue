@@ -28,7 +28,7 @@
             <p>
               <strong>Amount:</strong>
               {{
-                `${transaction.amount.toLocaleString()} ${getCurrencyIsoString(
+                `${amountString} ${getCurrencyIsoString(
                   transaction.currencyId
                 )}`
               }}
@@ -47,6 +47,9 @@
 </template>
 
 <script>
+import { LossGain } from '@/common/constants/StringConstants.js'
+import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
+
 export default {
   props: {
     transaction: Object
@@ -97,6 +100,15 @@ export default {
       )
 
       switch (cat.categoryName) {
+        case LossGain:
+          if (transaction.amount > 0) {
+            this.iconColor = 'red'
+            this.icon = 'trending_down'
+          } else {
+            this.iconColor = 'green'
+            this.icon = 'trending_up'
+          }
+          break
         case 'Transportation':
           this.iconColor = 'indigo'
           this.icon = 'commute'
@@ -149,6 +161,9 @@ export default {
       return (
         this.$store.state.Transaction.selectedTransaction == this.transaction
       )
+    },
+    amountString() {
+      return toLocaleStringWithEndingZero(Math.abs(this.transaction.amount))
     }
   }
 }
