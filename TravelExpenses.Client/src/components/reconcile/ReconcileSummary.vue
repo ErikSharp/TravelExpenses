@@ -76,7 +76,7 @@
           </v-flex>
         </v-layout>
         <v-divider class="my-3"></v-divider>
-        <div v-if="difference === 0">
+        <div v-if="numbersMatch">
           <h3>You cash on-hand is correct.</h3>
           <h2 class="green--text">Reconciliation complete</h2>
         </div>
@@ -89,14 +89,14 @@
                 )} ${currencyObj.isoCode} ${haveNetGain ? 'too much' : 'short'}`
               }}
             </h3>
-            <v-icon large color="red">
-              {{ haveNetGain ? 'trending_up' : 'trending_down' }}
-            </v-icon>
+            <v-icon large color="red">{{
+              haveNetGain ? 'trending_up' : 'trending_down'
+            }}</v-icon>
           </v-layout>
         </div>
       </v-card-text>
     </v-card>
-    <v-layout v-if="difference !== 0" row justify-center>
+    <v-layout v-if="!numbersMatch" row justify-center>
       <v-btn dark color="primary" class="mt-3" @click="navToInvestigation"
         >Investigate</v-btn
       >
@@ -149,6 +149,11 @@ export default {
     },
     haveNetGain() {
       return this.difference + this.reconcileSummary.totalLossGain > 0
+    },
+    numbersMatch() {
+      return (
+        round(this.difference + this.reconcileSummary.totalLossGain, 3) === 0
+      )
     }
   }
 }
