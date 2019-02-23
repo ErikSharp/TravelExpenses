@@ -65,10 +65,16 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>Accounted for loss / gain:</h3>
+            <h3>
+              {{
+                `Accounted for ${
+                  reconcileSummary.totalLossGain > 0 ? 'loss' : 'gain'
+                }:`
+              }}
+            </h3>
           </v-flex>
           <v-flex shrink>
-            <h3>todo</h3>
+            <h3>{{ formatNumber(reconcileSummary.totalLossGain * -1) }}</h3>
           </v-flex>
         </v-layout>
         <v-divider class="my-3"></v-divider>
@@ -80,15 +86,13 @@
           <v-layout row align-center>
             <h3 class="red--text mr-2" style="display: inline">
               {{
-                `You ${difference > 0 ? 'have' : 'are'} ${formatNumber(
-                  Math.abs(difference)
-                )} ${currencyObj.isoCode} ${
-                  difference > 0 ? 'too much' : 'short'
-                }`
+                `You ${haveNetGain ? 'have' : 'are'} ${formatNumber(
+                  Math.abs(difference - reconcileSummary.totalLossGain)
+                )} ${currencyObj.isoCode} ${haveNetGain ? 'too much' : 'short'}`
               }}
             </h3>
             <v-icon large color="red">
-              {{ difference > 0 ? 'trending_up' : 'trending_down' }}
+              {{ haveNetGain ? 'trending_up' : 'trending_down' }}
             </v-icon>
           </v-layout>
         </div>
@@ -144,6 +148,9 @@ export default {
     },
     difference() {
       return round(this.cashOnHand - this.shouldBe, 3)
+    },
+    haveNetGain() {
+      return this.difference - this.reconcileSummary.totalLossGain > 0
     }
   }
 }
