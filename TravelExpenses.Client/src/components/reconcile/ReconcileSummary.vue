@@ -91,16 +91,22 @@
         </div>
         <div v-else>
           <v-layout row align-center>
-            <h3 class="red--text mr-2" style="display: inline">
-              {{
-                `You ${haveNetGain ? 'have' : 'are'} ${formatNumber(
-                  Math.abs(difference + reconcileSummary.totalLossGain)
-                )} ${currencyObj.isoCode} ${haveNetGain ? 'too much' : 'short'}`
-              }}
-            </h3>
-            <v-icon large color="red">
-              {{ haveNetGain ? 'trending_up' : 'trending_down' }}
-            </v-icon>
+            <v-flex grow>
+              <h3 class="red--text mr-2" style="display: inline">
+                {{
+                  `You ${haveNetGain ? 'have' : 'are'} ${formatNumber(
+                    Math.abs(difference + reconcileSummary.totalLossGain)
+                  )} ${currencyObj.isoCode} ${
+                    haveNetGain ? 'too much' : 'short'
+                  }`
+                }}
+              </h3>
+            </v-flex>
+            <v-flex shrink>
+              <v-icon large color="red">{{
+                haveNetGain ? 'trending_up' : 'trending_down'
+              }}</v-icon>
+            </v-flex>
           </v-layout>
         </div>
       </v-card-text>
