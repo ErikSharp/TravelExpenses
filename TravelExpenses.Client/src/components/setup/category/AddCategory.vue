@@ -29,10 +29,15 @@
 
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { LossGain } from '@/common/constants/StringConstants.js'
 
 const categoryMustBeUnique = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.categoryName.toLowerCase())
   return itemsLowered.indexOf(value.toLowerCase()) < 0
+}
+
+const categoryMustNotBeLossGain = value => {
+  return value.toLowerCase() !== LossGain.toLowerCase()
 }
 
 export default {
@@ -42,7 +47,8 @@ export default {
         required,
         minLength: minLength(3),
         maxLength: maxLength(255),
-        categoryMustBeUnique
+        categoryMustBeUnique,
+        categoryMustNotBeLossGain
       }
     }
 
@@ -81,6 +87,8 @@ export default {
         )
       !this.$v.category.categoryMustBeUnique &&
         errors.push('The category must be unique')
+      !this.$v.category.categoryMustNotBeLossGain &&
+        errors.push(`The category name must not be ${LossGain}`)
 
       !this.$v.category.required && errors.push('A category is required')
       return errors
