@@ -68,9 +68,6 @@ namespace TravelExpenses.Application.Features.Categories
                 public CategoryValidator()
                 {
                     RuleFor(c => c.CategoryName).NotEmpty().Length(3, 255);
-                    RuleFor(c => c.CategoryName)
-                        .Must(name => name.ToUpperInvariant() != "Loss/Gain".ToUpperInvariant())
-                        .WithMessage("The category must not be named 'Loss/Gain' in any case");
                 }
             }            
         }        
