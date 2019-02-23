@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,10 +53,21 @@ namespace TravelExpenses.Application.Features.Reconcile
                         t.CurrencyId == request.CurrencyId)
                     .Sum(t => t.Amount);
 
+                var totalLossGain = context.Transactions
+                    .Include(t => t.Category)
+                    .Where(t =>
+                        t.UserId == query.UserId &&
+                        t.LocationId == request.LocationId &&
+                        t.CurrencyId == request.CurrencyId &&
+                        t.Category.CategoryName.ToUpperInvariant() == "Loss/Gain".ToUpperInvariant() &&
+                        t.PaidWithCash)
+                    .Sum(t => t.Amount);
+
                 return Task.FromResult(new CurrencyTotals
                 {
                     TotalSpent = totalSpent,
-                    TotalWithdrawn = totalWithdrawn
+                    TotalWithdrawn = totalWithdrawn,
+                    TotalLossGain = totalLossGain
                 });
             }
         }
