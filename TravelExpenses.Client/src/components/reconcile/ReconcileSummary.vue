@@ -58,9 +58,7 @@
             <h3>Difference:</h3>
           </v-flex>
           <v-flex shrink>
-            <h3 :class="{ 'red--text': difference !== 0 }">
-              {{ formatNumber(difference) }}
-            </h3>
+            <h3>{{ formatNumber(difference) }}</h3>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -87,7 +85,7 @@
             <h3 class="red--text mr-2" style="display: inline">
               {{
                 `You ${haveNetGain ? 'have' : 'are'} ${formatNumber(
-                  Math.abs(difference - reconcileSummary.totalLossGain)
+                  Math.abs(difference + reconcileSummary.totalLossGain)
                 )} ${currencyObj.isoCode} ${haveNetGain ? 'too much' : 'short'}`
               }}
             </h3>
@@ -150,7 +148,7 @@ export default {
       return round(this.cashOnHand - this.shouldBe, 3)
     },
     haveNetGain() {
-      return this.difference - this.reconcileSummary.totalLossGain > 0
+      return this.difference + this.reconcileSummary.totalLossGain > 0
     }
   }
 }
