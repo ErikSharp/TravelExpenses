@@ -36,9 +36,9 @@
             <p v-if="transaction.keywordIds.length" style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
-              {{ getKeywordName(id) }}
-            </v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
+              getKeywordName(id)
+            }}</v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -49,6 +49,7 @@
 <script>
 import { LossGain } from '@/common/constants/StringConstants.js'
 import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -95,9 +96,15 @@ export default {
       return ''
     },
     setIcon(transaction) {
-      let cat = this.$store.state.Category.categories.find(
-        c => c.id === transaction.categoryId
-      )
+      let cat = null
+
+      if (transaction.categoryId === this.lossGainCategory.id) {
+        cat = this.lossGainCategory
+      } else {
+        cat = this.$store.state.Category.categories.find(
+          c => c.id === transaction.categoryId
+        )
+      }
 
       switch (cat.categoryName) {
         case LossGain:
@@ -157,6 +164,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('Category', ['lossGainCategory']),
     transactionSelected() {
       return (
         this.$store.state.Transaction.selectedTransaction == this.transaction

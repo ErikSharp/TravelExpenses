@@ -1,10 +1,14 @@
 import AxiosService from '@/services/AxiosService.js'
+import { LossGain } from '@/common/constants/StringConstants.js'
+import remove from 'lodash/remove'
+
 function initialState() {
   return {
     busy: false,
     addCategoryBusy: false,
     editCategoryBusy: false,
     categories: [],
+    lossGainCategory: {},
     sampleCategories: [
       'Transportation',
       'Dining',
@@ -39,6 +43,16 @@ export default {
       state.editCategoryBusy = busy
     },
     SET_CATEGORIES(state, categories) {
+      state.lossGainCategory = categories.find(c => c.categoryName === LossGain)
+
+      remove(categories, c => {
+        if (c) {
+          return c.categoryName === LossGain
+        } else {
+          return false
+        }
+      })
+
       state.categories = categories
     }
   },
