@@ -70,7 +70,8 @@ namespace TravelExpenses.Application.Features.Utilities
                     "Medical",
                     "Fees",
                     "Deposit",
-                    "Non-trip"
+                    "Non-trip",
+                    "Loss/Gain"
                 };
 
                 var categories = await mediator.Send(new CreateCategory.Query(
