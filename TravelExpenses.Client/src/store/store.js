@@ -64,17 +64,29 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setHomeView({ dispatch, commit }, view) {
+    setHomeView({ dispatch, commit, state }, view) {
+      //check where you've been
+      switch (state.homeView) {
+        case HomeViews.Reconcile:
+          commit('Reconcile/RESET')
+          break
+        case HomeViews.Setup:
+          dispatch('SetupData/setSetupWindow', SetupWindows.navigation)
+          break
+      }
+
       commit('SET_HOME_VIEW', view)
+
+      //check where you are going
       switch (view) {
         case HomeViews.Transactions:
           dispatch('setTitle', 'Recent Transactions')
-          dispatch('SetupData/setSetupWindow', SetupWindows.navigation)
           break
         default:
           dispatch('setTitle', firstLetterUpper(view))
           break
       }
+
       Router.push({ name: view })
     },
     setTitle({ commit }, title) {
