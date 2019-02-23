@@ -60,19 +60,18 @@
 <script>
 import sum from 'lodash/sum'
 import round from 'lodash/round'
-import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 
 export default {
   props: {
-    currency: Object
+    currency: Object,
+    buttonText: String
   },
   data() {
     return {
       dialog: false,
       inInt: true,
       hasValue: false,
-      readout: '',
-      buttonText: 'ENTER AMOUNT'
+      readout: ''
     }
   },
   methods: {
@@ -103,7 +102,6 @@ export default {
 
       if (numbers.length) {
         let result = round(sum(numbers), 3)
-        this.buttonText = toLocaleStringWithEndingZero(result)
         this.$emit('amountEntered', result)
       }
     },

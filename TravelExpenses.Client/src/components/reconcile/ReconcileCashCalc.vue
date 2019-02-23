@@ -42,17 +42,18 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
-      <template slot="item" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
+      <template slot="selection" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
+      <template slot="item" slot-scope="data">{{
+        getLocationString(data.item)
+      }}</template>
     </v-select>
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
       <enter-amount
         :currency="currency"
+        :buttonText="getAmountButtonText"
         @amountEntered="onAmountEntered($event)"
       />
     </v-layout>
@@ -71,6 +72,7 @@
 
 <script>
 import Windows from '@/common/enums/ReconcileWindows.js'
+import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 import EnterAmount from '@/components/EnterAmount.vue'
 import { required, minValue } from 'vuelidate/lib/validators'
 import sortBy from 'lodash/sortBy'
@@ -119,6 +121,11 @@ export default {
   computed: {
     ...mapState('Currency', ['currencies']),
     ...mapState('Reconcile', ['cashOnHand', 'reconcileBusy']),
+    getAmountButtonText() {
+      return this.$store.state.Reconcile.cashOnHand
+        ? toLocaleStringWithEndingZero(this.$store.state.Reconcile.cashOnHand)
+        : 'ENTER AMOUNT'
+    },
     currencyErrors() {
       const errors = []
 
