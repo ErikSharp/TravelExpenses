@@ -61,6 +61,7 @@
 
 <script>
 import clone from 'lodash/clone'
+import { LossGain } from '@/common/constants/StringConstants.js'
 
 export default {
   created() {
@@ -73,6 +74,8 @@ export default {
   },
   methods: {
     next() {
+      this.chosenCategories.push(LossGain)
+
       this.$store
         .dispatch('Category/addCategories', this.chosenCategories)
         .then(() => {
