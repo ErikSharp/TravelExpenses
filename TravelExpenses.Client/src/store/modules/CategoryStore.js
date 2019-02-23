@@ -43,16 +43,11 @@ export default {
       state.editCategoryBusy = busy
     },
     SET_CATEGORIES(state, categories) {
-      state.lossGainCategory = categories.find(c => c.categoryName === LossGain)
-
-      remove(categories, c => {
-        if (c) {
-          return c.categoryName === LossGain
-        } else {
-          return false
-        }
+      let lossGains = remove(categories, c => {
+        return c && c.categoryName === LossGain
       })
 
+      state.lossGainCategory = lossGains[0]
       state.categories = categories
     }
   },
@@ -117,11 +112,6 @@ export default {
         .then(() => {
           commit('SET_EDIT_CATEGORY_BUSY', false)
         })
-    }
-  },
-  getters: {
-    findCategory: state => id => {
-      return state.categories.find(c => c.id === id)
     }
   }
 }

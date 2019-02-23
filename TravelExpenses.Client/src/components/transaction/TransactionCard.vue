@@ -36,9 +36,9 @@
             <p v-if="transaction.keywordIds.length" style="display: inline">
               <strong>Keywords:</strong>
             </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">{{
-              getKeywordName(id)
-            }}</v-chip>
+            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
+              {{ getKeywordName(id) }}
+            </v-chip>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -72,12 +72,16 @@ export default {
       )
     },
     getCategoryString(id) {
-      let category = this.$store.getters['Category/findCategory'](id)
+      let category = this.$store.state.Category.categories.find(
+        c => c.id === id
+      )
       if (category) {
         return category.categoryName
+      } else if (this.$store.state.Category.lossGainCategory.id === id) {
+        return this.$store.state.Category.lossGainCategory.categoryName
+      } else {
+        return 'unknown'
       }
-
-      return 'unknown'
     },
     getKeywordName(id) {
       let keyword = this.$store.getters['Keyword/findKeyword'](id)
@@ -98,7 +102,10 @@ export default {
     setIcon(transaction) {
       let cat = null
 
-      if (transaction.categoryId === this.lossGainCategory.id) {
+      if (
+        this.lossGainCategory &&
+        transaction.categoryId === this.lossGainCategory.id
+      ) {
         cat = this.lossGainCategory
       } else {
         cat = this.$store.state.Category.categories.find(
