@@ -78,7 +78,16 @@
         <v-divider class="my-3"></v-divider>
         <div v-if="numbersMatch">
           <h3>You cash on-hand is correct.</h3>
-          <h2 class="green--text">Reconciliation complete</h2>
+          <v-layout row>
+            <v-flex grow>
+              <h2 style="display: inline" class="green--text">
+                Reconciliation complete
+              </h2>
+            </v-flex>
+            <v-flex shrink>
+              <v-icon color="green">done_outline</v-icon>
+            </v-flex>
+          </v-layout>
         </div>
         <div v-else>
           <v-layout row align-center>
@@ -89,9 +98,9 @@
                 )} ${currencyObj.isoCode} ${haveNetGain ? 'too much' : 'short'}`
               }}
             </h3>
-            <v-icon large color="red">{{
-              haveNetGain ? 'trending_up' : 'trending_down'
-            }}</v-icon>
+            <v-icon large color="red">
+              {{ haveNetGain ? 'trending_up' : 'trending_down' }}
+            </v-icon>
           </v-layout>
         </div>
       </v-card-text>
