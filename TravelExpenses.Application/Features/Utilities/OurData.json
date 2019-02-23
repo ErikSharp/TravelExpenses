@@ -173,6 +173,11 @@
       "CategoryID": 11,
       "CategoryName": "Non-trip",
       "IncomeExpense": "Expense"
+    },
+    {
+      "CategoryID": 12,
+      "CategoryName": "Loss/Gain",
+      "IncomeExpense": "Expense"
     }
   ],
   "locations": [
