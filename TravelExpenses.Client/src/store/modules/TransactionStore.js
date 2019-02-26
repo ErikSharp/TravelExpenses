@@ -47,14 +47,14 @@ export default {
   },
   actions: {
     saveTransaction({ dispatch }, data) {
-      dispatch('innerSaveTransaction', {
+      return dispatch('innerSaveTransaction', {
         transaction: data.transaction,
         complete: data.complete,
         editing: false
       })
     },
     editTransaction({ dispatch }, data) {
-      dispatch('innerSaveTransaction', {
+      return dispatch('innerSaveTransaction', {
         transaction: data.transaction,
         complete: data.complete,
         editing: true

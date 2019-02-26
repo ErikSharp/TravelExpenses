@@ -5,9 +5,9 @@
         <v-layout row>
           <v-flex>
             <v-avatar class="mr-3" size="55" color="primary">
-              <v-icon dark large>{{
-                haveNetGain ? 'trending_up' : 'trending_down'
-              }}</v-icon>
+              <v-icon dark large>
+                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
+              </v-icon>
             </v-avatar>
           </v-flex>
           <v-flex>
@@ -28,6 +28,7 @@
         hide-details
         solo
         label="Enter a description."
+        :readonly="saved"
         auto-grow
         v-model="memo"
         @input="$v.memo.$touch()"
@@ -39,11 +40,16 @@
         class="mb-3"
         dark
         color="primary"
-        :disabled="$v.$invalid"
+        :disabled="$v.$invalid || saved"
+        :loading="saveTransactionBusy"
         @click="saveAdjustment"
         >Save</v-btn
       >
-      <v-btn dark color="primary" @click="returnToSummary"
+      <v-btn
+        dark
+        color="primary"
+        :disabled="saveTransactionBusy || saved"
+        @click="returnToSummary"
         >Return to Summary</v-btn
       >
     </v-layout>
@@ -51,21 +57,39 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
   data() {
     return {
-      memo: ''
+      memo: '',
+      saved: false
     }
   },
   methods: {
     saveAdjustment() {
-      this.$store.dispatch('showSnackbar', {
-        color: 'pink',
-        message: 'We have saved your adjustment'
-      })
+      let transactionToSave = {
+        title: `Recorded ${this.haveNetGain ? 'gain' : 'loss'} adjustment`,
+        transDate: this.reconcileSummary.lastTransactionDay,
+        amount: this.haveNetGain ? this.amountOut * -1 : this.amountOut,
+        locationId: this.location.id,
+        currencyId: this.currency.id,
+        categoryId: this.lossGainCategory.id,
+        memo: this.memo,
+        paidWithCash: true,
+        userId: this.userId
+      }
+
+      this.$store
+        .dispatch('Transaction/saveTransaction', {
+          transaction: transactionToSave,
+          complete: () => {}
+        })
+        .then(() => {
+          this.saved = true
+          this.$store.dispatch('showSaveMessage', 'Adjustment has been saved')
+        })
     },
     returnToSummary() {
       this.$emit('returnToSummary')
@@ -82,7 +106,11 @@ export default {
     return result
   },
   computed: {
-    ...mapGetters('Reconcile', ['haveNetGain', 'resultString'])
+    ...mapGetters('Reconcile', ['haveNetGain', 'resultString', 'amountOut']),
+    ...mapState('Reconcile', ['reconcileSummary', 'location', 'currency']),
+    ...mapState('Category', ['lossGainCategory']),
+    ...mapGetters('Authentication', ['userId']),
+    ...mapState('Transaction', ['saveTransactionBusy'])
   }
 }
 </script>

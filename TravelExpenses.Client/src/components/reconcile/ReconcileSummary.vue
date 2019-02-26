@@ -65,13 +65,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>
-              {{
-                `Accounted for ${
-                  reconcileSummary.totalLossGain > 0 ? 'loss' : 'gain'
-                }:`
-              }}
-            </h3>
+            <h3>Accounted for:</h3>
           </v-flex>
           <v-flex shrink>
             <h3>{{ formatNumber(reconcileSummary.totalLossGain * -1) }}</h3>
@@ -99,9 +93,9 @@
               </h3>
             </v-flex>
             <v-flex shrink>
-              <v-icon large color="red">{{
-                haveNetGain ? 'trending_up' : 'trending_down'
-              }}</v-icon>
+              <v-icon large color="red">
+                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
+              </v-icon>
             </v-flex>
           </v-layout>
         </div>

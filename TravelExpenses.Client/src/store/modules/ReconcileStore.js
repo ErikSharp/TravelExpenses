@@ -17,7 +17,8 @@ function initialState() {
     reconcileSummary: {
       totalSpent: 0,
       totalWithdrawn: 0,
-      totalLossGain: 0
+      totalLossGain: 0,
+      lastTransactionDay: ''
     }
   }
 }
@@ -108,10 +109,11 @@ export default {
     difference: (state, getters) => {
       return round(state.cashOnHand - getters.cashShouldBe, 3)
     },
+    amountOut: (state, getters) => {
+      return Math.abs(getters.difference + state.reconcileSummary.totalLossGain)
+    },
     amountOutString: (state, getters) => {
-      return toLocaleStringWithEndingZero(
-        Math.abs(getters.difference + state.reconcileSummary.totalLossGain)
-      )
+      return toLocaleStringWithEndingZero(getters.amountOut)
     },
     haveNetGain: (state, getters) => {
       return getters.difference + state.reconcileSummary.totalLossGain > 0

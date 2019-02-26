@@ -9,5 +9,6 @@ namespace TravelExpenses.Application.Common.Dtos
         public decimal TotalSpent { get; set; }
         public decimal TotalWithdrawn { get; set; }
         public decimal TotalLossGain { get; set; }
+        public string LastTransactionDay { get; set; }
     }
 }

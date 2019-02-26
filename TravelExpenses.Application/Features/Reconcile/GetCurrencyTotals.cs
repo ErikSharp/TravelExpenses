@@ -13,6 +13,8 @@ namespace TravelExpenses.Application.Features.Reconcile
 {
     public class GetCurrencyTotals
     {
+        public static readonly string DateStringFormat = "yyyy-MM-dd";
+
         public class Query : IRequest<CurrencyTotals>
         {
             public Query(CurrencyTotalsRequest request, int userId)
@@ -39,10 +41,12 @@ namespace TravelExpenses.Application.Features.Reconcile
                 var request = query.Request;
 
                 var totalSpent = context.Transactions
+                    .Include(t => t.Category)
                     .Where(t => 
                         t.UserId == query.UserId && 
                         t.LocationId == request.LocationId &&
                         t.CurrencyId == request.CurrencyId &&
+                        t.Category.CategoryName.ToUpperInvariant() != "Loss/Gain".ToUpperInvariant() &&
                         t.PaidWithCash)
                     .Sum(t => t.Amount);
 
@@ -63,11 +67,19 @@ namespace TravelExpenses.Application.Features.Reconcile
                         t.PaidWithCash)
                     .Sum(t => t.Amount);
 
+                var lastTransactionDay = context.Transactions
+                    .Where(t =>
+                        t.UserId == query.UserId &&
+                        t.LocationId == request.LocationId &&
+                        t.CurrencyId == request.CurrencyId)
+                    .Max(t => t.TransDate).ToString(DateStringFormat);
+
                 return Task.FromResult(new CurrencyTotals
                 {
                     TotalSpent = totalSpent,
                     TotalWithdrawn = totalWithdrawn,
-                    TotalLossGain = totalLossGain
+                    TotalLossGain = totalLossGain,
+                    LastTransactionDay = lastTransactionDay
                 });
             }
         }
