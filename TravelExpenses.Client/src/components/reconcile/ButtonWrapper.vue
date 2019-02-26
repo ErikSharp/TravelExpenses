@@ -1,9 +1,14 @@
 <template>
   <div>
     <slot />
-    <v-btn class="summary-btn elevation-10" small fixed @click="notifyParent">{{
-      buttonText
-    }}</v-btn>
+    <v-btn
+      :loading="reconcileBusy"
+      class="summary-btn elevation-10"
+      small
+      fixed
+      @click="returnToSummary"
+      >{{ buttonText }}</v-btn
+    >
   </div>
 </template>
 
@@ -16,8 +21,15 @@ export default {
     }
   },
   methods: {
-    notifyParent() {
-      this.$emit('buttonClicked')
+    returnToSummary() {
+      this.$store.dispatch('Reconcile/getReconcileSummary', () => {
+        this.$emit('buttonClicked')
+      })
+    }
+  },
+  computed: {
+    reconcileBusy() {
+      return this.$store.state.Reconcile.reconcileBusy
     }
   }
 }
