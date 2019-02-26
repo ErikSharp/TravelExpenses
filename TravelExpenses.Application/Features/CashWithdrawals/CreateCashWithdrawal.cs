@@ -62,6 +62,7 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                     RuleFor(c => c.CashWithdrawalIn.Amount).GreaterThan(0m);
                     RuleFor(c => c.CashWithdrawalIn.TransDate).Must(ParseAsDate);
                     RuleFor(c => c.CashWithdrawalIn.CurrencyId).GreaterThan(0);
+                    RuleFor(c => c.CashWithdrawalIn.LocationId).GreaterThan(0);
                     RuleFor(c => c.CashWithdrawalIn.UserId).Equal(c => c.TokenUserId);
                 });
             }

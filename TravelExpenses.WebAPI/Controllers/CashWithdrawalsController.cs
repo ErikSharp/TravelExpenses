@@ -35,7 +35,7 @@ namespace TravelExpenses.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditTransaction(
+        public async Task<IActionResult> EditCashWithdrawal(
             [FromBody]CashWithdrawalDto cashWithdrawal,
             [FromHeader(Name = "Authorization")]string token)
         {
