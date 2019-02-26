@@ -5,13 +5,15 @@
         <v-avatar class="mr-2" size="55" color="primary">
           <v-icon dark large>description</v-icon>
         </v-avatar>
-        <h3>{{ `Summary for ${locationName} (${currencyObj.isoCode})` }}</h3>
+        <h3>
+          {{ `Summary for ${location.locationName} (${currency.isoCode})` }}
+        </h3>
       </v-card-title>
       <v-card-text>
         <v-divider class="mb-3"></v-divider>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `${currencyObj.currencyName} withdrawn:` }}</h3>
+            <h3>{{ `${currency.currencyName} withdrawn:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3 class="text-xs-right">
@@ -25,7 +27,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `${currencyObj.currencyName} spent:` }}</h3>
+            <h3>{{ `${currency.currencyName} spent:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3>
@@ -42,7 +44,7 @@
             <h3>Cash expected:</h3>
           </v-flex>
           <v-flex shrink>
-            <h3>{{ formatNumber(shouldBe) }}</h3>
+            <h3>{{ formatNumber(cashShouldBe) }}</h3>
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -93,19 +95,13 @@
           <v-layout row align-center>
             <v-flex grow>
               <h3 class="red--text mr-2" style="display: inline">
-                {{
-                  `You ${haveNetGain ? 'have' : 'are'} ${formatNumber(
-                    Math.abs(difference + reconcileSummary.totalLossGain)
-                  )} ${currencyObj.isoCode} ${
-                    haveNetGain ? 'too much' : 'short'
-                  }`
-                }}
+                {{ resultString }}
               </h3>
             </v-flex>
             <v-flex shrink>
-              <v-icon large color="red">{{
-                haveNetGain ? 'trending_up' : 'trending_down'
-              }}</v-icon>
+              <v-icon large color="red">
+                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
+              </v-icon>
             </v-flex>
           </v-layout>
         </div>
@@ -121,8 +117,7 @@
 
 <script>
 import Windows from '@/common/enums/ReconcileWindows.js'
-import { mapState } from 'vuex'
-import round from 'lodash/round'
+import { mapState, mapGetters } from 'vuex'
 import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 
 export default {
@@ -144,32 +139,13 @@ export default {
       'cashOnHand',
       'reconcileSummary'
     ]),
-    shouldBe() {
-      if (!this.reconcileSummary) {
-        return 0
-      }
-
-      return (
-        this.reconcileSummary.totalWithdrawn - this.reconcileSummary.totalSpent
-      )
-    },
-    locationName() {
-      return this.location ? this.location.locationName : ''
-    },
-    currencyObj() {
-      return this.currency ? this.currency : { isoCode: '', currencyName: '' }
-    },
-    difference() {
-      return round(this.cashOnHand - this.shouldBe, 3)
-    },
-    haveNetGain() {
-      return this.difference + this.reconcileSummary.totalLossGain > 0
-    },
-    numbersMatch() {
-      return (
-        round(this.difference + this.reconcileSummary.totalLossGain, 3) === 0
-      )
-    }
+    ...mapGetters('Reconcile', [
+      'cashShouldBe',
+      'difference',
+      'haveNetGain',
+      'numbersMatch',
+      'resultString'
+    ])
   }
 }
 </script>

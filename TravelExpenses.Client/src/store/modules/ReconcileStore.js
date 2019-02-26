@@ -1,13 +1,24 @@
 import AxiosService from '@/services/AxiosService.js'
+import round from 'lodash/round'
+import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 
 function initialState() {
   return {
     reconcileWindowId: 0,
     cashOnHand: 0,
     reconcileBusy: false,
-    currency: {},
-    location: {},
-    reconcileSummary: {}
+    currency: {
+      isoCode: '',
+      currencyName: ''
+    },
+    location: {
+      locationName: ''
+    },
+    reconcileSummary: {
+      totalSpent: 0,
+      totalWithdrawn: 0,
+      totalLossGain: 0
+    }
   }
 }
 
@@ -85,6 +96,36 @@ export default {
         .then(() => {
           commit('SET_RECONCILE_BUSY', false)
         })
+    }
+  },
+  getters: {
+    cashShouldBe: state => {
+      return (
+        state.reconcileSummary.totalWithdrawn -
+        state.reconcileSummary.totalSpent
+      )
+    },
+    difference: (state, getters) => {
+      return round(state.cashOnHand - getters.cashShouldBe, 3)
+    },
+    amountOutString: (state, getters) => {
+      return toLocaleStringWithEndingZero(
+        Math.abs(getters.difference + state.reconcileSummary.totalLossGain)
+      )
+    },
+    haveNetGain: (state, getters) => {
+      return getters.difference + state.reconcileSummary.totalLossGain > 0
+    },
+    numbersMatch: (state, getters) => {
+      return (
+        round(getters.difference + state.reconcileSummary.totalLossGain, 3) ===
+        0
+      )
+    },
+    resultString: (state, getters) => {
+      return `You ${getters.haveNetGain ? 'have' : 'are'} ${
+        getters.amountOutString
+      } ${state.currency.isoCode} ${getters.haveNetGain ? 'too much' : 'short'}`
     }
   }
 }
