@@ -35,18 +35,23 @@ export default {
   methods: {
     addTransaction() {
       this.transactionWindow = 2
-      this.$store.dispatch('setTitle', 'Add Transaction', { root: true })
+      this.setTitle('Add Transaction')
       this.scrollToTop()
     },
     editTransaction() {
       this.transactionWindow = 0
-      this.$store.dispatch('setTitle', 'Edit Transaction', { root: true })
+      this.setTitle('Edit Transaction')
       this.scrollToTop()
     },
     returnToRecent() {
       this.transactionWindow = 1
-      this.$store.dispatch('setTitle', 'Transactions', { root: true })
+      this.setTitle('Transactions')
       this.scrollToTop()
+    },
+    setTitle(title) {
+      if (this.title !== 'Reconcile') {
+        this.$store.dispatch('setTitle', title, { root: true })
+      }
     },
     scrollToTop() {
       this.$vuetify.goTo(0, {
@@ -54,6 +59,11 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       })
+    }
+  },
+  computed: {
+    title() {
+      return this.$store.state.title
     }
   }
 }

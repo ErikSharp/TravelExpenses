@@ -35,18 +35,23 @@ export default {
   methods: {
     addCashWithdrawal() {
       this.cashWithdrawalWindow = 2
-      this.$store.dispatch('setTitle', 'Add Cash Withdrawal', { root: true })
+      this.setTitle('Add Cash Withdrawal')
       this.scrollToTop()
     },
     editCashWithdrawal() {
       this.cashWithdrawalWindow = 0
-      this.$store.dispatch('setTitle', 'Edit Cash Withdrawal', { root: true })
+      this.setTitle('Edit Cash Withdrawal')
       this.scrollToTop()
     },
     returnToRecent() {
       this.cashWithdrawalWindow = 1
-      this.$store.dispatch('setTitle', 'Cash Withdrawals', { root: true })
+      this.setTitle('Cash Withdrawals')
       this.scrollToTop()
+    },
+    setTitle(title) {
+      if (this.title !== 'Reconcile') {
+        this.$store.dispatch('setTitle', title, { root: true })
+      }
     },
     scrollToTop() {
       this.$vuetify.goTo(0, {
@@ -54,6 +59,11 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       })
+    }
+  },
+  computed: {
+    title() {
+      return this.$store.state.title
     }
   }
 }
