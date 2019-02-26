@@ -74,6 +74,25 @@
           </div>
         </template>
       </v-select>
+      <v-select
+        :items="locations"
+        v-model="location"
+        return-object
+        :error-messages="locationErrors"
+        box
+        background-color="white"
+        color="primary"
+        label="Location"
+        @input="$v.location.$touch()"
+        @blur="$v.location.$touch()"
+      >
+        <template slot="selection" slot-scope="data">
+          {{ getLocationString(data.item) }}
+        </template>
+        <template slot="item" slot-scope="data">
+          {{ getLocationString(data.item) }}
+        </template>
+      </v-select>
       <v-textarea
         hide-details
         solo
@@ -130,6 +149,7 @@ export default {
       dateMenu: false,
       amount: '',
       currency: {},
+      location: {},
       memo: ''
     }
   },
@@ -152,12 +172,26 @@ export default {
       currency: {
         required
       },
+      location: {
+        required
+      },
       memo: {}
     }
 
     return result
   },
   methods: {
+    getLocationString(locationObj) {
+      const country = this.$store.getters['Country/findCountry'](
+        locationObj.countryId
+      )
+
+      if (country) {
+        return `${locationObj.locationName}, ${country.countryName}`
+      } else {
+        return locationObj.locationName
+      }
+    },
     leave() {
       if (this.$store.state.CashWithdrawal.recentCashWithdrawalsStale) {
         this.$store.dispatch('CashWithdrawal/reloadRecentCashWithdrawals')
@@ -170,6 +204,7 @@ export default {
         transDate: this.date,
         amount: this.amount,
         currencyId: this.currency.id,
+        locationId: this.location.id,
         memo: this.memo,
         userId: this.userId
       }
@@ -206,6 +241,9 @@ export default {
     ...mapGetters('Authentication', ['userId']),
     currencies() {
       return sortBy(this.$store.state.Currency.currencies, c => c.isoCode)
+    },
+    locations() {
+      return sortBy(this.$store.state.Location.locations, l => l.locationName)
     },
     titleErrors() {
       const errors = []
@@ -264,6 +302,14 @@ export default {
       if (!this.$v.currency.$dirty) return errors
 
       !this.$v.currency.required && errors.push('A currency is required')
+      return errors
+    },
+    locationErrors() {
+      const errors = []
+
+      if (!this.$v.location.$dirty) return errors
+
+      !this.$v.location.required && errors.push('A location is required')
       return errors
     },
     busy() {

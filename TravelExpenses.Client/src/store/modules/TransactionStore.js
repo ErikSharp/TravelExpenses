@@ -46,17 +46,15 @@ export default {
     }
   },
   actions: {
-    saveTransaction({ dispatch }, data) {
+    saveTransaction({ dispatch }, transaction) {
       return dispatch('innerSaveTransaction', {
-        transaction: data.transaction,
-        complete: data.complete,
+        transaction: transaction,
         editing: false
       })
     },
-    editTransaction({ dispatch }, data) {
+    editTransaction({ dispatch }, transaction) {
       return dispatch('innerSaveTransaction', {
-        transaction: data.transaction,
-        complete: data.complete,
+        transaction: transaction,
         editing: true
       })
     },
@@ -85,7 +83,6 @@ export default {
         })
         .then(() => {
           commit('SET_SAVE_TRANSACTION_BUSY', false)
-          data.complete()
         })
     },
     getRecentTransactions({ commit, dispatch }, skip) {
