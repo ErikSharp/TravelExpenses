@@ -1,12 +1,12 @@
 <template>
-  <v-container class="pt-0">
+  <v-container>
     <h2 class="white--text mb-1">Investigate</h2>
     <v-layout column>
       <v-flex class="order-xs1">
         <v-card>
-          <v-card-text class="pb-0">{{
-            `${resultString}. Did you count your cash correctly?`
-          }}</v-card-text>
+          <v-card-text class="pb-0">
+            {{ `${resultString}. Did you count your cash correctly?` }}
+          </v-card-text>
           <v-btn class="ml-3 mb-3" color="primary" @click="navigateCashCalc"
             >Recount Cash</v-btn
           >

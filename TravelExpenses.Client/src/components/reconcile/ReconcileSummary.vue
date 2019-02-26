@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-card>
       <v-card-title class="pb-0">
         <v-avatar class="mr-2" size="55" color="primary">
@@ -99,9 +99,9 @@
               </h3>
             </v-flex>
             <v-flex shrink>
-              <v-icon large color="red">
-                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
-              </v-icon>
+              <v-icon large color="red">{{
+                haveNetGain ? 'trending_up' : 'trending_down'
+              }}</v-icon>
             </v-flex>
           </v-layout>
         </div>
@@ -112,7 +112,7 @@
         >Investigate</v-btn
       >
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

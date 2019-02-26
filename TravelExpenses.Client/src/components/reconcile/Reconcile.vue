@@ -1,32 +1,30 @@
 <template>
-  <v-container>
-    <v-window touchless v-model="reconcileWindowId">
-      <v-window-item>
-        <reconcile-cash-calc />
-      </v-window-item>
-      <v-window-item>
-        <reconcile-summary />
-      </v-window-item>
-      <v-window-item>
-        <reconcile-investigation />
-      </v-window-item>
-      <v-window-item>
-        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <transactions />
-        </button-wrapper>
-      </v-window-item>
-      <v-window-item>
-        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <cash-withdrawals />
-        </button-wrapper>
-      </v-window-item>
-      <v-window-item>
-        <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-          <reconcile-loss-gain />
-        </button-wrapper>
-      </v-window-item>
-    </v-window>
-  </v-container>
+  <v-window touchless v-model="reconcileWindowId">
+    <v-window-item>
+      <reconcile-cash-calc />
+    </v-window-item>
+    <v-window-item>
+      <reconcile-summary />
+    </v-window-item>
+    <v-window-item>
+      <reconcile-investigation />
+    </v-window-item>
+    <v-window-item>
+      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+        <transactions />
+      </button-wrapper>
+    </v-window-item>
+    <v-window-item>
+      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+        <cash-withdrawals />
+      </button-wrapper>
+    </v-window-item>
+    <v-window-item>
+      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+        <reconcile-loss-gain />
+      </button-wrapper>
+    </v-window-item>
+  </v-window>
 </template>
 
 <script>

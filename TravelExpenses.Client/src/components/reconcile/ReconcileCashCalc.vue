@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="white--text mb-2">Cash calculator</h3>
+  <v-container>
+    <h2 class="white--text mb-2">Cash calculator</h2>
     <v-select
       :items="currencies"
       v-model="currency"
@@ -67,7 +67,7 @@
         >RECONCILE</v-btn
       >
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>
