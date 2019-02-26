@@ -13,6 +13,7 @@
           :vertical="snackbar.mode === 'vertical'"
           top
         >
+          {{ snackbar.message }}
           <v-icon
             v-if="snackbar.color.toLowerCase() === 'error'"
             color="white"
@@ -26,7 +27,6 @@
             >warning</v-icon
           >
           <v-icon v-else color="white" class="mr-2">info</v-icon>
-          {{ snackbar.message }}
           <!-- <v-btn
             dark
             flat
@@ -91,5 +91,10 @@ export default {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   padding-bottom: 0px;
+}
+
+.v-snack__wrapper {
+  width: 90%;
+  margin: auto;
 }
 </style>
