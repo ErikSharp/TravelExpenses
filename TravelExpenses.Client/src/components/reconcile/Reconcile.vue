@@ -20,9 +20,7 @@
       </button-wrapper>
     </v-window-item>
     <v-window-item>
-      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
-        <reconcile-loss-gain />
-      </button-wrapper>
+      <reconcile-loss-gain @returnToSummary="navToSummary" />
     </v-window-item>
   </v-window>
 </template>
