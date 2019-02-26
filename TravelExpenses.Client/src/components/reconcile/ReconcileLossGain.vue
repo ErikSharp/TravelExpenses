@@ -5,9 +5,9 @@
         <v-layout row>
           <v-flex>
             <v-avatar class="mr-3" size="55" color="primary">
-              <v-icon dark large>{{
-                haveNetGain ? 'trending_up' : 'trending_down'
-              }}</v-icon>
+              <v-icon dark large>
+                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
+              </v-icon>
             </v-avatar>
           </v-flex>
           <v-flex>
@@ -82,9 +82,7 @@ export default {
       }
 
       this.$store
-        .dispatch('Transaction/saveTransaction', {
-          transactionToSave
-        })
+        .dispatch('Transaction/saveTransaction', transactionToSave)
         .then(() => {
           this.saved = true
           this.$store.dispatch('showSaveMessage', 'Adjustment has been saved')
