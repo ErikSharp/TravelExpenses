@@ -75,9 +75,7 @@ export default {
           commit('SET_RECENT_CASH_WITHDRAWALS_STALE')
           dispatch(
             'showSaveMessage',
-            `${data.cashWithdrawal.title} has been ${
-              data.editing ? 'changed' : 'saved'
-            }`,
+            `Cash withdrawal has been ${data.editing ? 'changed' : 'saved'}`,
             {
               root: true
             }
