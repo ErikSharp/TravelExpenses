@@ -20,7 +20,7 @@ namespace TravelExpenses.Application.Features.Users
 {
     public class CreateUser
     {
-        public class Command : IRequest<UserOut>
+        public class Command : IRequest<AuthenticatedUserOut>
         {
             public Command(UserRegistration loginDetails)
             {
@@ -30,7 +30,7 @@ namespace TravelExpenses.Application.Features.Users
             public UserRegistration LoginDetails { get; private set; }
         }
 
-        public class Handler : IRequestHandler<Command, UserOut>
+        public class Handler : IRequestHandler<Command, AuthenticatedUserOut>
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
@@ -47,7 +47,7 @@ namespace TravelExpenses.Application.Features.Users
                 this.tokenGenerator = tokenGenerator;
             }
 
-            public async Task<UserOut> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<AuthenticatedUserOut> Handle(Command request, CancellationToken cancellationToken)
             {
                 var userExists = await context.Users.AnyAsync(u => u.Email == request.LoginDetails.Email).ConfigureAwait(false);
                 if (userExists)
@@ -63,7 +63,7 @@ namespace TravelExpenses.Application.Features.Users
                 {
                     await context.SaveChangesAsync().ConfigureAwait(false);
 
-                    var userOut = mapper.Map<UserOut>(user);
+                    var userOut = mapper.Map<AuthenticatedUserOut>(user);
                     userOut.Token = tokenGenerator.CreateTokenString(user);
 
                     return userOut;

@@ -44,8 +44,9 @@ export default {
         let locations = dispatch('Location/load', null, { root: true })
         let keywords = dispatch('Keyword/load', null, { root: true })
         let categories = dispatch('Category/load', null, { root: true })
+        let user = dispatch('User/getUser', null, { root: true })
 
-        return Promise.all([locations, keywords, categories]).then(() => {
+        return Promise.all([locations, keywords, categories, user]).then(() => {
           commit('SET_LOADED')
         })
       }

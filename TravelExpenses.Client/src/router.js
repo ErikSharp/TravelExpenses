@@ -107,7 +107,11 @@ myRouter.beforeEach((to, from, next) => {
   routerGuard(to, to => next(to), () => next(), getToken, callback => {
     if (!Store.state.InitialSetup.loaded) {
       Store.dispatch('InitialSetup/checkBaseRequirements').then(() => {
-        callback(Store.getters['InitialSetup/missingBaseData'])
+        if (!Store.state.User.user) {
+          Store.dispatch('Authentication/logout')
+        } else {
+          callback(Store.getters['InitialSetup/missingBaseData'])
+        }
       })
     } else {
       callback(Store.getters['InitialSetup/missingBaseData'])

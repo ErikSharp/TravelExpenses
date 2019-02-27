@@ -50,7 +50,7 @@ namespace TravelExpenses.IntegrationTests.Controllers
             httpResponse.EnsureSuccessStatusCode();
 
             var stringResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var authenticatedUser = JsonConvert.DeserializeObject<UserOut>(stringResponse);
+            var authenticatedUser = JsonConvert.DeserializeObject<AuthenticatedUserOut>(stringResponse);
 
             authenticatedUser.ShouldSatisfyAllConditions(
                 () => authenticatedUser.Email.ShouldBe(email, StringCompareShould.IgnoreCase),

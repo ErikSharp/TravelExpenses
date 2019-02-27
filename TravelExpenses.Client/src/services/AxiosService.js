@@ -100,5 +100,8 @@ export default {
     }
 
     return apiClient.put('api/reconcile/currency-totals', payload)
+  },
+  getUser() {
+    return apiClient.get('api/users/me')
   }
 }

@@ -18,7 +18,7 @@ namespace TravelExpenses.Application.Helpers
 
             CreateMap<UserRegistration, User>();
 
-            CreateMap<User, UserOut>();
+            CreateMap<User, AuthenticatedUserOut>();
 
             CreateMap<TransactionCreateIn, Transaction>()
                 .ForMember(dest => dest.TransDate,
@@ -57,6 +57,7 @@ namespace TravelExpenses.Application.Helpers
             CreateMap<Country, CountryOut>();
             CreateMap<Currency, CurrencyOut>();
             CreateMap<Keyword, KeywordOut>();
+            CreateMap<User, UserOut>();
 
             CreateMap<Location, LocationOut>()
                 .ForMember(dest => dest.CountryName,

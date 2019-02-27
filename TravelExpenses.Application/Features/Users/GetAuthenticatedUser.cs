@@ -14,7 +14,7 @@ namespace TravelExpenses.Application.Features.Users
 {
     public class GetAuthenticatedUser
     {
-        public class Query : IRequest<UserOut>
+        public class Query : IRequest<AuthenticatedUserOut>
         {
             public Query(UserIn loginDetails)
             {
@@ -24,7 +24,7 @@ namespace TravelExpenses.Application.Features.Users
             public UserIn LoginDetails { get; private set; }
         }
 
-        public class Handler : IRequestHandler<Query, UserOut>
+        public class Handler : IRequestHandler<Query, AuthenticatedUserOut>
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
@@ -40,7 +40,7 @@ namespace TravelExpenses.Application.Features.Users
                 this.tokenGenerator = tokenGenerator;
             }
 
-            public async Task<UserOut> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<AuthenticatedUserOut> Handle(Query request, CancellationToken cancellationToken)
             {
                 Log.Debug($"Looking for not disabled user with email: {request.LoginDetails.Email}");
 
@@ -74,9 +74,9 @@ namespace TravelExpenses.Application.Features.Users
                 return CreateUserWithToken(user);                
             }
 
-            private UserOut CreateUserWithToken(User user)
+            private AuthenticatedUserOut CreateUserWithToken(User user)
             {
-                var userOut = mapper.Map<UserOut>(user);
+                var userOut = mapper.Map<AuthenticatedUserOut>(user);
                 userOut.Token = tokenGenerator.CreateTokenString(user);
 
                 return userOut;

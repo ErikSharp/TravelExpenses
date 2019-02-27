@@ -98,7 +98,7 @@ namespace TravelExpenses.Application.Tests.Features
 
         private Handler CreateHandler(UserIn loginDetails, TravelExpensesContext context)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UserOut>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, AuthenticatedUserOut>());
             var mapper = config.CreateMapper();
 
             var tokenGenerator = new Mock<ITokenGenerator>();

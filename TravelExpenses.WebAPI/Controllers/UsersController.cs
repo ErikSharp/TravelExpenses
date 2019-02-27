@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.Users;
+using TravelExpenses.WebAPI.Extensions;
 using TravelExpenses.WebAPI.Models;
 
 namespace TravelExpenses.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -49,6 +51,16 @@ namespace TravelExpenses.WebAPI.Controllers
             return Created(
                 new Uri(Request.Path, UriKind.Relative), 
                 authenticatedUser);
+        }
+        
+        [HttpGet("me")]
+        public async Task<IActionResult> GetThisUser(            
+            [FromHeader(Name = "Authorization")] string token)
+        {
+            var userId = User.Claims.GetUserId();
+            var user = await mediator.Send(new GetThisUser.Query(userId)).ConfigureAwait(false);
+
+            return Ok(user);
         }
     }
 }

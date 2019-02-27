@@ -4,11 +4,9 @@ using System.Text;
 
 namespace TravelExpenses.Application.Common.Dtos
 {
-    public class UserOut
+    public class AuthenticatedUserOut
     {
-        public string Username { get; set; }
         public string Email { get; set; }
-        public DateTime Created { get; set; }
-        public bool Disabled { get; set; }
+        public string Token { get; set; }
     }
 }

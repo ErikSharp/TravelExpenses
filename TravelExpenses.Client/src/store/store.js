@@ -12,6 +12,7 @@ import Country from '@/store/modules/CountryStore.js'
 import Currency from '@/store/modules/CurrencyStore.js'
 import Category from '@/store/modules/CategoryStore.js'
 import Keyword from '@/store/modules/KeywordStore.js'
+import User from '@/store/modules/UserStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import SetupWindows from '@/common/enums/SetupWindows.js'
 import { firstLetterUpper } from '@/common/StringUtilities.js'
@@ -31,7 +32,8 @@ export default new Vuex.Store({
     Country,
     Currency,
     Category,
-    Keyword
+    Keyword,
+    User
   },
   state: {
     homeView: HomeViews.Transactions,
