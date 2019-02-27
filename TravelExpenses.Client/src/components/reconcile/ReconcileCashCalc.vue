@@ -42,12 +42,16 @@
       @input="$v.location.$touch()"
       @blur="$v.location.$touch()"
     >
-      <template slot="selection" slot-scope="data">{{
+      <template slot="selection" slot-scope="data">
+        {{
         getLocationString(data.item)
-      }}</template>
-      <template slot="item" slot-scope="data">{{
+        }}
+      </template>
+      <template slot="item" slot-scope="data">
+        {{
         getLocationString(data.item)
-      }}</template>
+        }}
+      </template>
     </v-select>
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
@@ -64,8 +68,7 @@
         :disabled="$v.$invalid"
         dark
         class="primary mt-5"
-        >RECONCILE</v-btn
-      >
+      >RECONCILE</v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -102,7 +105,7 @@ export default {
       this.$store.dispatch('Reconcile/setCashOnHand', amount)
     },
     beginReconcile() {
-      this.$store.dispatch('Reconcile/getReconcileSummary', () => {
+      this.$store.dispatch('Reconcile/getReconcileSummary').then(() => {
         this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
       })
     },

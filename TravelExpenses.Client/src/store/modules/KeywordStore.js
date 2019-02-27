@@ -54,7 +54,7 @@ export default {
           commit('SET_KEYWORDS', response.data)
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_BUSY', false)
@@ -79,7 +79,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_ADD_KEYWORD_BUSY', false)
@@ -100,7 +100,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_EDIT_KEYWORD_BUSY', false)

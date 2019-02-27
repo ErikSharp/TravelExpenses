@@ -65,7 +65,7 @@ export default {
     setCashOnHand({ commit }, amount) {
       commit('SET_CASH_ON_HAND', amount)
     },
-    getReconcileSummary({ dispatch, commit, state }, callback) {
+    getReconcileSummary({ dispatch, commit, state }) {
       commit('SET_RECONCILE_BUSY', true)
 
       return AxiosService.getReconcileSummary(
@@ -86,13 +86,10 @@ export default {
             )
           } else {
             commit('SET_RECONCILE_SUMMARY', response.data)
-
-            //only go forward if we got data back
-            callback()
           }
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_RECONCILE_BUSY', false)

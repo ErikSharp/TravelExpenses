@@ -1,18 +1,19 @@
 <template>
   <div>
-    <slot />
+    <slot/>
     <v-btn
       :loading="reconcileBusy"
       class="summary-btn elevation-10"
       small
       fixed
       @click="returnToSummary"
-      >{{ buttonText }}</v-btn
-    >
+    >{{ buttonText }}</v-btn>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     buttonText: {
@@ -22,15 +23,20 @@ export default {
   },
   methods: {
     returnToSummary() {
-      this.$store.dispatch('Reconcile/getReconcileSummary', () => {
-        this.$emit('buttonClicked')
+      this.$store.dispatch('Reconcile/getReconcileSummary').then(() => {
+        if (this.reconcileSummary.totalWithdrawn) {
+          this.$emit('buttonClicked')
+        } else {
+          this.$store.dispatch(
+            'showErrorMessage',
+            'There are no cash withdrawals to reconcile!'
+          )
+        }
       })
     }
   },
   computed: {
-    reconcileBusy() {
-      return this.$store.state.Reconcile.reconcileBusy
-    }
+    ...mapState('Reconcile', ['reconcileBusy', 'reconcileSummary'])
   }
 }
 </script>

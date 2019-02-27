@@ -61,7 +61,7 @@ export default {
           commit('SET_CATEGORIES', response.data)
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_BUSY', false)
@@ -86,7 +86,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_ADD_CATEGORY_BUSY', false)
@@ -107,7 +107,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_EDIT_CATEGORY_BUSY', false)

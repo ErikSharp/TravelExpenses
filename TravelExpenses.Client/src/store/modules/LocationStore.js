@@ -42,7 +42,7 @@ export default {
           commit('SET_LOCATIONS', response.data)
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_BUSY', false)
@@ -63,7 +63,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_ADD_LOCATION_BUSY', false)
@@ -84,7 +84,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_EDIT_LOCATION_BUSY', false)

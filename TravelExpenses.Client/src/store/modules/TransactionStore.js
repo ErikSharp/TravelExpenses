@@ -79,7 +79,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_SAVE_TRANSACTION_BUSY', false)
@@ -101,7 +101,7 @@ export default {
           }
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_RECENT_TRANSACTIONS_BUSY', false)
@@ -132,7 +132,7 @@ export default {
             dispatch('reloadRecentTransactions')
           })
           .catch(error => {
-            dispatch('showErrorMessage', error, { root: true })
+            dispatch('showAxiosErrorMessage', error, { root: true })
           })
           .then(() => {
             commit('SET_SAVE_TRANSACTION_BUSY', false)

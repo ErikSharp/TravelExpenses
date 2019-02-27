@@ -95,7 +95,16 @@ export default new Vuex.Store({
     showSnackbar({ commit }, snackbar) {
       commit('SET_SNACKBAR_DETAILS', snackbar)
     },
-    showErrorMessage({ dispatch }, error) {
+    showErrorMessage({ commit }, message) {
+      const snackbar = {
+        color: 'error',
+        message: message,
+        mode: '',
+        timeout: 6000
+      }
+      commit('SET_SNACKBAR_DETAILS', snackbar)
+    },
+    showAxiosErrorMessage({ dispatch }, error) {
       if (error.response) {
         dispatch('showSnackbar', {
           message:

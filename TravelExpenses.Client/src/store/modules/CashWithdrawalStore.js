@@ -82,7 +82,7 @@ export default {
           )
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_SAVE_CASH_WITHDRAWAL_BUSY', false)
@@ -105,7 +105,7 @@ export default {
           }
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
           commit('SET_RECENT_CASH_WITHDRAWALS_BUSY', false)
@@ -138,7 +138,7 @@ export default {
             dispatch('reloadRecentCashWithdrawals')
           })
           .catch(error => {
-            dispatch('showErrorMessage', error, { root: true })
+            dispatch('showAxiosErrorMessage', error, { root: true })
           })
           .then(() => {
             commit('SET_SAVE_CASH_WITHDRAWAL_BUSY', false)

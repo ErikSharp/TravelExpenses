@@ -33,7 +33,7 @@ export default {
           commit('SET_COUNTRIES', response.data)
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
     }
   },

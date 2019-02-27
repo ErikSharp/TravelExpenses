@@ -29,7 +29,7 @@ export default {
           commit('SET_CURRENCIES', response.data)
         })
         .catch(error => {
-          dispatch('showErrorMessage', error, { root: true })
+          dispatch('showAxiosErrorMessage', error, { root: true })
         })
     }
   },

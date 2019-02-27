@@ -5,18 +5,16 @@
         <v-layout row>
           <v-flex>
             <v-avatar class="mr-3" size="55" color="primary">
-              <v-icon dark large>{{
-                haveNetGain ? 'trending_up' : 'trending_down'
-              }}</v-icon>
+              <v-icon dark large>{{ haveNetGain ? 'trending_up' : 'trending_down' }}</v-icon>
             </v-avatar>
           </v-flex>
           <v-flex>
             <h2>Loss / Gain Adjustment</h2>
             <p>
               {{
-                `${resultString} and are recording a ${
-                  haveNetGain ? 'gain' : 'loss'
-                }.`
+              `${resultString} and are recording a ${
+              haveNetGain ? 'gain' : 'loss'
+              }.`
               }}
             </p>
           </v-flex>
@@ -28,7 +26,7 @@
         hide-details
         solo
         label="Enter a description."
-        :readonly="saved"
+        :readonly="saveTransactionBusy"
         auto-grow
         v-model="memo"
         @input="$v.memo.$touch()"
@@ -40,18 +38,16 @@
         class="mb-3"
         dark
         color="primary"
-        :disabled="$v.$invalid || saved"
+        :disabled="$v.$invalid || saveTransactionBusy || reconcileBusy"
         :loading="saveTransactionBusy"
         @click="saveAdjustment"
-        >Save</v-btn
-      >
+      >Save</v-btn>
       <v-btn
         dark
         color="primary"
-        :disabled="saveTransactionBusy || saved"
+        :disabled="saveTransactionBusy || reconcileBusy"
         @click="returnToSummary"
-        >Return to Summary</v-btn
-      >
+      >Return to Summary</v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -59,12 +55,12 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
+import Windows from '@/common/enums/ReconcileWindows.js'
 
 export default {
   data() {
     return {
-      memo: '',
-      saved: false
+      memo: ''
     }
   },
   methods: {
@@ -86,8 +82,13 @@ export default {
       this.$store
         .dispatch('Transaction/saveTransaction', transactionToSave)
         .then(() => {
-          this.saved = true
           this.$store.dispatch('showSaveMessage', 'Adjustment has been saved')
+          this.$store.dispatch('Reconcile/getReconcileSummary').then(() => {
+            this.$store.dispatch(
+              'Reconcile/setReconcileWindowId',
+              Windows.summary
+            )
+          })
         })
     },
     returnToSummary() {
@@ -106,7 +107,12 @@ export default {
   },
   computed: {
     ...mapGetters('Reconcile', ['haveNetGain', 'resultString', 'amountOut']),
-    ...mapState('Reconcile', ['reconcileSummary', 'location', 'currency']),
+    ...mapState('Reconcile', [
+      'reconcileSummary',
+      'location',
+      'currency',
+      'reconcileBusy'
+    ]),
     ...mapState('Category', ['lossGainCategory']),
     ...mapGetters('Authentication', ['userId']),
     ...mapState('Transaction', ['saveTransactionBusy'])
