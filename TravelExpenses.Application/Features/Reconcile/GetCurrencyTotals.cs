@@ -67,15 +67,22 @@ namespace TravelExpenses.Application.Features.Reconcile
                         t.PaidWithCash)
                     .Sum(t => t.Amount);
 
-                string lastTransactionDay = "";
-                if (totalWithdrawn != 0)
+                string lastTransactionDay = string.Empty;
+
+                try
                 {
-                    lastTransactionDay = context.Transactions
-                        .Where(t =>
-                            t.UserId == query.UserId &&
-                            t.LocationId == request.LocationId &&
-                            t.CurrencyId == request.CurrencyId)
-                        .Max(t => t.TransDate).ToString(DateStringFormat);
+                    if (totalWithdrawn != 0)
+                    {
+                        lastTransactionDay = context.Transactions
+                            .Where(t =>
+                                t.UserId == query.UserId &&
+                                t.LocationId == request.LocationId &&
+                                t.CurrencyId == request.CurrencyId)
+                            .Max(t => t.TransDate).ToString(DateStringFormat);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
                 }
 
                 return Task.FromResult(new CurrencyTotals

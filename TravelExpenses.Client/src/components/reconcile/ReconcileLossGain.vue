@@ -5,9 +5,9 @@
         <v-layout row>
           <v-flex>
             <v-avatar class="mr-3" size="55" color="primary">
-              <v-icon dark large>
-                {{ haveNetGain ? 'trending_up' : 'trending_down' }}
-              </v-icon>
+              <v-icon dark large>{{
+                haveNetGain ? 'trending_up' : 'trending_down'
+              }}</v-icon>
             </v-avatar>
           </v-flex>
           <v-flex>
@@ -71,7 +71,9 @@ export default {
     saveAdjustment() {
       let transactionToSave = {
         title: `Recorded ${this.haveNetGain ? 'gain' : 'loss'} adjustment`,
-        transDate: this.reconcileSummary.lastTransactionDay,
+        transDate: this.reconcileSummary.lastTransactionDay
+          ? this.reconcileSummary.lastTransactionDay
+          : new Date().toISOString().substring(0, 10),
         amount: this.haveNetGain ? this.amountOut * -1 : this.amountOut,
         locationId: this.location.id,
         currencyId: this.currency.id,
