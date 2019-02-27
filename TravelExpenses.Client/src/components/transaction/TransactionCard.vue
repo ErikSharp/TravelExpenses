@@ -17,28 +17,38 @@
         </v-flex>
         <v-flex>
           <v-card-text class="white py-1 px-0 border-right">
-            <p>
-              <strong>Title:</strong>
-              {{ transaction.title }}
-            </p>
-            <p>
-              <strong>Category:</strong>
-              {{ getCategoryString(transaction.categoryId) }}
-            </p>
-            <p>
-              <strong>Amount:</strong>
-              {{
+            <v-layout column>
+              <p>
+                <strong>Title:</strong>
+                {{ transaction.title }}
+              </p>
+              <p>
+                <strong>Location:</strong>
+                {{ getLocationString() }}
+              </p>
+              <p>
+                <strong>Category:</strong>
+                {{ getCategoryString(transaction.categoryId) }}
+              </p>
+              <p>
+                <strong>Amount:</strong>
+                {{
                 `${amountString} ${getCurrencyIsoString(
-                  transaction.currencyId
+                transaction.currencyId
                 )}`
-              }}
-            </p>
-            <p v-if="transaction.keywordIds.length" style="display: inline">
-              <strong>Keywords:</strong>
-            </p>
-            <v-chip small v-for="(id, i) in transaction.keywordIds" :key="i">
-              {{ getKeywordName(id) }}
-            </v-chip>
+                }}
+              </p>
+              <div>
+                <p v-if="transaction.keywordIds.length" style="display: inline">
+                  <strong>Keywords:</strong>
+                </p>
+                <v-chip
+                  small
+                  v-for="(id, i) in transaction.keywordIds"
+                  :key="i"
+                >{{ getKeywordName(id) }}</v-chip>
+              </div>
+            </v-layout>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -49,7 +59,7 @@
 <script>
 import { LossGain } from '@/common/constants/StringConstants.js'
 import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -81,6 +91,22 @@ export default {
         return this.$store.state.Category.lossGainCategory.categoryName
       } else {
         return 'unknown'
+      }
+    },
+    getLocationString() {
+      const location = this.findLocation(this.transaction.locationId)
+
+      let country = null
+      if (location) {
+        country = this.findCountry(location.countryId)
+
+        if (country) {
+          return `${location.locationName}, ${country.countryName}`
+        } else {
+          return location.locationName
+        }
+      } else {
+        return 'Unknown'
       }
     },
     getKeywordName(id) {
@@ -172,6 +198,8 @@ export default {
   },
   computed: {
     ...mapState('Category', ['lossGainCategory']),
+    ...mapGetters('Location', ['findLocation']),
+    ...mapGetters('Country', ['findCountry']),
     transactionSelected() {
       return (
         this.$store.state.Transaction.selectedTransaction == this.transaction
@@ -187,7 +215,6 @@ export default {
 <style scoped>
 .v-card p {
   margin: 0;
-  height: 22px;
   overflow: hidden;
 }
 
