@@ -11,8 +11,8 @@
     <v-flex>
       <v-layout align-center justify-start row fill-height>
         <v-flex shrink>
-          <v-avatar size="70" class="mx-2 elevation-5" :class="iconColor">
-            <v-icon size="45" class="white--text">{{ icon }}</v-icon>
+          <v-avatar size="70" class="mx-2 elevation-5" :color="getColor()">
+            <v-icon size="45" class="white--text">{{ getIcon() }}</v-icon>
           </v-avatar>
         </v-flex>
         <v-flex>
@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import { LossGain } from '@/common/constants/StringConstants.js'
 import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 import { mapState, mapGetters } from 'vuex'
 
@@ -65,16 +64,29 @@ export default {
   props: {
     transaction: Object
   },
-  created() {
-    this.setIcon(this.transaction)
-  },
-  data() {
-    return {
-      iconColor: '',
-      icon: ''
-    }
-  },
   methods: {
+    getIcon() {
+      const category = this.findCategory(this.transaction.categoryId)
+      if (category) {
+        return category.icon
+      } else {
+        return 'live_help'
+      }
+    },
+    getColor() {
+      const category = this.findCategory(this.transaction.categoryId)
+
+      if (category) {
+        var hex = category.color.toString(16)
+        if (hex.length < 2) {
+          hex = '0' + hex
+        }
+
+        return '#' + hex
+      } else {
+        return '#000000'
+      }
+    },
     selectTransaction() {
       this.$store.dispatch(
         'Transaction/setSelectedTransaction',
@@ -124,80 +136,11 @@ export default {
       }
 
       return ''
-    },
-    setIcon(transaction) {
-      let cat = null
-
-      if (
-        this.lossGainCategory &&
-        transaction.categoryId === this.lossGainCategory.id
-      ) {
-        cat = this.lossGainCategory
-      } else {
-        cat = this.$store.state.Category.categories.find(
-          c => c.id === transaction.categoryId
-        )
-      }
-
-      switch (cat.categoryName) {
-        case LossGain:
-          if (transaction.amount > 0) {
-            this.iconColor = 'red'
-            this.icon = 'trending_down'
-          } else {
-            this.iconColor = 'green'
-            this.icon = 'trending_up'
-          }
-          break
-        case 'Transportation':
-          this.iconColor = 'indigo'
-          this.icon = 'commute'
-          break
-        case 'Dining':
-          this.iconColor = 'orange'
-          this.icon = 'fastfood'
-          break
-        case 'Groceries':
-          this.iconColor = 'green darken-2'
-          this.icon = 'local_grocery_store'
-          break
-        case 'Entertainment':
-          this.iconColor = 'pink lighten-2'
-          this.icon = 'theaters'
-          break
-        case 'Accommodations':
-          this.iconColor = 'purple lighten-2'
-          this.icon = 'local_hotel'
-          break
-        case 'Utilities':
-          this.iconColor = 'green lighten-1'
-          this.icon = 'power'
-          break
-        case 'Medical':
-          this.iconColor = 'red darken-1'
-          this.icon = 'local_hospital'
-          break
-        case 'Fees':
-          this.iconColor = 'blue lighten-2'
-          this.icon = 'local_atm'
-          break
-        case 'Deposit':
-          this.iconColor = 'cyan lighten-2'
-          this.icon = 'attach_money'
-          break
-        case 'Non-trip':
-          this.iconColor = 'orange'
-          this.icon = 'card_giftcard'
-          break
-        default:
-          this.iconColor = 'blue'
-          this.icon = 'live_help'
-          break
-      }
     }
   },
   computed: {
     ...mapState('Category', ['lossGainCategory']),
+    ...mapGetters('Category', ['findCategory']),
     ...mapGetters('Location', ['findLocation']),
     ...mapGetters('Country', ['findCountry']),
     transactionSelected() {

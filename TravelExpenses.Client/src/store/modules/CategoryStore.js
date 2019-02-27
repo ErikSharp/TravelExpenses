@@ -113,5 +113,17 @@ export default {
           commit('SET_EDIT_CATEGORY_BUSY', false)
         })
     }
+  },
+  getters: {
+    findCategory: state => id => {
+      let category = state.categories.find(c => c.id === id)
+
+      if (!category) {
+        category =
+          state.lossGainCategory.id === id ? state.lossGainCategory : null
+      }
+
+      return category
+    }
   }
 }
