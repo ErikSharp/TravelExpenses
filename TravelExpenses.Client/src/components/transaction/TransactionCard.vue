@@ -68,6 +68,13 @@ export default {
     getIcon() {
       const category = this.findCategory(this.transaction.categoryId)
       if (category) {
+        if (category === this.$store.state.Category.lossGainCategory) {
+          if (this.transaction.amount > 0) {
+            return 'trending_down'
+          } else {
+            return 'trending_up'
+          }
+        }
         return category.icon
       } else {
         return 'live_help'
@@ -77,6 +84,14 @@ export default {
       const category = this.findCategory(this.transaction.categoryId)
 
       if (category) {
+        if (category === this.$store.state.Category.lossGainCategory) {
+          if (this.transaction.amount > 0) {
+            return '#FF0000'
+          } else {
+            return '#00CC00'
+          }
+        }
+
         var hex = category.color.toString(16)
         if (hex.length < 2) {
           hex = '0' + hex
