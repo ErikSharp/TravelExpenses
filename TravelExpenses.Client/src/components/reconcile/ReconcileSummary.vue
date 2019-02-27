@@ -8,7 +8,7 @@
           </v-avatar>
           <div class="ml-1">
             <h3>Reconcile summary for:</h3>
-            <h4>{{ `${location.locationName}, ${findCountry(location.countryId).countryName}` }}</h4>
+            <h4>{{ getLocationString() }}</h4>
             <h4>{{ `${currency.isoCode} - ${currency.currencyName}` }}</h4>
           </div>
         </v-layout>
@@ -120,6 +120,15 @@ export default {
     },
     formatNumber(numValue) {
       return toLocaleStringWithEndingZero(numValue)
+    },
+    getLocationString() {
+      const country = this.findCountry(this.location.countryId)
+      let countryName = ''
+      if (country) {
+        countryName = country.countryName
+      }
+
+      return `${this.location.locationName}, ${countryName}`
     }
   },
   computed: {
