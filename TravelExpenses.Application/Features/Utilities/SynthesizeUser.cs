@@ -76,7 +76,7 @@ namespace TravelExpenses.Application.Features.Utilities
 
                 var categories = await mediator.Send(new CreateCategory.Query(
                     catNames.Select(cn => 
-                        new Category { CategoryName = cn, UserId = userId }).ToArray()
+                        new CategoryIn { CategoryName = cn, UserId = userId }).ToArray()
                 )).ConfigureAwait(false);
 
                 var keywordNames = new []

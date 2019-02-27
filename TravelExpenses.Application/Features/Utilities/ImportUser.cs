@@ -94,7 +94,7 @@ namespace TravelExpenses.Application.Features.Utilities
                 }
 
                 //enter categories
-                var categories = import.Categories.Select(c => new Category
+                var categories = import.Categories.Select(c => new CategoryIn
                 {
                     CategoryName = c.CategoryName,
                     UserId = request.UserId

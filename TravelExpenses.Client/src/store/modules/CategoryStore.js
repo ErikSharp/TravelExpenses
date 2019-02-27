@@ -10,16 +10,56 @@ function initialState() {
     categories: [],
     lossGainCategory: {},
     sampleCategories: [
-      'Transportation',
-      'Dining',
-      'Groceries',
-      'Entertainment',
-      'Accommodations',
-      'Utilities',
-      'Medical',
-      'Fees',
-      'Deposit',
-      'Non-trip'
+      {
+        categoryName: 'Transportation',
+        icon: 'commute',
+        color: 0x3f51b5
+      },
+      {
+        categoryName: 'Dining',
+        icon: 'fastfood',
+        color: 0xff9800
+      },
+      {
+        categoryName: 'Groceries',
+        icon: 'local_grocery_store',
+        color: 0x388e3c
+      },
+      {
+        categoryName: 'Entertainment',
+        icon: 'theaters',
+        color: 0xf06292
+      },
+      {
+        categoryName: 'Accommodations',
+        icon: 'local_hotel',
+        color: 0xba68c8
+      },
+      {
+        categoryName: 'Utilities',
+        icon: 'power',
+        color: 0x66bb6a
+      },
+      {
+        categoryName: 'Medical',
+        icon: 'local_hospital',
+        color: 0xe53935
+      },
+      {
+        categoryName: 'Fees',
+        icon: 'local_atm',
+        color: 0x64b5f6
+      },
+      {
+        categoryName: 'Deposit',
+        icon: 'attach_money',
+        color: 0x4dd0e1
+      },
+      {
+        categoryName: 'Non-trip',
+        icon: 'card_giftcard',
+        color: 0xf57c00
+      }
     ]
   }
 }
@@ -77,7 +117,7 @@ export default {
             'showSaveMessage',
             `${
               newCategories.length === 1
-                ? newCategories[0] + ' has'
+                ? newCategories[0].categoryName + ' has'
                 : newCategories.length + ' categories have'
             } been saved`,
             {

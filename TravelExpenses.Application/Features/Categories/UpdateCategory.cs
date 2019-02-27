@@ -19,12 +19,12 @@ namespace TravelExpenses.Application.Features.Categories
     {
         public class Query : IRequest<CategoryOut[]>
         {
-            public Query(Category category)
+            public Query(CategoryUpdateIn category)
             {
                 Category = category;
             }
 
-            public Category Category { get; }
+            public CategoryUpdateIn Category { get; }
         }
 
         public class Handler : IRequestHandler<Query, CategoryOut[]>
@@ -51,6 +51,8 @@ namespace TravelExpenses.Application.Features.Categories
                 if (category != null)
                 {
                     category.CategoryName = request.Category.CategoryName;
+                    category.Icon = request.Category.Icon;
+                    category.Color = request.Category.Color;
                     await context.SaveChangesAsync().ConfigureAwait(false);
                 }
                 else

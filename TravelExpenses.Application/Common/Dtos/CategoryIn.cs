@@ -4,8 +4,8 @@ using System.Text;
 
 namespace TravelExpenses.Application.Common.Dtos
 {
-    public class CategoryOut : CategoryBase
+    public class CategoryIn : CategoryBase
     {
-        public int Id { get; set; }        
+        public int UserId { get; set; }
     }
 }

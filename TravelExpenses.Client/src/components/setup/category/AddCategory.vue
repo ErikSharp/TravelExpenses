@@ -13,14 +13,7 @@
     ></v-text-field>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
-        <v-btn
-          dark
-          color="primary"
-          :disabled="$v.$invalid"
-          :loading="busy"
-          @click="add"
-          >Add</v-btn
-        >
+        <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
     </v-flex>
@@ -64,7 +57,11 @@ export default {
       this.$emit('cancel')
     },
     add() {
-      this.$store.dispatch('Category/addCategories', [this.category])
+      this.$store.dispatch('Category/addCategories', [
+        {
+          categoryName: this.category
+        }
+      ])
     }
   },
   computed: {

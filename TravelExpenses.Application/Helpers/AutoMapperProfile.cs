@@ -58,6 +58,8 @@ namespace TravelExpenses.Application.Helpers
             CreateMap<Currency, CurrencyOut>();
             CreateMap<Keyword, KeywordOut>();
             CreateMap<User, UserOut>();
+            CreateMap<CategoryIn, Category>();
+            CreateMap<Category, CategoryOut>();
 
             CreateMap<Location, LocationOut>()
                 .ForMember(dest => dest.CountryName,

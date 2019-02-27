@@ -18,12 +18,12 @@ namespace TravelExpenses.Application.Features.Categories
     {
         public class Query : IRequest<CategoryOut[]>
         {
-            public Query(Category[] categories)
+            public Query(CategoryIn[] categories)
             {
                 Categories = categories;
             }
 
-            public Category[] Categories { get; }
+            public CategoryIn[] Categories { get; }
         }
 
         public class Handler : IRequestHandler<Query, CategoryOut[]>
@@ -41,18 +41,19 @@ namespace TravelExpenses.Application.Features.Categories
 
             public async Task<CategoryOut[]> Handle(Query request, CancellationToken cancellationToken)
             {
-                context.Categories.AddRange(request.Categories);
+                var categories = request.Categories.Select(c => mapper.Map<Category>(c));
+                context.Categories.AddRange(categories);
                 await context.SaveChangesAsync().ConfigureAwait(false);
 
                 var userId = request.Categories.First().UserId;
 
-                var categories = await context.Categories
+                var allCategories = await context.Categories
                     .Where(c => c.UserId == userId)
                     .Include(c => c.User)
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                return categories.Select(c => mapper.Map<CategoryOut>(c)).ToArray();
+                return allCategories.Select(c => mapper.Map<CategoryOut>(c)).ToArray();
             }
         }
 
@@ -63,11 +64,12 @@ namespace TravelExpenses.Application.Features.Categories
                 RuleForEach(c => c.Categories).SetValidator(new CategoryValidator());
             }
 
-            public class CategoryValidator : AbstractValidator<Category>
+            public class CategoryValidator : AbstractValidator<CategoryIn>
             {
                 public CategoryValidator()
                 {
                     RuleFor(c => c.CategoryName).NotEmpty().Length(3, 255);
+                    RuleFor(c => c.Icon).MaximumLength(40);
                 }
             }            
         }        

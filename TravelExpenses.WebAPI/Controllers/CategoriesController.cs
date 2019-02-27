@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.Categories;
 using TravelExpenses.Domain.Entities;
 using TravelExpenses.WebAPI.Extensions;
@@ -38,27 +39,31 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]string[] categoryNames)
+            [FromBody]CategoryIn[] categories)
         {
             var userId = User.Claims.GetUserId();
-            var categories = categoryNames.Select(n => new Category() { CategoryName = n, UserId = userId }).ToArray();
-            var categoryStrings = await mediator.Send(new CreateCategory.Query(categories)).ConfigureAwait(false);
+            foreach (var cat in categories)
+            {
+                cat.UserId = userId;
+            }
+
+            var results = await mediator.Send(new CreateCategory.Query(categories)).ConfigureAwait(false);
 
             return Created(
                 new Uri(Request.Path, UriKind.Relative),
-                categoryStrings);
+                results);
         }
 
         [HttpPut]
         public async Task<IActionResult> Put(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]Category category)
+            [FromBody]CategoryUpdateIn category)
         {
             var userId = User.Claims.GetUserId();
             category.UserId = userId;
-            var categoryStrings = await mediator.Send(new UpdateCategory.Query(category)).ConfigureAwait(false);
+            var results = await mediator.Send(new UpdateCategory.Query(category)).ConfigureAwait(false);
 
-            return Ok(categoryStrings);
+            return Ok(results);
         }
     }
 }
