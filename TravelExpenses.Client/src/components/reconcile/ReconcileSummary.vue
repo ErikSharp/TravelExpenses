@@ -2,12 +2,15 @@
   <v-container>
     <v-card>
       <v-card-title class="pb-0">
-        <v-avatar class="mr-2" size="55" color="primary">
-          <v-icon dark large>description</v-icon>
-        </v-avatar>
-        <h3>
-          {{ `Summary for ${location.locationName} (${currency.isoCode})` }}
-        </h3>
+        <v-layout row align-center>
+          <v-avatar class="mr-2" size="55" color="primary">
+            <v-icon dark large>description</v-icon>
+          </v-avatar>
+          <div class="ml-1">
+            <h3>Reconcile summary for:</h3>
+            <h4>{{ `${location.locationName} (${currency.isoCode})` }}</h4>
+          </div>
+        </v-layout>
       </v-card-title>
       <v-card-text>
         <v-divider class="mb-3"></v-divider>
