@@ -39,18 +39,15 @@ export default {
     }
   },
   actions: {
-    checkBaseRequirements({ state, commit, dispatch }, callback) {
+    checkBaseRequirements({ state, commit, dispatch }) {
       if (!state.loaded) {
         let locations = dispatch('Location/load', null, { root: true })
         let keywords = dispatch('Keyword/load', null, { root: true })
         let categories = dispatch('Category/load', null, { root: true })
 
-        Promise.all([locations, keywords, categories]).then(() => {
+        return Promise.all([locations, keywords, categories]).then(() => {
           commit('SET_LOADED')
-          callback()
         })
-      } else {
-        callback()
       }
     },
     nextWindow({ commit, state, rootState }) {
