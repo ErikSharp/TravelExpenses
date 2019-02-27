@@ -8,7 +8,8 @@
           </v-avatar>
           <div class="ml-1">
             <h3>Reconcile summary for:</h3>
-            <h4>{{ `${location.locationName} (${currency.isoCode})` }}</h4>
+            <h4>{{ `${location.locationName}, ${findCountry(location.countryId).countryName}` }}</h4>
+            <h4>{{ `${currency.isoCode} - ${currency.currencyName}` }}</h4>
           </div>
         </v-layout>
       </v-card-title>
@@ -134,7 +135,8 @@ export default {
       'haveNetGain',
       'numbersMatch',
       'resultString'
-    ])
+    ]),
+    ...mapGetters('Country', ['findCountry'])
   }
 }
 </script>
