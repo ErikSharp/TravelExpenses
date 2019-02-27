@@ -10,6 +10,8 @@ namespace TravelExpenses.Domain.Entities
         public string CategoryName { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public int Color { get; set; }
+        public string Icon { get; set; }
 
         public ICollection<Transaction> Transactions { get; private set; }
     }

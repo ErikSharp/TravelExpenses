@@ -16,8 +16,17 @@ namespace TravelExpenses.Persistence.Configurations
             builder.HasIndex(c => new { c.CategoryName, c.UserId }).IsUnique(true);
 
             builder.Property(e => e.CategoryName)
-                    .HasMaxLength(255)
-                    .IsRequired();
+                .HasMaxLength(255)
+                .IsRequired();
+
+            builder.Property(c => c.Color)
+                .HasDefaultValue(0x6495ed)                
+                .IsRequired();
+
+            builder.Property(c => c.Icon)
+                .HasDefaultValue("live_help")
+                .HasMaxLength(40)
+                .IsRequired();
         }
     }
 }
