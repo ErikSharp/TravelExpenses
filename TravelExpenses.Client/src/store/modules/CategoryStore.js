@@ -9,6 +9,7 @@ function initialState() {
     editCategoryBusy: false,
     categories: [],
     lossGainCategory: {},
+    chosenIconAndColor: null,
     sampleCategories: [
       {
         categoryName: 'Transportation',
@@ -89,6 +90,12 @@ export default {
 
       state.lossGainCategory = lossGains[0]
       state.categories = categories
+    },
+    SET_CHOSEN_ICON_AND_COLOR(state, iconColor) {
+      state.chosenIconAndColor = iconColor
+    },
+    CLEAR_CHOSEN_ICON_AND_COLOR(state) {
+      state.chosenIconAndColor = null
     }
   },
   actions: {
@@ -107,12 +114,20 @@ export default {
           commit('SET_BUSY', false)
         })
     },
+    setChosenIconAndColor({ commit }, iconColor) {
+      commit('SET_CHOSEN_ICON_AND_COLOR', iconColor)
+    },
+    clearChosenIconAndColor({ commit }) {
+      commit('CLEAR_CHOSEN_ICON_AND_COLOR')
+    },
     addCategories({ dispatch, commit }, newCategories) {
       commit('SET_ADD_CATEGORY_BUSY', true)
 
       return AxiosService.addCategories(newCategories)
         .then(response => {
+          commit('CLEAR_CHOSEN_ICON_AND_COLOR')
           commit('SET_CATEGORIES', response.data)
+
           dispatch(
             'showSaveMessage',
             `${
@@ -137,7 +152,9 @@ export default {
 
       return AxiosService.editCategory(category)
         .then(response => {
+          commit('CLEAR_CHOSEN_ICON_AND_COLOR')
           commit('SET_CATEGORIES', response.data)
+
           dispatch(
             'showSaveMessage',
             `${category.categoryName} has been updated`,

@@ -22,7 +22,7 @@ export default {
     }
   },
   actions: {
-    setSetupWindow({ dispatch, commit, rootState }, window) {
+    setSetupWindow({ dispatch, commit, rootState, state }, window) {
       switch (window) {
         case SetupWindow.locations:
           dispatch('setTitle', 'Locations', { root: true })
@@ -34,8 +34,10 @@ export default {
           dispatch('Keyword/load', null, { root: true })
           break
         case SetupWindow.categories:
-          dispatch('setTitle', 'Categories', { root: true })
-          dispatch('Category/load', null, { root: true })
+          if (state.setupWindow != SetupWindow.colorIcon) {
+            dispatch('setTitle', 'Categories', { root: true })
+            dispatch('Category/load', null, { root: true })
+          }
           break
         case SetupWindow.navigation:
           dispatch('setTitle', firstLetterUpper(rootState.homeView), {

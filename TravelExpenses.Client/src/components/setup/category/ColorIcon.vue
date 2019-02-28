@@ -31,7 +31,7 @@
             <icon-selector
               :iconData="{
                 id: i,
-                iconColor: color,
+                iconColor: hexColorString,
                 iconString: iconSamples[i - 1]
               }"
               :selectedId="selectedIcon.id"
@@ -40,22 +40,17 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <!-- <v-text-field
-        v-model="selectedIcon.iconString"
-        label="Enter category name"
-        box
-        background-color="white"
-        color="primary"
-      ></v-text-field>-->
     </v-card>
     <v-layout row justify-center class="mt-2">
-      <v-btn :disabled="selectedIcon.id === 0" dark color="primary">CONFIRM</v-btn>
+      <v-btn :disabled="selectedIcon.id === 0" dark color="primary" @click="confirm">CONFIRM</v-btn>
+      <v-btn dark color="primary" @click="cancel">CANCEL</v-btn>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 import IconSelector from '@/components/setup/category/IconSelector.vue'
+import SetupWindow from '@/common/enums/SetupWindows.js'
 
 const padLeadingZero = hex => {
   if (hex.length < 2) {
@@ -109,15 +104,40 @@ export default {
   methods: {
     onIconSelection(iconData) {
       this.selectedIcon = iconData
+    },
+    confirm() {
+      this.$store
+        .dispatch('Category/setChosenIconAndColor', {
+          iconColor: this.colorInt,
+          iconHexColor: this.hexColorString,
+          iconString: this.selectedIcon.iconString
+        })
+        .then(() => {
+          this.$store.dispatch(
+            'SetupData/setSetupWindow',
+            SetupWindow.categories
+          )
+        })
+    },
+    cancel() {
+      this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.categories)
     }
   },
   computed: {
-    color() {
+    hexColorString() {
       let red = padLeadingZero(this.red.toString(16))
       let green = padLeadingZero(this.green.toString(16))
       let blue = padLeadingZero(this.blue.toString(16))
 
       const result = `#${red}${green}${blue}`
+      return result
+    },
+    colorInt() {
+      let red = padLeadingZero(this.red.toString(16))
+      let green = padLeadingZero(this.green.toString(16))
+      let blue = padLeadingZero(this.blue.toString(16))
+
+      const result = parseInt(`${red}${green}${blue}`, 16)
       return result
     }
   }

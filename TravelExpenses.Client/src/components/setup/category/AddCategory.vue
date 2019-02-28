@@ -13,7 +13,14 @@
     ></v-text-field>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
-        <v-btn dark color="primary" @click="navColorIcon">Color & Icon</v-btn>
+        <v-btn
+          v-if="chosenIconAndColor"
+          :color="chosenIconAndColor.iconHexColor"
+          @click="navColorIcon"
+        >
+          <v-icon class="white--text">{{ chosenIconAndColor.iconString }}</v-icon>
+        </v-btn>
+        <v-btn v-else dark color="primary" @click="navColorIcon">Color & Icon</v-btn>
         <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
@@ -25,6 +32,7 @@
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { LossGain } from '@/common/constants/StringConstants.js'
 import SetupWindow from '@/common/enums/SetupWindows.js'
+import { mapState } from 'vuex'
 
 const categoryMustBeUnique = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.categoryName.toLowerCase())
@@ -44,6 +52,9 @@ export default {
         maxLength: maxLength(255),
         categoryMustBeUnique,
         categoryMustNotBeLossGain
+      },
+      chosenIconAndColor: {
+        required
       }
     }
 
@@ -59,17 +70,21 @@ export default {
       this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.colorIcon)
     },
     cancel() {
+      this.$store.dispatch('Category/clearChosenIconAndColor')
       this.$emit('cancel')
     },
     add() {
       this.$store.dispatch('Category/addCategories', [
         {
-          categoryName: this.category
+          categoryName: this.category,
+          color: this.chosenIconAndColor.iconColor,
+          icon: this.chosenIconAndColor.iconString
         }
       ])
     }
   },
   computed: {
+    ...mapState('Category', ['chosenIconAndColor']),
     categoryErrors() {
       const errors = []
 
@@ -111,4 +126,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+>>> .v-text-field__details {
+  margin-bottom: 0 !important;
+}
+</style>

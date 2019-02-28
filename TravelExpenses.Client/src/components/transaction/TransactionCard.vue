@@ -92,12 +92,8 @@ export default {
           }
         }
 
-        var hex = category.color.toString(16)
-        if (hex.length < 2) {
-          hex = '0' + hex
-        }
-
-        return '#' + hex
+        const HTMLcolor = category.color.toString(16)
+        return '#000000'.substring(0, 7 - HTMLcolor.length) + HTMLcolor
       } else {
         return '#000000'
       }
