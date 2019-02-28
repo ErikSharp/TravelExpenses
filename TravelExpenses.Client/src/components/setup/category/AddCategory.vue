@@ -13,6 +13,7 @@
     ></v-text-field>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
+        <v-btn dark color="primary" @click="navColorIcon">Color & Icon</v-btn>
         <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
@@ -23,6 +24,7 @@
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { LossGain } from '@/common/constants/StringConstants.js'
+import SetupWindow from '@/common/enums/SetupWindows.js'
 
 const categoryMustBeUnique = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.categoryName.toLowerCase())
@@ -53,6 +55,9 @@ export default {
     }
   },
   methods: {
+    navColorIcon() {
+      this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.colorIcon)
+    },
     cancel() {
       this.$emit('cancel')
     },
