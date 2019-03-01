@@ -18,10 +18,21 @@
           :color="chosenIconAndColor.iconHexColor"
           @click="navColorIcon"
         >
-          <v-icon class="white--text">{{ chosenIconAndColor.iconString }}</v-icon>
+          <v-icon class="white--text">{{
+            chosenIconAndColor.iconString
+          }}</v-icon>
         </v-btn>
-        <v-btn v-else dark color="primary" @click="navColorIcon">Color & Icon</v-btn>
-        <v-btn dark color="primary" :disabled="$v.$invalid" :loading="busy" @click="add">Add</v-btn>
+        <v-btn v-else dark color="primary" @click="navColorIcon"
+          >Color & Icon</v-btn
+        >
+        <v-btn
+          dark
+          color="primary"
+          :disabled="$v.$invalid"
+          :loading="busy"
+          @click="add"
+          >Add</v-btn
+        >
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
     </v-flex>
@@ -96,14 +107,17 @@ export default {
             this.$v.category.$params.maxLength.max
           } characters`
         )
+
       !this.$v.category.minLength &&
         errors.push(
           `The category must be a minimum of ${
             this.$v.category.$params.minLength.min
           } characters`
         )
+
       !this.$v.category.categoryMustBeUnique &&
         errors.push('The category must be unique')
+
       !this.$v.category.categoryMustNotBeLossGain &&
         errors.push(`The category name must not be ${LossGain}`)
 
