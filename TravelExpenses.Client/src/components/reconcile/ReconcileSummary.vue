@@ -22,9 +22,9 @@
           <v-flex shrink>
             <h3 class="text-xs-right">
               {{
-              reconcileSummary.totalWithdrawn
-              ? formatNumber(reconcileSummary.totalWithdrawn)
-              : ''
+                reconcileSummary.totalWithdrawn
+                  ? formatNumber(reconcileSummary.totalWithdrawn)
+                  : ''
               }}
             </h3>
           </v-flex>
@@ -36,9 +36,9 @@
           <v-flex shrink>
             <h3>
               {{
-              reconcileSummary.totalSpent
-              ? formatNumber(reconcileSummary.totalSpent)
-              : '0'
+                reconcileSummary.totalSpent
+                  ? formatNumber(reconcileSummary.totalSpent)
+                  : '0'
               }}
             </h3>
           </v-flex>
@@ -80,7 +80,9 @@
           <h3>You cash on-hand is correct.</h3>
           <v-layout row>
             <v-flex grow>
-              <h2 style="display: inline" class="green--text">Reconciliation complete</h2>
+              <h2 style="display: inline" class="green--text">
+                Reconciliation complete
+              </h2>
             </v-flex>
             <v-flex shrink>
               <v-icon color="green">done_outline</v-icon>
@@ -90,17 +92,23 @@
         <div v-else>
           <v-layout row align-center>
             <v-flex grow>
-              <h3 class="red--text mr-2" style="display: inline">{{ resultString }}</h3>
+              <h3 class="red--text mr-2" style="display: inline">
+                {{ resultString }}
+              </h3>
             </v-flex>
             <v-flex shrink>
-              <v-icon large color="red">{{ haveNetGain ? 'trending_up' : 'trending_down' }}</v-icon>
+              <v-icon large color="red">{{
+                haveNetGain ? 'trending_up' : 'trending_down'
+              }}</v-icon>
             </v-flex>
           </v-layout>
         </div>
       </v-card-text>
     </v-card>
     <v-layout v-if="!numbersMatch" row justify-center>
-      <v-btn dark color="primary" class="mt-3" @click="navToInvestigation">Investigate</v-btn>
+      <v-btn dark color="primary" class="mt-3" @click="navToInvestigation"
+        >Investigate</v-btn
+      >
     </v-layout>
   </v-container>
 </template>

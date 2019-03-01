@@ -5,16 +5,18 @@
         <v-layout row>
           <v-flex>
             <v-avatar class="mr-3" size="55" color="primary">
-              <v-icon dark large>{{ haveNetGain ? 'trending_up' : 'trending_down' }}</v-icon>
+              <v-icon dark large>{{
+                haveNetGain ? 'trending_up' : 'trending_down'
+              }}</v-icon>
             </v-avatar>
           </v-flex>
           <v-flex>
             <h2>Loss / Gain Adjustment</h2>
             <p>
               {{
-              `${resultString} and are recording a ${
-              haveNetGain ? 'gain' : 'loss'
-              }.`
+                `${resultString} and are recording a ${
+                  haveNetGain ? 'gain' : 'loss'
+                }.`
               }}
             </p>
           </v-flex>
@@ -41,13 +43,15 @@
         :disabled="$v.$invalid || saveTransactionBusy || reconcileBusy"
         :loading="saveTransactionBusy"
         @click="saveAdjustment"
-      >Save</v-btn>
+        >Save</v-btn
+      >
       <v-btn
         dark
         color="primary"
         :disabled="saveTransactionBusy || reconcileBusy"
         @click="returnToSummary"
-      >Return to Summary</v-btn>
+        >Return to Summary</v-btn
+      >
     </v-layout>
   </v-container>
 </template>

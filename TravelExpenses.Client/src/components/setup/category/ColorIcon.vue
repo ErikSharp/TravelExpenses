@@ -8,22 +8,40 @@
           <p class="ma-0 pa-0">Red</p>
         </v-flex>
         <v-flex xs10>
-          <v-slider v-model="red" max="255" hide-details color="#F00" class="ma-0 pa-0 mr-3"></v-slider>
+          <v-slider
+            v-model="red"
+            max="255"
+            hide-details
+            color="#F00"
+            class="ma-0 pa-0 mr-3"
+          ></v-slider>
         </v-flex>
         <v-flex xs2>
           <p class="ma-0 pa-0">Green</p>
         </v-flex>
         <v-flex xs10>
-          <v-slider v-model="green" max="255" hide-details color="#0F0" class="ma-0 pa-0 mr-3"></v-slider>
+          <v-slider
+            v-model="green"
+            max="255"
+            hide-details
+            color="#0F0"
+            class="ma-0 pa-0 mr-3"
+          ></v-slider>
         </v-flex>
         <v-flex xs2>
           <p class="ma-0 pa-0">Blue</p>
         </v-flex>
         <v-flex xs10>
-          <v-slider v-model="blue" max="255" hide-details color="#00F" class="ma-0 pa-0 mr-3"></v-slider>
+          <v-slider
+            v-model="blue"
+            max="255"
+            hide-details
+            color="#00F"
+            class="ma-0 pa-0 mr-3"
+          ></v-slider>
         </v-flex>
       </v-layout>
-      <v-divider class="my-2"/>
+      <v-divider class="my-2" />
       <h3 class="mb-2">Icon</h3>
       <v-container grid-list-md class="ma-0 pa-0">
         <v-layout row wrap>
@@ -42,7 +60,13 @@
       </v-container>
     </v-card>
     <v-layout row justify-center class="mt-2">
-      <v-btn :disabled="selectedIcon.id === 0" dark color="primary" @click="confirm">CONFIRM</v-btn>
+      <v-btn
+        :disabled="selectedIcon.id === 0"
+        dark
+        color="primary"
+        @click="confirm"
+        >CONFIRM</v-btn
+      >
       <v-btn dark color="primary" @click="cancel">CANCEL</v-btn>
     </v-layout>
   </v-container>
@@ -144,5 +168,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

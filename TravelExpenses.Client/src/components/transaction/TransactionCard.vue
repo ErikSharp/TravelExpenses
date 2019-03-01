@@ -33,9 +33,9 @@
               <p>
                 <strong>Amount:</strong>
                 {{
-                `${amountString} ${getCurrencyIsoString(
-                transaction.currencyId
-                )}`
+                  `${amountString} ${getCurrencyIsoString(
+                    transaction.currencyId
+                  )}`
                 }}
               </p>
               <div>
@@ -46,7 +46,8 @@
                   small
                   v-for="(id, i) in transaction.keywordIds"
                   :key="i"
-                >{{ getKeywordName(id) }}</v-chip>
+                  >{{ getKeywordName(id) }}</v-chip
+                >
               </div>
             </v-layout>
           </v-card-text>

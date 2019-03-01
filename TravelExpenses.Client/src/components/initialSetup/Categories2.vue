@@ -3,7 +3,9 @@
     <v-flex xs12 class="mb-3">
       <v-layout row align-center>
         <v-avatar size="55" class="mr-3 elevation-4">
-          <v-icon large class="primary white--text">collections_bookmark</v-icon>
+          <v-icon large class="primary white--text"
+            >collections_bookmark</v-icon
+          >
         </v-avatar>
         <h1>Categories</h1>
       </v-layout>
@@ -13,9 +15,20 @@
       to use.
     </p>
     <p>Refine the selection below to your liking:</p>
-    <v-select :items="categories" v-model="chosenCategories" label="Categories" chips solo multiple>
+    <v-select
+      :items="categories"
+      v-model="chosenCategories"
+      label="Categories"
+      chips
+      solo
+      multiple
+    >
       <template slot="selection" slot-scope="data">
-        <v-chip :selected="data.selected" close @input="removeCategory(data.item)">
+        <v-chip
+          :selected="data.selected"
+          close
+          @input="removeCategory(data.item)"
+        >
           <span>{{ data.item.categoryName }}</span>
         </v-chip>
       </template>
@@ -39,7 +52,8 @@
           :disabled="!chosenCategories.length"
           color="primary"
           @click="next"
-        >NEXT</v-btn>
+          >NEXT</v-btn
+        >
       </v-layout>
     </v-flex>
   </v-card>

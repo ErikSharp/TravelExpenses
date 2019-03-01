@@ -1,6 +1,11 @@
 <template>
   <div class="root">
-    <v-avatar size="56" tile :color="selected ? 'primary' : 'white'" @click="onIconSelection()">
+    <v-avatar
+      size="56"
+      tile
+      :color="selected ? 'primary' : 'white'"
+      @click="onIconSelection()"
+    >
       <v-avatar :color="iconData.iconColor">
         <v-icon class="white--text">{{ iconData.iconString }}</v-icon>
       </v-avatar>

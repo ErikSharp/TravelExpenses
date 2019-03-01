@@ -1,13 +1,14 @@
 <template>
   <div>
-    <slot/>
+    <slot />
     <v-btn
       :loading="reconcileBusy"
       class="summary-btn elevation-10"
       small
       fixed
       @click="returnToSummary"
-    >{{ buttonText }}</v-btn>
+      >{{ buttonText }}</v-btn
+    >
   </div>
 </template>
 

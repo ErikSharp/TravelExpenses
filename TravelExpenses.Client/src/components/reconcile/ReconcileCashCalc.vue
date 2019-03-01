@@ -43,14 +43,10 @@
       @blur="$v.location.$touch()"
     >
       <template slot="selection" slot-scope="data">
-        {{
-        getLocationString(data.item)
-        }}
+        {{ getLocationString(data.item) }}
       </template>
       <template slot="item" slot-scope="data">
-        {{
-        getLocationString(data.item)
-        }}
+        {{ getLocationString(data.item) }}
       </template>
     </v-select>
     <v-layout justify-end align-center>
@@ -68,7 +64,8 @@
         :disabled="$v.$invalid"
         dark
         class="primary mt-5"
-      >RECONCILE</v-btn>
+        >RECONCILE</v-btn
+      >
     </v-layout>
   </v-container>
 </template>
