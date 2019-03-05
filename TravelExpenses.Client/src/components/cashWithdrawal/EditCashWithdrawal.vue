@@ -327,6 +327,7 @@ export default {
         this.date = val.transDate
         this.amount = val.amount
         this.currency = this.currencies.find(c => c.id === val.currencyId)
+        this.location = this.locations.find(l => l.id === val.locationId)
         this.memo = val.memo
         this.$v.$reset()
       }
