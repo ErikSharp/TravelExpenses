@@ -45,7 +45,7 @@ export default {
     },
     returnToRecent() {
       this.transactionWindow = 1
-      this.setTitle('Transactions')
+      this.setTitle('Recent Transactions')
       this.scrollToTop()
     },
     setTitle(title) {
