@@ -57,7 +57,7 @@
           </v-btn>
           <v-btn
             flat
-            :disabled="!transactionSelected"
+            :disabled="!transactionSelected || lossGainSelected"
             class="primary my-3"
             @click="editTransaction"
           >
@@ -72,7 +72,7 @@
             <v-btn
               slot="activator"
               flat
-              :disabled="!transactionSelected"
+              :disabled="!transactionSelected || lossGainSelected"
               class="primary my-3"
             >
               <v-icon dark>delete</v-icon>Delete
@@ -162,16 +162,24 @@ export default {
     ...mapState('Transaction', [
       'recentTransactionsBusy',
       'noMoreTransactions',
-      'saveTransactionBusy'
+      'saveTransactionBusy',
+      'selectedTransaction'
     ]),
+    ...mapState('Category', ['lossGainCategory']),
     recentTransactions() {
       return groupBy(
         this.$store.state.Transaction.recentTransactions,
         t => t.transDate
       )
     },
+    lossGainSelected() {
+      return (
+        this.transactionSelected &&
+        this.selectedTransaction.categoryId === this.lossGainCategory.id
+      )
+    },
     transactionSelected() {
-      return !!this.$store.state.Transaction.selectedTransaction.title
+      return !!this.selectedTransaction.title
     }
   },
   watch: {
