@@ -1,6 +1,9 @@
 import AxiosService from '@/services/AxiosService.js'
 import { LossGain } from '@/common/constants/StringConstants.js'
 import remove from 'lodash/remove'
+import clone from 'lodash/clone'
+
+const cornflowerBlue = 0x6495ed
 
 function initialState() {
   return {
@@ -8,8 +11,8 @@ function initialState() {
     addCategoryBusy: false,
     editCategoryBusy: false,
     categories: [],
-    lossGainCategory: {},
-    chosenIconAndColor: null,
+    lossGainCategory: null,
+    editCategory: null,
     sampleCategories: [
       {
         categoryName: 'Transportation',
@@ -91,11 +94,11 @@ export default {
       state.lossGainCategory = lossGains[0]
       state.categories = categories
     },
-    SET_CHOSEN_ICON_AND_COLOR(state, iconColor) {
-      state.chosenIconAndColor = iconColor
+    SET_EDIT_CATEGORY(state, category) {
+      state.editCategory = category
     },
-    CLEAR_CHOSEN_ICON_AND_COLOR(state) {
-      state.chosenIconAndColor = null
+    CLEAR_EDIT_CATEGORY(state) {
+      state.editCategory = null
     }
   },
   actions: {
@@ -114,18 +117,21 @@ export default {
           commit('SET_BUSY', false)
         })
     },
-    setChosenIconAndColor({ commit }, iconColor) {
-      commit('SET_CHOSEN_ICON_AND_COLOR', iconColor)
+    setEditCategory({ commit }, category) {
+      commit('SET_EDIT_CATEGORY', category)
     },
-    clearChosenIconAndColor({ commit }) {
-      commit('CLEAR_CHOSEN_ICON_AND_COLOR')
+    clearEditCategory({ commit }) {
+      commit('CLEAR_EDIT_CATEGORY')
+    },
+    addCategory({ dispatch, state }) {
+      dispatch('addCategories', [state.editCategory])
     },
     addCategories({ dispatch, commit }, newCategories) {
       commit('SET_ADD_CATEGORY_BUSY', true)
 
       return AxiosService.addCategories(newCategories)
         .then(response => {
-          commit('CLEAR_CHOSEN_ICON_AND_COLOR')
+          commit('CLEAR_EDIT_CATEGORY')
           commit('SET_CATEGORIES', response.data)
 
           dispatch(
@@ -147,21 +153,18 @@ export default {
           commit('SET_ADD_CATEGORY_BUSY', false)
         })
     },
-    editCategory({ dispatch, commit }, category) {
+    editCategory({ dispatch, commit, state }) {
       commit('SET_EDIT_CATEGORY_BUSY', true)
 
-      return AxiosService.editCategory(category)
+      return AxiosService.editCategory(state.editCategory)
         .then(response => {
-          commit('CLEAR_CHOSEN_ICON_AND_COLOR')
+          let name = state.editCategory.categoryName
+          commit('CLEAR_EDIT_CATEGORY')
           commit('SET_CATEGORIES', response.data)
 
-          dispatch(
-            'showSaveMessage',
-            `${category.categoryName} has been updated`,
-            {
-              root: true
-            }
-          )
+          dispatch('showSaveMessage', `${name} has been updated`, {
+            root: true
+          })
         })
         .catch(error => {
           dispatch('showAxiosErrorMessage', error, { root: true })
@@ -169,6 +172,69 @@ export default {
         .then(() => {
           commit('SET_EDIT_CATEGORY_BUSY', false)
         })
+    },
+    setName({ state, dispatch }, name) {
+      let editCategory = {}
+
+      if (!state.editCategory) {
+        editCategory = {
+          categoryName: name,
+          color: cornflowerBlue,
+          icon: ''
+        }
+      } else {
+        editCategory = clone(state.editCategory)
+        editCategory.categoryName = name
+      }
+      dispatch('setEditCategory', editCategory)
+    },
+    setRed({ state, dispatch }, red) {
+      let editCategory = {}
+
+      if (!state.editCategory) {
+        editCategory = {
+          categoryName: '',
+          color: (red << 16) | cornflowerBlue,
+          icon: ''
+        }
+      } else {
+        editCategory = clone(state.editCategory)
+        editCategory.color = editCategory.color & 0x00ffff
+        editCategory.color = (red << 16) | editCategory.color
+      }
+      dispatch('setEditCategory', editCategory)
+    },
+    setGreen({ state, dispatch }, green) {
+      let editCategory = {}
+
+      if (!state.editCategory) {
+        editCategory = {
+          categoryName: '',
+          color: (green << 8) | cornflowerBlue,
+          icon: ''
+        }
+      } else {
+        editCategory = clone(state.editCategory)
+        editCategory.color = editCategory.color & 0xff00ff
+        editCategory.color = (green << 8) | editCategory.color
+      }
+      dispatch('setEditCategory', editCategory)
+    },
+    setBlue({ state, dispatch }, blue) {
+      let editCategory = {}
+
+      if (!state.editCategory) {
+        editCategory = {
+          categoryName: '',
+          color: blue | cornflowerBlue,
+          icon: ''
+        }
+      } else {
+        editCategory = clone(state.editCategory)
+        editCategory.color = editCategory.color & 0xffff00
+        editCategory.color = blue | editCategory.color
+      }
+      dispatch('setEditCategory', editCategory)
     }
   },
   getters: {
@@ -181,6 +247,35 @@ export default {
       }
 
       return category
+    },
+    editHexColor: state => {
+      if (state.editCategory) {
+        const hex = state.editCategory.color.toString(16)
+        return '#000000'.substring(0, 7 - hex.length) + hex
+      } else {
+        return '#' + cornflowerBlue.toString(16)
+      }
+    },
+    red: state => {
+      if (state.editCategory) {
+        return (state.editCategory.color & 0xff0000) >> 16
+      } else {
+        return (cornflowerBlue & 0xff0000) >> 16
+      }
+    },
+    green: state => {
+      if (state.editCategory) {
+        return (state.editCategory.color & 0x00ff00) >> 8
+      } else {
+        return (cornflowerBlue & 0x00ff00) >> 8
+      }
+    },
+    blue: state => {
+      if (state.editCategory) {
+        return state.editCategory.color & 0x0000ff
+      } else {
+        return cornflowerBlue & 0x0000ff
+      }
     }
   }
 }

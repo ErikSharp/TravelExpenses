@@ -2,21 +2,26 @@
   <div>
     <h2 class="white--text">Edit category</h2>
     <v-text-field
-      v-model.trim="category.categoryName"
-      :error-messages="categoryErrors"
+      v-model.trim="categoryName"
+      :error-messages="categoryNameErrors"
       label="Edit name"
       box
       background-color="white"
       color="primary"
-      @input="$v.category.$touch()"
-      @blur="$v.category.$touch()"
+      @input="$v.categoryName.$touch()"
+      @blur="$v.categoryName.$touch()"
     ></v-text-field>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
+        <v-btn :color="editHexColor" @click="navColorIcon">
+          <v-icon class="white--text">{{
+            editCategory ? editCategory.icon : ''
+          }}</v-icon>
+        </v-btn>
         <v-btn
           dark
           color="primary"
-          :disabled="$v.$invalid"
+          :disabled="!$v.$anyDirty || $v.$invalid"
           :loading="busy"
           @click="edit"
           >Edit</v-btn
@@ -28,79 +33,94 @@
 </template>
 
 <script>
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import CategoryMixin from '@/components/setup/category/CategoryMixin.js'
 
-const categoryMustBeUnique = (value, vm) => {
+const categoryMustBeUniqueOrOriginal = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.categoryName.toLowerCase())
-  return itemsLowered.indexOf(value.categoryName.toLowerCase()) < 0
+
+  let isUnique = itemsLowered.indexOf(value.toLowerCase()) < 0
+  let isOriginal = vm.originalCategoryName
+    ? vm.originalCategoryName == value
+    : true
+  return isUnique || isOriginal
 }
 
 export default {
-  props: {
-    category: Object
+  mixins: [CategoryMixin],
+  data() {
+    return {
+      originalCategoryName: ''
+    }
   },
   validations() {
-    const result = {
-      category: {
-        categoryName: {
-          required,
-          minLength: minLength(3),
-          maxLength: maxLength(255)
-        },
-        categoryMustBeUnique
-      }
-    }
+    const base = this.baseValidations()
+    base.categoryName[
+      'categoryMustBeUniqueOrOriginal'
+    ] = categoryMustBeUniqueOrOriginal
 
-    return result
+    return base
   },
   methods: {
-    cancel() {
-      this.$emit('cancel')
-    },
     edit() {
-      this.$store
-        .dispatch('Category/editCategory', this.category)
-        .then(() => this.$emit('cancel'))
+      this.$store.dispatch('Category/editCategory').then(() => {
+        this.originalCategoryName = ''
+        this.$emit('cancel')
+      })
     }
   },
   computed: {
-    categoryErrors() {
+    categoryName: {
+      get() {
+        return this.$store.state.Category.editCategory
+          ? this.$store.state.Category.editCategory.categoryName
+          : ''
+      },
+      set(val) {
+        if (val && !this.originalCategoryName) {
+          this.originalCategoryName = this.categoryName
+        }
+
+        this.$store.dispatch('Category/setName', val).then(() => {
+          if (val && this.originalCategoryName == val) {
+            this.$v.categoryName.$reset()
+          }
+        })
+      }
+    },
+    categoryNameErrors() {
       const errors = []
 
-      if (!this.$v.category.$dirty) return errors
+      if (!this.$v.categoryName.$dirty) return errors
 
-      !this.$v.category.categoryName.maxLength &&
+      !this.$v.categoryName.maxLength &&
         errors.push(
           `The category can be a maximum of ${
-            this.$v.category.categoryName.$params.maxLength.max
+            this.$v.categoryName.$params.maxLength.max
           } characters`
         )
-      !this.$v.category.categoryName.minLength &&
+
+      !this.$v.categoryName.minLength &&
         errors.push(
           `The category must be a minimum of ${
-            this.$v.category.categoryName.$params.minLength.min
+            this.$v.categoryName.$params.minLength.min
           } characters`
         )
-      !this.$v.category.categoryMustBeUnique &&
-        errors.push('The category must be unique')
 
-      !this.$v.category.categoryName.required &&
-        errors.push('A category is required')
+      !this.$v.categoryName.categoryMustBeUniqueOrOriginal &&
+        errors.push('The category must be unique or the original value')
+
+      !this.$v.categoryName.categoryMustNotBeLossGain &&
+        errors.push(`The category name must not be ${LossGain}`)
+
+      !this.$v.categoryName.required && errors.push('A category is required')
       return errors
-    },
-    items() {
-      return this.$store.state.Category.categories
-    },
-    busy() {
-      return this.$store.state.Category.editCategoryBusy
-    }
-  },
-  watch: {
-    category() {
-      this.$v.$reset()
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+>>> .v-text-field__details {
+  margin-bottom: 0 !important;
+}
+</style>

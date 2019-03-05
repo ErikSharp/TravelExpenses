@@ -49,7 +49,7 @@
             <icon-selector
               :iconData="{
                 id: i,
-                iconColor: hexColorString,
+                iconColor: editHexColor,
                 iconString: iconSamples[i - 1]
               }"
               :selectedId="selectedIcon.id"
@@ -67,7 +67,6 @@
         @click="confirm"
         >CONFIRM</v-btn
       >
-      <v-btn dark color="primary" @click="cancel">CANCEL</v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -75,6 +74,8 @@
 <script>
 import IconSelector from '@/components/setup/category/IconSelector.vue'
 import SetupWindow from '@/common/enums/SetupWindows.js'
+import { mapState, mapGetters } from 'vuex'
+import clone from 'lodash/clone'
 
 const padLeadingZero = hex => {
   if (hex.length < 2) {
@@ -90,9 +91,6 @@ export default {
   },
   data() {
     return {
-      red: 219,
-      green: 57,
-      blue: 168,
       selectedIcon: {
         id: 0,
         iconString: ''
@@ -128,41 +126,40 @@ export default {
   methods: {
     onIconSelection(iconData) {
       this.selectedIcon = iconData
+      let category = clone(this.editCategory)
+      category.icon = iconData.iconString
+      this.$store.dispatch('Category/setEditCategory', category)
     },
     confirm() {
-      this.$store
-        .dispatch('Category/setChosenIconAndColor', {
-          iconColor: this.colorInt,
-          iconHexColor: this.hexColorString,
-          iconString: this.selectedIcon.iconString
-        })
-        .then(() => {
-          this.$store.dispatch(
-            'SetupData/setSetupWindow',
-            SetupWindow.categories
-          )
-        })
-    },
-    cancel() {
       this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.categories)
     }
   },
   computed: {
-    hexColorString() {
-      let red = padLeadingZero(this.red.toString(16))
-      let green = padLeadingZero(this.green.toString(16))
-      let blue = padLeadingZero(this.blue.toString(16))
-
-      const result = `#${red}${green}${blue}`
-      return result
+    ...mapState('Category', ['editCategory']),
+    ...mapGetters('Category', ['editHexColor']),
+    red: {
+      get() {
+        return this.$store.getters['Category/red']
+      },
+      set(val) {
+        this.$store.dispatch('Category/setRed', val)
+      }
     },
-    colorInt() {
-      let red = padLeadingZero(this.red.toString(16))
-      let green = padLeadingZero(this.green.toString(16))
-      let blue = padLeadingZero(this.blue.toString(16))
-
-      const result = parseInt(`${red}${green}${blue}`, 16)
-      return result
+    green: {
+      get() {
+        return this.$store.getters['Category/green']
+      },
+      set(val) {
+        this.$store.dispatch('Category/setGreen', val)
+      }
+    },
+    blue: {
+      get() {
+        return this.$store.getters['Category/blue']
+      },
+      set(val) {
+        this.$store.dispatch('Category/setBlue', val)
+      }
     }
   }
 }

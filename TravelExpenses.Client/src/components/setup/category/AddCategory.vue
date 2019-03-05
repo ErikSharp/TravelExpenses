@@ -2,25 +2,23 @@
   <div>
     <h2 class="white--text">Add additional category</h2>
     <v-text-field
-      v-model.trim="category"
-      :error-messages="categoryErrors"
+      v-model.trim="categoryName"
+      :error-messages="categoryNameErrors"
       label="Enter category name"
       box
       background-color="white"
       color="primary"
-      @input="$v.category.$touch()"
-      @blur="$v.category.$touch()"
+      @input="$v.categoryName.$touch()"
+      @blur="$v.categoryName.$touch()"
     ></v-text-field>
     <v-flex xs8 offset-xs2>
       <v-layout row justify-space-around>
         <v-btn
-          v-if="chosenIconAndColor"
-          :color="chosenIconAndColor.iconHexColor"
+          v-if="editCategory && editCategory.icon"
+          :color="editHexColor"
           @click="navColorIcon"
         >
-          <v-icon class="white--text">{{
-            chosenIconAndColor.iconString
-          }}</v-icon>
+          <v-icon class="white--text">{{ editCategory.icon }}</v-icon>
         </v-btn>
         <v-btn v-else dark color="primary" @click="navColorIcon"
           >Color & Icon</v-btn
@@ -40,101 +38,64 @@
 </template>
 
 <script>
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
-import { LossGain } from '@/common/constants/StringConstants.js'
-import SetupWindow from '@/common/enums/SetupWindows.js'
-import { mapState } from 'vuex'
+import CategoryMixin from '@/components/setup/category/CategoryMixin.js'
 
 const categoryMustBeUnique = (value, vm) => {
   let itemsLowered = vm.items.map(i => i.categoryName.toLowerCase())
   return itemsLowered.indexOf(value.toLowerCase()) < 0
 }
 
-const categoryMustNotBeLossGain = value => {
-  return value.toLowerCase() !== LossGain.toLowerCase()
-}
-
 export default {
+  mixins: [CategoryMixin],
   validations() {
-    const result = {
-      category: {
-        required,
-        minLength: minLength(3),
-        maxLength: maxLength(255),
-        categoryMustBeUnique,
-        categoryMustNotBeLossGain
-      },
-      chosenIconAndColor: {
-        required
-      }
-    }
+    const base = this.baseValidations()
+    base.categoryName['categoryMustBeUnique'] = categoryMustBeUnique
 
-    return result
-  },
-  data() {
-    return {
-      category: ''
-    }
+    return base
   },
   methods: {
-    navColorIcon() {
-      this.$store.dispatch('SetupData/setSetupWindow', SetupWindow.colorIcon)
-    },
-    cancel() {
-      this.$store.dispatch('Category/clearChosenIconAndColor')
-      this.$emit('cancel')
-    },
     add() {
-      this.$store.dispatch('Category/addCategories', [
-        {
-          categoryName: this.category,
-          color: this.chosenIconAndColor.iconColor,
-          icon: this.chosenIconAndColor.iconString
-        }
-      ])
+      this.$store.dispatch('Category/addCategory')
     }
   },
   computed: {
-    ...mapState('Category', ['chosenIconAndColor']),
-    categoryErrors() {
+    categoryName: {
+      get() {
+        return this.$store.state.Category.editCategory
+          ? this.$store.state.Category.editCategory.categoryName
+          : ''
+      },
+      set(val) {
+        this.$store.dispatch('Category/setName', val)
+      }
+    },
+    categoryNameErrors() {
       const errors = []
 
-      if (!this.$v.category.$dirty) return errors
+      if (!this.$v.categoryName.$dirty) return errors
 
-      !this.$v.category.maxLength &&
+      !this.$v.categoryName.maxLength &&
         errors.push(
           `The category can be a maximum of ${
-            this.$v.category.$params.maxLength.max
+            this.$v.categoryName.$params.maxLength.max
           } characters`
         )
 
-      !this.$v.category.minLength &&
+      !this.$v.categoryName.minLength &&
         errors.push(
           `The category must be a minimum of ${
-            this.$v.category.$params.minLength.min
+            this.$v.categoryName.$params.minLength.min
           } characters`
         )
 
-      !this.$v.category.categoryMustBeUnique &&
+      !this.$v.categoryName.categoryMustBeUnique &&
         errors.push('The category must be unique')
 
-      !this.$v.category.categoryMustNotBeLossGain &&
+      !this.$v.categoryName.categoryMustNotBeLossGain &&
         errors.push(`The category name must not be ${LossGain}`)
 
-      !this.$v.category.required && errors.push('A category is required')
+      !this.$v.categoryName.required && errors.push('A category is required')
       return errors
-    },
-    items() {
-      return this.$store.state.Category.categories
-    },
-    busy() {
-      return this.$store.state.Category.addCategoryBusy
-    }
-  },
-  watch: {
-    items() {
-      this.category = ''
-      this.$v.$reset()
     }
   }
 }

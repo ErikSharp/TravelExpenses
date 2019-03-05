@@ -30,13 +30,13 @@
         ></v-divider>
       </template>
     </v-list>
-    <hr class="my-4" />
+    <hr class="mt-4 mb-2" />
     <v-window touchless v-model="editWindow">
       <v-window-item>
         <add-category @cancel="cancelAdd" />
       </v-window-item>
       <v-window-item>
-        <edit-category :category="selectedCategory" @cancel="cancelEdit" />
+        <edit-category @cancel="cancelEdit" />
       </v-window-item>
     </v-window>
   </div>
@@ -52,8 +52,7 @@ import SetupWindows from '@/common/enums/SetupWindows.js'
 export default {
   data() {
     return {
-      editWindow: 0,
-      selectedCategory: {}
+      editWindow: 0
     }
   },
   components: {
@@ -62,7 +61,7 @@ export default {
   },
   methods: {
     edit(item) {
-      this.selectedCategory = clone(item)
+      this.$store.dispatch('Category/setEditCategory', item)
       this.editWindow = 1
     },
     cancelAdd() {
