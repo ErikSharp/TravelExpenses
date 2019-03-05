@@ -154,9 +154,6 @@ export default {
       memo: ''
     }
   },
-  mounted() {
-    this.$store.dispatch('CashWithdrawal/reloadRecentCashWithdrawals')
-  },
   methods: {
     showMemo(memo) {
       this.memo = memo

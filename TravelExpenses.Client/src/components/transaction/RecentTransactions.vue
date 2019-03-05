@@ -130,9 +130,6 @@ export default {
   components: {
     TransactionCard
   },
-  mounted() {
-    this.$store.dispatch('Transaction/reloadRecentTransactions')
-  },
   data() {
     return {
       panel: [true],

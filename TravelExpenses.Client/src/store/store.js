@@ -82,8 +82,12 @@ export default new Vuex.Store({
       //check where you are going
       switch (view) {
         case HomeViews.Transactions:
-          dispatch('setTitle', 'Recent Transactions')
+          dispatch('setTitle', 'Recent Transactions').then(() => {
+            dispatch('Transaction/reloadRecentTransactions')
+          })
           break
+        case HomeViews.CashWithdrawals:
+          dispatch('CashWithdrawal/reloadRecentCashWithdrawals')
         default:
           dispatch('setTitle', firstLetterUpper(view))
           break
