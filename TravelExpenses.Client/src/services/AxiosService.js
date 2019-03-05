@@ -103,5 +103,8 @@ export default {
   },
   getUser() {
     return apiClient.get('api/users/me')
+  },
+  savePreferences(preferences) {
+    return apiClient.put('api/users/preferences', preferences)
   }
 }
