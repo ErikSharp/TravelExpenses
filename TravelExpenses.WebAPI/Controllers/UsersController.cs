@@ -42,6 +42,17 @@ namespace TravelExpenses.WebAPI.Controllers
             return Ok(authenticatedUser);
         }
 
+        [HttpPut("preferences")]
+        public async Task<IActionResult> WritePreferences([FromBody]Preferences preferences)
+        {
+            var userId = User.Claims.GetUserId();
+            var results = await mediator.Send(
+                new WritePreferences.Query(userId, preferences))
+                .ConfigureAwait(false);
+
+            return Ok(results);
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody]UserRegistration userParam)
