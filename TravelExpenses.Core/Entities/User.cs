@@ -12,6 +12,7 @@ namespace TravelExpenses.Domain.Entities
         public string PasswordHash { get; set; }
         public DateTime Created { get; set; }
         public bool Disabled { get; set; }
+        public string Preferences { get; set; }
 
         public ICollection<Location> Locations { get; private set; }
         public ICollection<Category> Categories { get; private set; }

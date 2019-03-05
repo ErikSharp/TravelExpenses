@@ -10,5 +10,6 @@ namespace TravelExpenses.Application.Common.Dtos
         public string Email { get; set; }
         public DateTime Created { get; set; }
         public bool Disabled { get; set; }
+        public string Preferences { get; set; }
     }
 }
