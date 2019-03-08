@@ -43,9 +43,9 @@
       </v-layout>
       <v-divider class="my-2" />
       <h3 class="mb-2">Icon</h3>
-      <v-container grid-list-md class="ma-0 pa-0">
-        <v-layout row wrap>
-          <v-flex v-for="i in 24" :key="i" xs2>
+      <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+        <v-layout row wrap justify-end>
+          <v-flex v-for="i in iconSamples.length" :key="i">
             <icon-selector
               :iconData="{
                 id: i,
