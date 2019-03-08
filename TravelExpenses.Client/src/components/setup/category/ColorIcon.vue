@@ -5,7 +5,7 @@
       <h3>Color</h3>
       <v-layout row wrap align-center class="mt-2">
         <v-flex xs2>
-          <p class="ma-0 pa-0">Red</p>
+          <p class="ma-0 pa-0 my-3">Red</p>
         </v-flex>
         <v-flex xs10>
           <v-slider
@@ -17,7 +17,7 @@
           ></v-slider>
         </v-flex>
         <v-flex xs2>
-          <p class="ma-0 pa-0">Green</p>
+          <p class="ma-0 pa-0 my-3">Green</p>
         </v-flex>
         <v-flex xs10>
           <v-slider
@@ -29,7 +29,7 @@
           ></v-slider>
         </v-flex>
         <v-flex xs2>
-          <p class="ma-0 pa-0">Blue</p>
+          <p class="ma-0 pa-0 my-3">Blue</p>
         </v-flex>
         <v-flex xs10>
           <v-slider
