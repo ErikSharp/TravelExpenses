@@ -101,4 +101,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+>>> .v-text-field__details {
+  margin-bottom: 0 !important;
+}
+</style>

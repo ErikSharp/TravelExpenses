@@ -30,15 +30,17 @@
         ></v-divider>
       </template>
     </v-list>
-    <hr class="mt-4 mb-2" />
-    <v-window touchless v-model="editWindow">
-      <v-window-item>
-        <add-category @cancel="cancelAdd" />
-      </v-window-item>
-      <v-window-item>
-        <edit-category @cancel="cancelEdit" />
-      </v-window-item>
-    </v-window>
+    <div class="spacer"></div>
+    <div class="controls pa-2">
+      <v-window touchless v-model="editWindow">
+        <v-window-item>
+          <add-category @cancel="cancelAdd" />
+        </v-window-item>
+        <v-window-item>
+          <edit-category @cancel="cancelEdit" />
+        </v-window-item>
+      </v-window>
+    </div>
   </div>
 </template>
 
@@ -83,4 +85,16 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.spacer {
+  height: 174px;
+}
+
+.controls {
+  position: fixed;
+  width: 100%;
+  bottom: 56px;
+  margin-left: -16px;
+  background: rgba(0, 0, 0, 0.8);
+}
+</style>
