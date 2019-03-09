@@ -12,6 +12,7 @@ import Country from '@/store/modules/CountryStore.js'
 import Currency from '@/store/modules/CurrencyStore.js'
 import Category from '@/store/modules/CategoryStore.js'
 import Keyword from '@/store/modules/KeywordStore.js'
+import Query from '@/store/modules/QueryStore.js'
 import User from '@/store/modules/UserStore.js'
 import * as HomeViews from '@/common/constants/HomeViews.js'
 import SetupWindows from '@/common/enums/SetupWindows.js'
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     Currency,
     Category,
     Keyword,
+    Query,
     User
   },
   state: {
