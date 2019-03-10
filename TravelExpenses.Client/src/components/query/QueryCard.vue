@@ -1,9 +1,17 @@
 <template>
-  <v-card light class="my-1" @click="onClick">
+  <v-card
+    :class="{ active: active, inactive: !active }"
+    class="my-1"
+    @click="onClick"
+  >
     <v-flex>
       <v-layout align-center justify-start row fill-height>
         <v-flex shrink>
-          <v-avatar size="70" class="mx-3 my-2 elevation-5" :color="color">
+          <v-avatar
+            size="70"
+            class="mx-3 my-2 elevation-5"
+            :color="active ? color : 'grey'"
+          >
             <v-icon size="45" class="white--text">{{ icon }}</v-icon>
           </v-avatar>
         </v-flex>
@@ -32,15 +40,28 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    active: {
+      type: Boolean,
+      required: true
     }
   },
   methods: {
     onClick() {
-      this.$emit('click')
+      if (this.active) {
+        this.$emit('click')
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.inactive {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.active {
+  background: white;
+}
 </style>

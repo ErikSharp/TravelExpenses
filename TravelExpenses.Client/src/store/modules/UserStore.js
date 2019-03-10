@@ -3,7 +3,10 @@ import Axios from '@/services/AxiosService.js'
 function initialState() {
   return {
     user: {},
-    preferences: {}
+    preferences: {
+      ShowReconcileInstructions: true,
+      DefaultQueryCurrencyId: 0
+    }
   }
 }
 
@@ -19,6 +22,9 @@ export default {
     },
     SET_SHOW_RECONCILE_INSTRUCTIONS(state, show) {
       state.preferences.ShowReconcileInstructions = show
+    },
+    SET_DEFAULT_QUERY_CURRENCY_ID(state, id) {
+      state.preferences.DefaultQueryCurrencyId = id
     }
   },
   actions: {
@@ -52,11 +58,18 @@ export default {
     setShowReconcileInstructions({ commit, dispatch }, show) {
       commit('SET_SHOW_RECONCILE_INSTRUCTIONS', show)
       dispatch('savePreferences')
+    },
+    setDefaultQueryCurrencyId({ commit, dispatch }, id) {
+      commit('SET_DEFAULT_QUERY_CURRENCY_ID', id)
+      dispatch('savePreferences')
     }
   },
   getters: {
     showReconcileInstructions: state => {
-      return state.user.preferences.ShowReconcileInstructions
+      return state.preferences.ShowReconcileInstructions
+    },
+    defaultQueryCurrencyId: state => {
+      return state.preferences.DefaultQueryCurrencyId
     }
   }
 }

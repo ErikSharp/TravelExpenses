@@ -31,6 +31,7 @@
       icon="assessment"
       title="Locations total comparison"
       class="mb-2"
+      :active="!!currency"
       @click="navLocTotalComp"
     >
       Compares the total amount spent in each location
@@ -39,6 +40,7 @@
       color="purple"
       icon="assessment"
       title="Locations categories comparison"
+      :active="!!currency"
       @click="navLocCatComp"
     >
       Compares categories in each location
@@ -67,10 +69,12 @@ export default {
     ...mapState('Currency', ['currencies']),
     currency: {
       get() {
-        return this.$store.state.Query.currency
+        const id = this.$store.getters['User/defaultQueryCurrencyId']
+        const ccy = this.$store.getters['Currency/findCurrency'](id)
+        return ccy
       },
       set(val) {
-        this.$store.dispatch('Query/setCurrency', val)
+        this.$store.dispatch('User/setDefaultQueryCurrencyId', val.id)
       }
     }
   }
