@@ -59,6 +59,8 @@ export default {
             dispatch('Currency/setCurrencies', response.data.currencies, {
               root: true
             })
+
+            commit('SET_LOADED')
           })
           .catch(error => {
             dispatch('showAxiosErrorMessage', error, { root: true })
