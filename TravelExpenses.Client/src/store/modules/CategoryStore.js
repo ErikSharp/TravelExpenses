@@ -102,6 +102,9 @@ export default {
     }
   },
   actions: {
+    setCategories({ commit }, categories) {
+      commit('SET_CATEGORIES', categories)
+    },
     load({ dispatch, commit }) {
       commit('SET_CATEGORIES', [])
       commit('SET_BUSY', true)

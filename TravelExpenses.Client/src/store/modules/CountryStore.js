@@ -21,6 +21,9 @@ export default {
     }
   },
   actions: {
+    setCountries({ commit }, countries) {
+      commit('SET_COUNTRIES', countries)
+    },
     load({ state, dispatch, commit }) {
       if (state.countries.length) {
         return

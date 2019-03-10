@@ -1,7 +1,7 @@
 import Windows from '@/common/enums/InitialSetupWindows.js'
 import Router from '@/router'
 import * as HomeViews from '@/common/constants/HomeViews.js'
-import { Promise } from 'bluebird'
+import AxiosService from '@/services/AxiosService.js'
 
 function initialState() {
   return {
@@ -39,16 +39,30 @@ export default {
     }
   },
   actions: {
-    checkBaseRequirements({ state, commit, dispatch }) {
+    getBaseData({ state, commit, dispatch }) {
       if (!state.loaded) {
-        let locations = dispatch('Location/load', null, { root: true })
-        let keywords = dispatch('Keyword/load', null, { root: true })
-        let categories = dispatch('Category/load', null, { root: true })
-        let user = dispatch('User/getUser', null, { root: true })
-
-        return Promise.all([locations, keywords, categories, user]).then(() => {
-          commit('SET_LOADED')
-        })
+        return AxiosService.getBaseData()
+          .then(response => {
+            dispatch('Location/setLocations', response.data.locations, {
+              root: true
+            })
+            dispatch('Keyword/setKeywords', response.data.keywords, {
+              root: true
+            })
+            dispatch('Category/setCategories', response.data.categories, {
+              root: true
+            })
+            dispatch('User/setUser', response.data.user, { root: true })
+            dispatch('Country/setCountries', response.data.countries, {
+              root: true
+            })
+            dispatch('Currency/setCurrencies', response.data.currencies, {
+              root: true
+            })
+          })
+          .catch(error => {
+            dispatch('showAxiosErrorMessage', error, { root: true })
+          })
       }
     },
     nextWindow({ commit, state, rootState }) {

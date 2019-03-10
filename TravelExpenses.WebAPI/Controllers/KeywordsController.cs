@@ -28,9 +28,9 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromHeader(Name = "Authorization")]string token)
         {
             var userId = User.Claims.GetUserId();
-            var countries = await mediator.Send(new GetKeywords.Query(userId)).ConfigureAwait(false);
+            var keywords = await mediator.Send(new GetKeywords.Query(userId)).ConfigureAwait(false);
 
-            return Ok(countries);
+            return Ok(keywords);
         }
 
         [HttpPost]

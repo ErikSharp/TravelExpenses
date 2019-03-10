@@ -28,6 +28,13 @@ export default {
     }
   },
   actions: {
+    setUser({ commit }, user) {
+      commit('SET_USER', user)
+
+      if (user.preferences) {
+        commit('SET_PREFERENCES', JSON.parse(user.preferences))
+      }
+    },
     getUser({ commit, dispatch }) {
       return Axios.getUser()
         .then(response => {

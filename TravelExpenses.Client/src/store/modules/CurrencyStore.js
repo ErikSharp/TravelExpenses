@@ -21,6 +21,9 @@ export default {
     }
   },
   actions: {
+    setCurrencies({ commit }, currencies) {
+      commit('SET_CURRENCIES', currencies)
+    },
     load({ dispatch, commit }) {
       commit('SET_CURRENCIES', [])
 

@@ -17,7 +17,6 @@ namespace TravelExpenses.WebAPI.Controllers
     {
         private readonly IMediator mediator;
         private readonly IMemoryCache memoryCache;
-        private readonly string cacheKey = Guid.NewGuid().ToString();
 
         public CurrenciesController(IMediator mediator, IMemoryCache memoryCache)
         {
@@ -28,15 +27,7 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var cachedCurrencies = memoryCache.Get<List<CurrencyOut>>(cacheKey);
-            if (cachedCurrencies != null)
-                return Ok(cachedCurrencies);
-
-            var currencies = await mediator.Send(new GetCurrencies.Query()).ConfigureAwait(false);
-
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromDays(1));
-            memoryCache.Set(cacheKey, currencies, cacheEntryOptions);
-
+            var currencies = await mediator.Send(new GetCurrencies.Query(memoryCache)).ConfigureAwait(false);
             return Ok(currencies);
         }
     }

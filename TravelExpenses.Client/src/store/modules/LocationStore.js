@@ -33,6 +33,9 @@ export default {
     }
   },
   actions: {
+    setLocations({ commit }, locations) {
+      commit('SET_LOCATIONS', locations)
+    },
     load({ dispatch, commit }) {
       commit('SET_LOCATIONS', [])
       commit('SET_BUSY', true)

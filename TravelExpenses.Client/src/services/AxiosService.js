@@ -106,5 +106,8 @@ export default {
   },
   savePreferences(preferences) {
     return apiClient.put('api/users/preferences', preferences)
+  },
+  getBaseData() {
+    return apiClient.get('api/base-data')
   }
 }

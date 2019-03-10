@@ -106,7 +106,7 @@ let getToken = callback => {
 myRouter.beforeEach((to, from, next) => {
   routerGuard(to, to => next(to), () => next(), getToken, callback => {
     if (!Store.state.InitialSetup.loaded) {
-      Store.dispatch('InitialSetup/checkBaseRequirements').then(() => {
+      Store.dispatch('InitialSetup/getBaseData').then(() => {
         if (!Store.state.User.user) {
           Store.dispatch('Authentication/logout')
         } else {

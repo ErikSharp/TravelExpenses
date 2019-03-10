@@ -45,6 +45,9 @@ export default {
     }
   },
   actions: {
+    setKeywords({ commit }, keywords) {
+      commit('SET_KEYWORDS', keywords)
+    },
     load({ dispatch, commit }) {
       commit('SET_KEYWORDS', [])
       commit('SET_BUSY', true)
