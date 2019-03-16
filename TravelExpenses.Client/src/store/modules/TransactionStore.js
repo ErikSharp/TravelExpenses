@@ -35,6 +35,9 @@ export default {
       state.noMoreTransactions = false
       state.recentTransactionsStale = false
     },
+    CLEAR_SELECTED_TRANSACTION(state) {
+      state.selectedTransaction = {}
+    },
     SET_NO_MORE_TRANSACTIONS(state) {
       state.noMoreTransactions = true
     },
@@ -113,6 +116,7 @@ export default {
     },
     reloadRecentTransactions({ commit, dispatch }) {
       commit('CLEAR_RECENT_TRANSACTIONS')
+      commit('CLEAR_SELECTED_TRANSACTION')
       dispatch('getRecentTransactions')
     },
     setSelectedTransaction({ state, commit }, transaction) {
