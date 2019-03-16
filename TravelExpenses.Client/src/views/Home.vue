@@ -45,16 +45,13 @@ export default {
   components: {
     HomeHeader
   },
-  created() {
-    this.$store.dispatch('setHomeView', this.$router.currentRoute.name)
-  },
   computed: {
     homeView: {
       get() {
         return this.$store.state.homeView
       },
       set(newValue) {
-        return this.$store.dispatch('setHomeView', newValue)
+        this.$router.push({ name: newValue })
       }
     }
   }

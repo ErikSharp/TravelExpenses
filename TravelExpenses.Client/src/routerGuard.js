@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import * as HomeViews from '@/common/constants/HomeViews.js'
+import Store from '@/store/store.js'
 
 let redirectFlag = false
 
@@ -48,6 +49,7 @@ export let routerGuard = (
             nextDesination(redirect, HomeViews.Transactions)
           } else {
             if (destination == to.name) {
+              Store.dispatch('setHomeView', to.name, { root: true })
               proceed()
             } else {
               nextDesination(redirect, destination)

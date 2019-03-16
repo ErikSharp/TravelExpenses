@@ -94,8 +94,6 @@ export default new Vuex.Store({
           dispatch('setTitle', firstLetterUpper(view))
           break
       }
-
-      Router.push({ name: view })
     },
     setTitle({ commit }, title) {
       commit('SET_TITLE', title)
