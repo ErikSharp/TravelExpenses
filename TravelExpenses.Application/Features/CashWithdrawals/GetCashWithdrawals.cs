@@ -16,7 +16,7 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
 {
     public class GetCashWithdrawals
     {
-        public class Query : IRequest<CashWithdrawalDto[]>
+        public class Query : IRequest<CashWithdrawalsOut>
         {
             public Query(int userId, int skip)
             {
@@ -28,7 +28,7 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
             public int Skip { get; private set; }
         }
 
-        public class Handler : IRequestHandler<Query, CashWithdrawalDto[]>
+        public class Handler : IRequestHandler<Query, CashWithdrawalsOut>
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
@@ -44,20 +44,33 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                 this.appSettings = appSettings.Value;
             }
 
-            public async Task<CashWithdrawalDto[]> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CashWithdrawalsOut> Handle(Query request, CancellationToken cancellationToken)
             {
-                var cashWithdrawals = await context.CashWithdrawals
-                    .Where(c => c.UserId == request.UserId)
-                    .Include(c => c.User)
-                    .OrderByDescending(t => t.TransDate)
-                    .ThenByDescending(t => t.Id)
-                    .Skip(request.Skip)
-                    .Take(appSettings.RecentTransactionsTakeAmount)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
+                var totalRecords = context.CashWithdrawals
+                    .Count(c => c.UserId == request.UserId);
 
-                var cashWithdrawalsOut = cashWithdrawals.Select(t => mapper.Map<CashWithdrawalDto>(t)).ToArray();
-                return cashWithdrawalsOut;
+                var result = new CashWithdrawalsOut
+                {
+                    TotalRecords = totalRecords,
+                    PageCount = appSettings.RecentTransactionsTakeAmount
+                };
+
+                if (totalRecords > 0)
+                {
+                    var page = await context.CashWithdrawals
+                        .Where(c => c.UserId == request.UserId)                        
+                        .OrderByDescending(t => t.TransDate)
+                        .ThenByDescending(t => t.Id)
+                        .Skip(request.Skip)
+                        .Take(appSettings.RecentTransactionsTakeAmount)
+                        .ToListAsync()
+                        .ConfigureAwait(false);
+
+                    var cashWithdrawalsOut = page.Select(t => mapper.Map<CashWithdrawalDto>(t)).ToArray();
+                    result.CashWithdrawals = cashWithdrawalsOut;
+                }
+
+                return result;
             }
         }
     }

@@ -16,7 +16,7 @@ namespace TravelExpenses.Application.Features.Transactions
 {
     public class GetRecentTransactions
     {
-        public class Query : IRequest<TransactionOut[]>
+        public class Query : IRequest<TransactionsOut>
         {
             public Query(int userId, int skip)
             {
@@ -28,7 +28,7 @@ namespace TravelExpenses.Application.Features.Transactions
             public int Skip { get; private set; }
         }
 
-        public class Handler : IRequestHandler<Query, TransactionOut[]>
+        public class Handler : IRequestHandler<Query, TransactionsOut>
         {
             private readonly TravelExpensesContext context;
             private readonly IMapper mapper;
@@ -44,20 +44,34 @@ namespace TravelExpenses.Application.Features.Transactions
                 this.appSettings = appSettings.Value;
             }
 
-            public async Task<TransactionOut[]> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<TransactionsOut> Handle(Query request, CancellationToken cancellationToken)
             {
-                var transactions = await context.Transactions
-                    .Where(t => t.UserId == request.UserId)
-                    .Include(t => t.TransactionKeywords)
-                    .OrderByDescending(t => t.TransDate)
-                    .ThenByDescending(t => t.Id)
-                    .Skip(request.Skip)
-                    .Take(appSettings.RecentTransactionsTakeAmount)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
+                var totalRecords = context.Transactions
+                    .Count(c => c.UserId == request.UserId);
 
-                var transactionsOut = transactions.Select(t => mapper.Map<TransactionOut>(t)).ToArray();
-                return transactionsOut;
+                var result = new TransactionsOut
+                {
+                    TotalRecords = totalRecords,
+                    PageCount = appSettings.RecentTransactionsTakeAmount
+                };
+
+                if (totalRecords > 0)
+                {
+                    var page = await context.Transactions
+                        .Where(t => t.UserId == request.UserId)
+                        .Include(t => t.TransactionKeywords)
+                        .OrderByDescending(t => t.TransDate)
+                        .ThenByDescending(t => t.Id)
+                        .Skip(request.Skip)
+                        .Take(appSettings.RecentTransactionsTakeAmount)
+                        .ToListAsync()
+                        .ConfigureAwait(false);
+
+                    var transactionsOut = page.Select(t => mapper.Map<TransactionOut>(t)).ToArray();
+                    result.Transactions = transactionsOut;
+                }
+
+                return result;
             }
         }
     }

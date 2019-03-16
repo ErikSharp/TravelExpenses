@@ -51,9 +51,12 @@ namespace TravelExpenses.WebAPI.Controllers
             [FromHeader(Name = "Authorization")] string token)
         {
             var userId = User.Claims.GetUserId();
-            var transactions = await mediator.Send(new GetCashWithdrawals.Query(userId, skip)).ConfigureAwait(false);
+            var result = await mediator.Send(new GetCashWithdrawals.Query(userId, skip)).ConfigureAwait(false);
 
-            return Ok(transactions);
+            Response.Headers.Add("X-Total-Count", result.TotalRecords.ToString());
+            Response.Headers.Add("Page-Count", result.PageCount.ToString());
+
+            return Ok(result.CashWithdrawals);
         }
 
         [HttpDelete("{id}")]

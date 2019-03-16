@@ -53,7 +53,10 @@ namespace TravelExpenses.WebAPI.Controllers
             var userId = User.Claims.GetUserId();
             var transactions = await mediator.Send(new GetRecentTransactions.Query(userId, skip)).ConfigureAwait(false);
 
-            return Ok(transactions);
+            Response.Headers.Add("X-Total-Count", transactions.TotalRecords.ToString());
+            Response.Headers.Add("Page-Count", transactions.PageCount.ToString());
+
+            return Ok(transactions.Transactions);
         }
 
         [HttpDelete("{id}")]
