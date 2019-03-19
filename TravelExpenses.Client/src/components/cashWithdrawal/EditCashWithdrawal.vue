@@ -193,9 +193,6 @@ export default {
       }
     },
     leave() {
-      if (this.$store.state.CashWithdrawal.recentCashWithdrawalsStale) {
-        this.$store.dispatch('CashWithdrawal/reloadRecentCashWithdrawals')
-      }
       this.$emit('done')
     },
     save() {
@@ -213,16 +210,15 @@ export default {
         cashWithdrawalToSave['id'] = this.id
       }
 
-      this.$store.dispatch(
-        `CashWithdrawal/${this.edit ? 'edit' : 'save'}CashWithdrawal`,
-        {
-          cashWithdrawal: cashWithdrawalToSave,
-          complete: () => {
-            this.leave()
-            this.resetForm()
-          }
-        }
-      )
+      this.$store
+        .dispatch(
+          `CashWithdrawal/${this.edit ? 'edit' : 'save'}CashWithdrawal`,
+          cashWithdrawalToSave
+        )
+        .then(() => {
+          this.leave()
+          this.resetForm()
+        })
     },
     resetForm() {
       this.$v.$reset()

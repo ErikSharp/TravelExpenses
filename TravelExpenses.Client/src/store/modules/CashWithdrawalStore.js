@@ -3,11 +3,12 @@ import AxiosService from '@/services/AxiosService.js'
 function initialState() {
   return {
     saveCashWithdrawalBusy: false,
-    recentCashWithdrawalsBusy: false,
-    recentCashWithdrawals: [],
-    recentCashWithdrawalsStale: false,
-    noMoreCashWithdrawals: false,
-    selectedCashWithdrawal: {}
+    cashWithdrawalsBusy: false,
+    cashWithdrawals: [],
+    selectedCashWithdrawal: {},
+    page: 1,
+    pageSize: 25,
+    totalRecords: 0
   }
 }
 
@@ -21,49 +22,48 @@ export default {
         state[key] = s[key]
       })
     },
+    SET_PAGE_SIZE(state, size) {
+      state.pageSize = size
+    },
+    SET_TOTAL_RECORDS(state, total) {
+      state.totalRecords = total
+    },
     SET_SAVE_CASH_WITHDRAWAL_BUSY(state, busy) {
       state.saveCashWithdrawalBusy = busy
     },
-    SET_RECENT_CASH_WITHDRAWALS_BUSY(state, busy) {
-      state.recentCashWithdrawalsBusy = busy
+    SET_CASH_WITHDRAWALS_BUSY(state, busy) {
+      state.cashWithdrawalsBusy = busy
     },
-    APPEND_TO_RECENT_CASH_WITHDRAWALS(state, cashWithdrawals) {
-      state.recentCashWithdrawals = state.recentCashWithdrawals.concat(
-        cashWithdrawals
-      )
+    SET_CASH_WITHDRAWALS(state, withdrawals) {
+      state.cashWithdrawals = withdrawals
     },
-    CLEAR_RECENT_CASH_WITHDRAWALS(state) {
-      state.recentCashWithdrawals = []
-      state.noMoreCashWithdrawals = false
-      state.recentCashWithdrawalsStale = false
+    CLEAR_CASH_WITHDRAWALS(state) {
+      state.cashWithdrawals = []
+    },
+    CLEAR_SELECTED_CASH_WITHDRAWAL(state) {
       state.selectedCashWithdrawal = {}
-    },
-    SET_NO_MORE_CASH_WITHDRAWALS(state) {
-      state.noMoreCashWithdrawals = true
-    },
-    SET_RECENT_CASH_WITHDRAWALS_STALE(state) {
-      state.recentCashWithdrawalsStale = true
     },
     SET_SELECTED_CASH_WITHDRAWAL(state, cashWithdrawal) {
       state.selectedCashWithdrawal = cashWithdrawal
+    },
+    SET_PAGE(state, page) {
+      state.page = page
     }
   },
   actions: {
-    saveCashWithdrawal({ dispatch }, data) {
+    saveCashWithdrawal({ dispatch }, cashWithdrawal) {
       dispatch('innerSaveCashWithdrawal', {
-        cashWithdrawal: data.cashWithdrawal,
-        complete: data.complete,
+        cashWithdrawal: cashWithdrawal,
         editing: false
       })
     },
-    editCashWithdrawal({ dispatch }, data) {
+    editCashWithdrawal({ dispatch }, cashWithdrawal) {
       dispatch('innerSaveCashWithdrawal', {
-        cashWithdrawal: data.cashWithdrawal,
-        complete: data.complete,
+        cashWithdrawal: cashWithdrawal,
         editing: true
       })
     },
-    innerSaveCashWithdrawal({ dispatch, commit }, data) {
+    innerSaveCashWithdrawal({ dispatch, commit, state }, data) {
       commit('SET_SAVE_CASH_WITHDRAWAL_BUSY', true)
 
       let axiosOp = data.editing
@@ -72,7 +72,7 @@ export default {
 
       return axiosOp(data.cashWithdrawal)
         .then(() => {
-          commit('SET_RECENT_CASH_WITHDRAWALS_STALE')
+          dispatch('getCashWithdrawals', state.page)
           dispatch(
             'showSaveMessage',
             `Cash withdrawal has been ${data.editing ? 'changed' : 'saved'}`,
@@ -86,38 +86,32 @@ export default {
         })
         .then(() => {
           commit('SET_SAVE_CASH_WITHDRAWAL_BUSY', false)
-          data.complete()
         })
     },
-    getRecentCashWithdrawals({ commit, dispatch }, skip) {
-      if (!skip) {
-        skip = 0
+    getCashWithdrawals({ state, commit, dispatch }, page) {
+      commit('CLEAR_CASH_WITHDRAWALS')
+      commit('CLEAR_SELECTED_CASH_WITHDRAWAL')
+      commit('SET_PAGE', page || 1)
+
+      let skip = 0
+      if (page > 1) {
+        skip = (page - 1) * state.pageSize
       }
 
-      commit('SET_RECENT_CASH_WITHDRAWALS_BUSY', true)
+      commit('SET_CASH_WITHDRAWALS_BUSY', true)
 
-      return AxiosService.getRecentCashWithdrawals(skip)
+      return AxiosService.getCashWithdrawals(skip)
         .then(response => {
-          if (response.data.length) {
-            commit('APPEND_TO_RECENT_CASH_WITHDRAWALS', response.data)
-          } else {
-            commit('SET_NO_MORE_CASH_WITHDRAWALS')
-          }
+          commit('SET_PAGE_SIZE', +response.headers['page-size'])
+          commit('SET_TOTAL_RECORDS', +response.headers['x-total-count'])
+          commit('SET_CASH_WITHDRAWALS', response.data)
         })
         .catch(error => {
           dispatch('showAxiosErrorMessage', error, { root: true })
         })
         .then(() => {
-          commit('SET_RECENT_CASH_WITHDRAWALS_BUSY', false)
+          commit('SET_CASH_WITHDRAWALS_BUSY', false)
         })
-    },
-    getNextCashWithdrawals({ state, dispatch }) {
-      let length = state.recentCashWithdrawals.length
-      dispatch('getRecentCashWithdrawals', length)
-    },
-    reloadRecentCashWithdrawals({ commit, dispatch }) {
-      commit('CLEAR_RECENT_CASH_WITHDRAWALS')
-      dispatch('getRecentCashWithdrawals')
     },
     setSelectedCashWithdrawal({ state, commit }, cashWithdrawal) {
       if (state.selectedCashWithdrawal == cashWithdrawal) {
@@ -135,7 +129,7 @@ export default {
         )
           .then(() => {
             commit('SET_SELECTED_CASH_WITHDRAWAL', {})
-            dispatch('reloadRecentCashWithdrawals')
+            dispatch('getCashWithdrawals')
           })
           .catch(error => {
             dispatch('showAxiosErrorMessage', error, { root: true })
@@ -147,6 +141,11 @@ export default {
             }
           })
       }
+    }
+  },
+  getters: {
+    pageCount: state => {
+      return Math.ceil(state.totalRecords / state.pageSize) || 1
     }
   }
 }

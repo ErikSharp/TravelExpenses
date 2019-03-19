@@ -28,7 +28,7 @@ export default {
   register(details) {
     return apiClient.post('api/users', details)
   },
-  getRecentTransactions(skip) {
+  getTransactions(skip) {
     return apiClient.get('api/transactions', {
       params: {
         skip: skip
@@ -44,7 +44,7 @@ export default {
   deleteTransaction(transactionId) {
     return apiClient.delete(`api/transactions/${transactionId}`)
   },
-  getRecentCashWithdrawals(skip) {
+  getCashWithdrawals(skip) {
     return apiClient.get('api/cash-withdrawals', {
       params: {
         skip: skip

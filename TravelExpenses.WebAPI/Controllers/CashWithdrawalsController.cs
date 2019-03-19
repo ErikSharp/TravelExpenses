@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.CashWithdrawals;
 using TravelExpenses.WebAPI.Extensions;
+using TravelExpenses.WebAPI.Static;
 
 namespace TravelExpenses.WebAPI.Controllers
 {
@@ -53,8 +54,8 @@ namespace TravelExpenses.WebAPI.Controllers
             var userId = User.Claims.GetUserId();
             var result = await mediator.Send(new GetCashWithdrawals.Query(userId, skip)).ConfigureAwait(false);
 
-            Response.Headers.Add("X-Total-Count", result.TotalRecords.ToString());
-            Response.Headers.Add("Page-Count", result.PageCount.ToString());
+            Response.Headers.Add(Headers.TotalCount, result.TotalRecords.ToString());
+            Response.Headers.Add(Headers.PageSize, result.PageSize.ToString());
 
             return Ok(result.CashWithdrawals);
         }

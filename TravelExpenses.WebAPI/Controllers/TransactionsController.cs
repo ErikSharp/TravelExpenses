@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TravelExpenses.Application.Common.Dtos;
 using TravelExpenses.Application.Features.Transactions;
 using TravelExpenses.WebAPI.Extensions;
+using TravelExpenses.WebAPI.Static;
 
 namespace TravelExpenses.WebAPI.Controllers
 {
@@ -53,8 +54,8 @@ namespace TravelExpenses.WebAPI.Controllers
             var userId = User.Claims.GetUserId();
             var transactions = await mediator.Send(new GetRecentTransactions.Query(userId, skip)).ConfigureAwait(false);
 
-            Response.Headers.Add("X-Total-Count", transactions.TotalRecords.ToString());
-            Response.Headers.Add("Page-Count", transactions.PageCount.ToString());
+            Response.Headers.Add(Headers.TotalCount, transactions.TotalRecords.ToString());
+            Response.Headers.Add(Headers.PageSize, transactions.PageSize.ToString());
 
             return Ok(transactions.Transactions);
         }

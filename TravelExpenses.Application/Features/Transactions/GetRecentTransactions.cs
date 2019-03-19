@@ -52,7 +52,7 @@ namespace TravelExpenses.Application.Features.Transactions
                 var result = new TransactionsOut
                 {
                     TotalRecords = totalRecords,
-                    PageCount = appSettings.RecentTransactionsTakeAmount
+                    PageSize = appSettings.RecentTransactionsTakeAmount
                 };
 
                 if (totalRecords > 0)

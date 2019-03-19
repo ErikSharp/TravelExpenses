@@ -34,6 +34,7 @@ using TravelExpenses.Persistence;
 using TravelExpenses.WebAPI.Extensions;
 using TravelExpenses.WebAPI.HealthChecks;
 using TravelExpenses.WebAPI.Middleware;
+using TravelExpenses.WebAPI.Static;
 using TravelExpenses.WebAPI.Utilities;
 
 namespace TravelExpenses.WebAPI
@@ -58,14 +59,22 @@ namespace TravelExpenses.WebAPI
             this.configuration = configuration;
             this.env = env;
         }
-
         
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithExposedHeaders(Headers.TotalCount)
+                        .WithExposedHeaders(Headers.PageSize);
+                });
+            });
 
             services.AddSingleton<IDateTime, MachineDateTime>();
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
@@ -178,11 +187,7 @@ namespace TravelExpenses.WebAPI
 
             if (env.IsDevelopment())
             {
-                // As we are calling npm run serve in VS Code, it will be on a different port than the Web API and requires CORS config
-                app.UseCors(builder => 
-                    builder.WithOrigins("http://localhost:8080")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+                app.UseCors();
             }
             else
             {

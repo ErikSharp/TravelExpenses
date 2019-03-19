@@ -339,9 +339,6 @@ export default {
         })
     },
     leave() {
-      if (this.$store.state.Transaction.recentTransactionsStale) {
-        this.$store.dispatch('Transaction/reloadRecentTransactions')
-      }
       this.$emit('done')
     },
     save() {

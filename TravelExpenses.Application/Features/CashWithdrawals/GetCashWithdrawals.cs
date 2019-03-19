@@ -52,7 +52,7 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                 var result = new CashWithdrawalsOut
                 {
                     TotalRecords = totalRecords,
-                    PageCount = appSettings.RecentTransactionsTakeAmount
+                    PageSize = appSettings.RecentTransactionsTakeAmount
                 };
 
                 if (totalRecords > 0)

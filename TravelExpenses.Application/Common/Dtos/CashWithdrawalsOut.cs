@@ -8,6 +8,6 @@ namespace TravelExpenses.Application.Common.Dtos
     {
         public CashWithdrawalDto[] CashWithdrawals { get; set; }
         public int TotalRecords { get; set; }
-        public int PageCount { get; set; }
+        public int PageSize { get; set; }
     }
 }

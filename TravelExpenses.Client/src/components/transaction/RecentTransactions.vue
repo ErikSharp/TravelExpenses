@@ -2,7 +2,7 @@
   <div>
     <div
       class="helper-text"
-      v-if="!Object.keys(recentTransactions).length && !recentTransactionsBusy"
+      v-if="!Object.keys(transactions).length && !transactionsBusy"
     >
       <h1 class="text-xs-center white--text">No transactions</h1>
       <p class="text-xs-center white--text">
@@ -10,7 +10,7 @@
       </p>
     </div>
     <v-layout
-      v-show="!Object.keys(recentTransactions).length && recentTransactionsBusy"
+      v-show="!Object.keys(transactions).length && transactionsBusy"
       justify-center
     >
       <v-progress-circular
@@ -21,10 +21,10 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
-    <v-expansion-panel dark v-model="panel" expand>
+    <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
         class="primary mt-1"
-        v-for="(dateGroup, date) in recentTransactions"
+        v-for="(dateGroup, date) in transactions"
         :key="date"
       >
         <div slot="header">{{ getDateString(date) }}</div>
@@ -37,28 +37,20 @@
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-layout justify-center>
-      <v-btn
-        v-show="Object.keys(recentTransactions).length"
-        flat
-        :loading="recentTransactionsBusy"
-        :disabled="noMoreTransactions"
-        class="primary"
-        @click="loadMore"
-        >Load More</v-btn
-      >
-    </v-layout>
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
+      <div class="text-xs-center my-1">
+        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+      </div>
       <v-flex xs12 sm10 offset-sm1>
         <v-layout justify-center justify-space-between>
-          <v-btn flat class="primary my-3" @click="addTransaction">
+          <v-btn flat class="primary mb-2 mt-0" @click="addTransaction">
             <v-icon dark>add</v-icon>Add
           </v-btn>
           <v-btn
             flat
             :disabled="!transactionSelected || lossGainSelected"
-            class="primary my-3"
+            class="primary mb-2 mt-0"
             @click="editTransaction"
           >
             <v-icon dark>edit</v-icon>Edit
@@ -73,7 +65,7 @@
               slot="activator"
               flat
               :disabled="!transactionSelected || lossGainSelected"
-              class="primary my-3"
+              class="primary mb-2 mt-0"
             >
               <v-icon dark>delete</v-icon>Delete
             </v-btn>
@@ -115,7 +107,7 @@
 /* eslint-disable no-console */
 import groupBy from 'lodash/groupBy'
 import TransactionCard from '@/components/transaction/TransactionCard.vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 const dateOptions = {
   weekday: 'long',
@@ -132,14 +124,11 @@ export default {
   },
   data() {
     return {
-      panel: [true],
+      panels: [true],
       deleteDialog: false
     }
   },
   methods: {
-    loadMore() {
-      this.$store.dispatch('Transaction/getNextTransactions')
-    },
     addTransaction() {
       this.$emit('addTransaction')
     },
@@ -157,15 +146,25 @@ export default {
   },
   computed: {
     ...mapState('Transaction', [
-      'recentTransactionsBusy',
-      'noMoreTransactions',
+      'transactionsBusy',
       'saveTransactionBusy',
-      'selectedTransaction'
+      'selectedTransaction',
+      'totalRecords',
+      'pageSize'
     ]),
+    ...mapGetters('Transaction', ['pageCount']),
     ...mapState('Category', ['lossGainCategory']),
-    recentTransactions() {
+    page: {
+      get() {
+        return this.$store.state.Transaction.page
+      },
+      set(val) {
+        this.$store.dispatch('Transaction/getTransactions', val)
+      }
+    },
+    transactions() {
       return groupBy(
-        this.$store.state.Transaction.recentTransactions,
+        this.$store.state.Transaction.transactions,
         t => t.transDate
       )
     },
@@ -180,12 +179,12 @@ export default {
     }
   },
   watch: {
-    recentTransactions(val) {
-      this.panel = new Array(Object.keys(val).length)
-      this.panel.fill(false)
+    transactions(val) {
+      this.panels = new Array(Object.keys(val).length)
+      this.panels.fill(false)
 
-      if (this.panel.length) {
-        this.panel[0] = true
+      if (this.panels.length) {
+        this.panels[0] = true
       }
     }
   }
@@ -201,10 +200,14 @@ export default {
 }
 
 .bottom-spacer {
-  height: 79px;
+  height: 100px;
 }
 
 .helper-text {
   margin-top: 75px;
+}
+
+>>> .v-pagination__more {
+  color: white !important;
 }
 </style>

@@ -8,6 +8,6 @@ namespace TravelExpenses.Application.Common.Dtos
     {
         public TransactionOut[] Transactions { get; set; }
         public int TotalRecords { get; set; }
-        public int PageCount { get; set; }
+        public int PageSize { get; set; }
     }
 }

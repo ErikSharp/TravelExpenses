@@ -11,9 +11,7 @@
     </v-dialog>
     <div
       class="helper-text"
-      v-if="
-        !Object.keys(recentCashWithdrawals).length && !recentCashWithdrawalsBusy
-      "
+      v-if="!Object.keys(cashWithdrawals).length && !cashWithdrawalsBusy"
     >
       <h1 class="text-xs-center white--text">No Cash Withdrawals</h1>
       <p class="text-xs-center white--text">
@@ -21,9 +19,7 @@
       </p>
     </div>
     <v-layout
-      v-show="
-        !Object.keys(recentCashWithdrawals).length && recentCashWithdrawalsBusy
-      "
+      v-show="!Object.keys(cashWithdrawals).length && cashWithdrawalsBusy"
       justify-center
     >
       <v-progress-circular
@@ -34,10 +30,10 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
-    <v-expansion-panel dark v-model="panel" expand>
+    <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
         class="primary mt-1"
-        v-for="(dateGroup, date) in recentCashWithdrawals"
+        v-for="(dateGroup, date) in cashWithdrawals"
         :key="date"
       >
         <div slot="header">{{ getDateString(date) }}</div>
@@ -51,28 +47,20 @@
         </div>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-layout justify-center>
-      <v-btn
-        v-show="Object.keys(recentCashWithdrawals).length"
-        flat
-        :loading="recentCashWithdrawalsBusy"
-        :disabled="noMoreCashWithdrawals"
-        class="primary"
-        @click="loadMore"
-        >Load More</v-btn
-      >
-    </v-layout>
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12>
+      <div class="text-xs-center my-1">
+        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+      </div>
       <v-flex xs12 sm10 offset-sm1>
         <v-layout justify-center justify-space-between>
-          <v-btn flat class="primary my-3" @click="addCashWithdrawal">
+          <v-btn flat class="primary mb-2 mt-0" @click="addCashWithdrawal">
             <v-icon dark>add</v-icon>Add
           </v-btn>
           <v-btn
             flat
             :disabled="!cashWithdrawalSelected"
-            class="primary my-3"
+            class="primary mb-2 mt-0"
             @click="editCashWithdrawal"
           >
             <v-icon dark>edit</v-icon>Edit
@@ -87,7 +75,7 @@
               slot="activator"
               flat
               :disabled="!cashWithdrawalSelected"
-              class="primary my-3"
+              class="primary mb-2 mt-0"
             >
               <v-icon dark>delete</v-icon>Delete
             </v-btn>
@@ -131,7 +119,7 @@
 /* eslint-disable no-console */
 import groupBy from 'lodash/groupBy'
 import CashWithdrawalCard from '@/components/cashWithdrawal/CashWithdrawalCard.vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 const dateOptions = {
   weekday: 'long',
@@ -148,7 +136,7 @@ export default {
   },
   data() {
     return {
-      panel: [true],
+      panels: [true],
       deleteDialog: false,
       memoDialog: false,
       memo: ''
@@ -158,9 +146,6 @@ export default {
     showMemo(memo) {
       this.memo = memo
       this.memoDialog = true
-    },
-    loadMore() {
-      this.$store.dispatch('CashWithdrawal/getNextCashWithdrawals')
     },
     addCashWithdrawal() {
       this.$emit('addCashWithdrawal')
@@ -182,13 +167,23 @@ export default {
   },
   computed: {
     ...mapState('CashWithdrawal', [
-      'recentCashWithdrawalsBusy',
-      'noMoreCashWithdrawals',
-      'saveCashWithdrawalBusy'
+      'cashWithdrawalsBusy',
+      'saveCashWithdrawalBusy',
+      'totalRecords',
+      'pageSize'
     ]),
-    recentCashWithdrawals() {
+    ...mapGetters('CashWithdrawal', ['pageCount']),
+    page: {
+      get() {
+        return this.$store.state.CashWithdrawal.page
+      },
+      set(val) {
+        this.$store.dispatch('CashWithdrawal/getCashWithdrawals', val)
+      }
+    },
+    cashWithdrawals() {
       return groupBy(
-        this.$store.state.CashWithdrawal.recentCashWithdrawals,
+        this.$store.state.CashWithdrawal.cashWithdrawals,
         t => t.transDate
       )
     },
@@ -197,12 +192,12 @@ export default {
     }
   },
   watch: {
-    recentCashWithdrawals(val) {
-      this.panel = new Array(Object.keys(val).length)
-      this.panel.fill(false)
+    cashWithdrawals(val) {
+      this.panels = new Array(Object.keys(val).length)
+      this.panels.fill(false)
 
-      if (this.panel.length) {
-        this.panel[0] = true
+      if (this.panels.length) {
+        this.panels[0] = true
       }
     }
   }
@@ -218,7 +213,7 @@ export default {
 }
 
 .bottom-spacer {
-  height: 79px;
+  height: 100px;
 }
 
 .helper-text {
