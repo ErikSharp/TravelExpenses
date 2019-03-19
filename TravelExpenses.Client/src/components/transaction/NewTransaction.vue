@@ -1,6 +1,6 @@
 <template>
   <div id="root">
-    <v-container>
+    <v-container class="pb-0">
       <v-text-field
         v-model.trim="title"
         :error-messages="titleErrors"
@@ -181,29 +181,28 @@
           </v-checkbox>
         </v-layout>
       </v-flex>
-      <v-flex xs10 offset-xs1>
-        <v-layout justify-center justify-space-between>
-          <v-btn
-            dark
-            :loading="busy && !usingSaveAndNew"
-            :disabled="
-              $v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty
-            "
-            @click="save"
-            >Save</v-btn
-          >
-          <v-btn
-            v-if="!edit"
-            dark
-            :loading="busy && usingSaveAndNew"
-            :disabled="$v.$invalid || (busy && usingSaveAndNew)"
-            @click="saveAndNew"
-            >Save & New</v-btn
-          >
-          <v-btn dark @click="cancel">Cancel</v-btn>
-        </v-layout>
-      </v-flex>
     </v-container>
+    <v-flex xs12 sm10 offset-sm1>
+      <v-layout justify-center justify-space-between>
+        <v-btn
+          dark
+          :loading="busy && !usingSaveAndNew"
+          :disabled="$v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty"
+          @click="save"
+          >Save</v-btn
+        >
+        <v-btn
+          v-if="!edit"
+          dark
+          :loading="busy && usingSaveAndNew"
+          :disabled="$v.$invalid || (busy && usingSaveAndNew)"
+          @click="saveAndNew"
+          >Save & New</v-btn
+        >
+        <v-btn dark @click="cancel">Cancel</v-btn>
+      </v-layout>
+    </v-flex>
+    <div class="bottom-spacer"></div>
   </div>
 </template>
 
@@ -497,4 +496,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.bottom-spacer {
+  height: 10px;
+}
+</style>
