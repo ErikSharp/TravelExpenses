@@ -88,7 +88,7 @@ export default {
           commit('SET_SAVE_CASH_WITHDRAWAL_BUSY', false)
         })
     },
-    getCashWithdrawals({ state, commit, dispatch }, page) {
+    getCashWithdrawals({ state, commit, dispatch, rootState }, page) {
       commit('CLEAR_CASH_WITHDRAWALS')
       commit('CLEAR_SELECTED_CASH_WITHDRAWAL')
       commit('SET_PAGE', page || 1)
@@ -100,7 +100,10 @@ export default {
 
       commit('SET_CASH_WITHDRAWALS_BUSY', true)
 
-      return AxiosService.getCashWithdrawals(skip)
+      return AxiosService.getCashWithdrawals(
+        skip,
+        rootState.Location.selectedLocation.id
+      )
         .then(response => {
           commit('SET_PAGE_SIZE', +response.headers['page-size'])
           commit('SET_TOTAL_RECORDS', +response.headers['x-total-count'])

@@ -18,14 +18,16 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
     {
         public class Query : IRequest<CashWithdrawalsOut>
         {
-            public Query(int userId, int skip)
+            public Query(int userId, int skip, int filterLocationId)
             {
                 UserId = userId;
                 Skip = skip;
+                FilterLocationId = filterLocationId;
             }
 
             public int UserId { get; private set; }
             public int Skip { get; private set; }
+            public int FilterLocationId { get; }
         }
 
         public class Handler : IRequestHandler<Query, CashWithdrawalsOut>
@@ -46,8 +48,15 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
 
             public async Task<CashWithdrawalsOut> Handle(Query request, CancellationToken cancellationToken)
             {
-                var totalRecords = context.CashWithdrawals
-                    .Count(c => c.UserId == request.UserId);
+                var totalQuery = context.CashWithdrawals
+                    .Where(c => c.UserId == request.UserId);
+
+                if (request.FilterLocationId > 0)
+                {
+                    totalQuery = totalQuery.Where(t => t.LocationId == request.FilterLocationId);
+                }
+
+                var totalRecords = await totalQuery.CountAsync().ConfigureAwait(false);
 
                 var result = new CashWithdrawalsOut
                 {
@@ -57,8 +66,15 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
 
                 if (totalRecords > 0)
                 {
-                    var page = await context.CashWithdrawals
-                        .Where(c => c.UserId == request.UserId)                        
+                    var query = context.CashWithdrawals
+                        .Where(c => c.UserId == request.UserId);
+
+                    if (request.FilterLocationId > 0)
+                    {
+                        query = query.Where(t => t.LocationId == request.FilterLocationId);
+                    }
+
+                    var page = await query                     
                         .OrderByDescending(t => t.TransDate)
                         .ThenByDescending(t => t.Id)
                         .Skip(request.Skip)

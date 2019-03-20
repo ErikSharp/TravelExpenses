@@ -7,7 +7,8 @@ function initialState() {
     editLocationBusy: false,
     locations: [],
     selectedLocation: {
-      locationName: 'All Locations'
+      locationName: 'All Locations',
+      id: 0
     }
   }
 }

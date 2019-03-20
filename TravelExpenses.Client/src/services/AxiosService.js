@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Store from '@/store/store.js'
+import { filter } from 'bluebird'
 
 // This is the one instance that everyone will use
 const apiClient = axios.create({
@@ -28,11 +29,17 @@ export default {
   register(details) {
     return apiClient.post('api/users', details)
   },
-  getTransactions(skip) {
+  getTransactions(skip, filterLocationId) {
+    let params = {
+      skip: skip
+    }
+
+    if (filterLocationId) {
+      params['location'] = filterLocationId
+    }
+
     return apiClient.get('api/transactions', {
-      params: {
-        skip: skip
-      }
+      params: params
     })
   },
   createTransaction(transaction) {
@@ -44,11 +51,17 @@ export default {
   deleteTransaction(transactionId) {
     return apiClient.delete(`api/transactions/${transactionId}`)
   },
-  getCashWithdrawals(skip) {
+  getCashWithdrawals(skip, filterLocationId) {
+    let params = {
+      skip: skip
+    }
+
+    if (filterLocationId) {
+      params['location'] = filterLocationId
+    }
+
     return apiClient.get('api/cash-withdrawals', {
-      params: {
-        skip: skip
-      }
+      params: params
     })
   },
   createCashWithdrawal(cashWithdrawal) {

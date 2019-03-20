@@ -49,10 +49,11 @@ namespace TravelExpenses.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRecent(
             [FromQuery(Name = "skip")] int skip,
+            [FromQuery(Name = "location")] int filterLocationId,
             [FromHeader(Name = "Authorization")] string token)
         {
             var userId = User.Claims.GetUserId();
-            var transactions = await mediator.Send(new GetRecentTransactions.Query(userId, skip)).ConfigureAwait(false);
+            var transactions = await mediator.Send(new GetRecentTransactions.Query(userId, skip, filterLocationId)).ConfigureAwait(false);
 
             Response.Headers.Add(Headers.TotalCount, transactions.TotalRecords.ToString());
             Response.Headers.Add(Headers.PageSize, transactions.PageSize.ToString());

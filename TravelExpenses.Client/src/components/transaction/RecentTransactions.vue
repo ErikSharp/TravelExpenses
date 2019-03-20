@@ -25,7 +25,7 @@
       v-if="Object.keys(transactions).length && !transactionsBusy"
       class="pt-2 pl-2 pr-2 pb-1"
     >
-      <global-location />
+      <global-location @onChange="onlocationFilterChanged" />
     </v-container>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
@@ -137,6 +137,9 @@ export default {
     }
   },
   methods: {
+    onlocationFilterChanged() {
+      this.$store.dispatch('Transaction/getTransactions')
+    },
     addTransaction() {
       this.$emit('addTransaction')
     },

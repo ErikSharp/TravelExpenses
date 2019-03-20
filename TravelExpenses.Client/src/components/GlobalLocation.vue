@@ -48,7 +48,9 @@ export default {
         return this.$store.state.Location.selectedLocation
       },
       set(val) {
-        this.$store.dispatch('Location/setSelectedLocation', val)
+        this.$store.dispatch('Location/setSelectedLocation', val).then(() => {
+          this.$emit('onChange')
+        })
       }
     }
   }
@@ -66,5 +68,13 @@ export default {
 
 >>> .v-input__slot::before {
   border-width: 0 !important;
+}
+
+>>> input {
+  display: none;
+}
+
+>>> .v-select__selections {
+  margin-bottom: 8px;
 }
 </style>

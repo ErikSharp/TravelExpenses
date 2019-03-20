@@ -90,7 +90,7 @@ export default {
           commit('SET_SAVE_TRANSACTION_BUSY', false)
         })
     },
-    getTransactions({ state, commit, dispatch }, page) {
+    getTransactions({ state, commit, dispatch, rootState }, page) {
       commit('CLEAR_TRANSACTIONS')
       commit('CLEAR_SELECTED_TRANSACTION')
       commit('SET_PAGE', page || 1)
@@ -102,7 +102,10 @@ export default {
 
       commit('SET_TRANSACTIONS_BUSY', true)
 
-      return AxiosService.getTransactions(skip)
+      return AxiosService.getTransactions(
+        skip,
+        rootState.Location.selectedLocation.id
+      )
         .then(response => {
           commit('SET_PAGE_SIZE', +response.headers['page-size'])
           commit('SET_TOTAL_RECORDS', +response.headers['x-total-count'])
