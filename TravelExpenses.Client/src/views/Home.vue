@@ -75,4 +75,9 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+button {
+  padding: 8px 0 10px 0 !important;
+  min-width: 65px !important;
+}
 </style>
