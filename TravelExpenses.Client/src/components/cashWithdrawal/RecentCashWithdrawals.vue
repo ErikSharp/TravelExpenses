@@ -30,6 +30,12 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
+    <v-container
+      v-if="Object.keys(cashWithdrawals).length && !cashWithdrawalsBusy"
+      class="pt-2 pl-2 pr-2 pb-1"
+    >
+      <global-location />
+    </v-container>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
         class="primary mt-1"
@@ -117,6 +123,7 @@
 
 <script>
 /* eslint-disable no-console */
+import GlobalLocation from '@/components/GlobalLocation.vue'
 import groupBy from 'lodash/groupBy'
 import CashWithdrawalCard from '@/components/cashWithdrawal/CashWithdrawalCard.vue'
 import { mapState, mapGetters } from 'vuex'
@@ -132,7 +139,8 @@ const locale = navigator.language || 'en-US'
 
 export default {
   components: {
-    CashWithdrawalCard
+    CashWithdrawalCard,
+    GlobalLocation
   },
   data() {
     return {
@@ -218,5 +226,9 @@ export default {
 
 .helper-text {
   margin-top: 75px;
+}
+
+>>> .v-pagination__more {
+  color: white !important;
 }
 </style>

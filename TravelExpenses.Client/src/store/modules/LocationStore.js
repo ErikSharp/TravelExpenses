@@ -5,7 +5,10 @@ function initialState() {
     busy: false,
     addLocationBusy: false,
     editLocationBusy: false,
-    locations: []
+    locations: [],
+    selectedLocation: {
+      locationName: 'All Locations'
+    }
   }
 }
 
@@ -30,11 +33,17 @@ export default {
     },
     SET_LOCATIONS(state, locations) {
       state.locations = locations
+    },
+    SET_SELECTED_LOCATION(state, location) {
+      state.selectedLocation = location
     }
   },
   actions: {
     setLocations({ commit }, locations) {
       commit('SET_LOCATIONS', locations)
+    },
+    setSelectedLocation({ commit }, location) {
+      commit('SET_SELECTED_LOCATION', location)
     },
     load({ dispatch, commit }) {
       commit('SET_LOCATIONS', [])

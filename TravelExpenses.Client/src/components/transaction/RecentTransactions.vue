@@ -21,6 +21,12 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
+    <v-container
+      v-if="Object.keys(transactions).length && !transactionsBusy"
+      class="pt-2 pl-2 pr-2 pb-1"
+    >
+      <global-location />
+    </v-container>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
         class="primary mt-1"
@@ -105,6 +111,7 @@
 
 <script>
 /* eslint-disable no-console */
+import GlobalLocation from '@/components/GlobalLocation.vue'
 import groupBy from 'lodash/groupBy'
 import TransactionCard from '@/components/transaction/TransactionCard.vue'
 import { mapState, mapGetters } from 'vuex'
@@ -120,7 +127,8 @@ const locale = navigator.language || 'en-US'
 
 export default {
   components: {
-    TransactionCard
+    TransactionCard,
+    GlobalLocation
   },
   data() {
     return {
