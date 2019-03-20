@@ -44,7 +44,11 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
     <div class="bottom-spacer"></div>
-    <v-flex class="button-background" xs12>
+    <v-flex
+      class="button-background"
+      xs12
+      v-if="Object.keys(transactions).length && !transactionsBusy"
+    >
       <div class="text-xs-center my-1">
         <v-pagination v-model="page" :length="pageCount"></v-pagination>
       </div>
