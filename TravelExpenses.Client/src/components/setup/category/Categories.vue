@@ -1,35 +1,29 @@
 <template>
   <div>
-    <h2 class="white--text">Added categories</h2>
-    <v-list subheader>
-      <v-list-tile v-if="busy">
-        <v-list-tile-content>
-          <v-progress-circular
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile v-else-if="listItems.length < 1">
-        <v-list-tile-content>
-          <v-list-tile-title
-            >You currently don't have any categories added</v-list-tile-title
-          >
-        </v-list-tile-content>
-      </v-list-tile>
-      <template v-for="(item, index) in listItems">
-        <v-list-tile @click="edit(item)" :key="item.id">
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.categoryName"></v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider
-          v-if="index + 1 < listItems.length"
-          class="my-0"
-          :key="item.id + 'div'"
-        ></v-divider>
-      </template>
-    </v-list>
+    <v-progress-circular
+      v-if="busy"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+    <v-card v-else-if="listItems.length < 1"
+      >You currently don't have any categories added</v-card
+    >
+    <v-card
+      v-else
+      v-for="(item, index) in listItems"
+      :key="item.id"
+      class="mb-1"
+      @click="edit(item)"
+    >
+      <v-layout align-center justify-start row fill-height>
+        <v-flex shrink>
+          <v-avatar size="40" class="ma-2 elevation-5" :color="getColor(item)">
+            <v-icon size="25" class="white--text">{{ item.icon }}</v-icon>
+          </v-avatar>
+        </v-flex>
+        <v-flex>{{ item.categoryName }}</v-flex>
+      </v-layout>
+    </v-card>
     <div class="spacer"></div>
     <div class="controls pa-2">
       <v-window touchless v-model="editWindow">
@@ -62,6 +56,10 @@ export default {
     EditCategory
   },
   methods: {
+    getColor(item) {
+      const HTMLcolor = item.color.toString(16)
+      return '#000000'.substring(0, 7 - HTMLcolor.length) + HTMLcolor
+    },
     edit(item) {
       this.$store.dispatch('Category/setEditCategory', item)
       this.editWindow = 1

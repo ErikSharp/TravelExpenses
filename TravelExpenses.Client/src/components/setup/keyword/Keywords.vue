@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2 class="white--text">Added keywords</h2>
     <v-list subheader>
       <v-list-tile v-if="busy">
         <v-list-tile-content>
