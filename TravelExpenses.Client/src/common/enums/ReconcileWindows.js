@@ -1,8 +1,9 @@
 export default Object.freeze({
-  cashCalc: 0,
-  summary: 1,
-  investigation: 2,
-  transactions: 3,
-  cashWithdrawals: 4,
-  lossGain: 5
+  instructions: 0,
+  cashCalc: 1,
+  summary: 2,
+  investigation: 3,
+  transactions: 4,
+  cashWithdrawals: 5,
+  lossGain: 6
 })

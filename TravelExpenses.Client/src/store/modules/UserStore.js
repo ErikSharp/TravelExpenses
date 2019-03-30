@@ -18,7 +18,9 @@ export default {
       state.user = user
     },
     SET_PREFERENCES(state, preferences) {
-      state.preferences = preferences
+      if (preferences) {
+        state.preferences = preferences
+      }
     },
     SET_SHOW_RECONCILE_INSTRUCTIONS(state, show) {
       state.preferences.ShowReconcileInstructions = show

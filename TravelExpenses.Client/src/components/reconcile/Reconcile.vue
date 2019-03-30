@@ -1,6 +1,9 @@
 <template>
   <v-window touchless v-model="reconcileWindowId">
     <v-window-item>
+      <reconcile-instructions />
+    </v-window-item>
+    <v-window-item>
       <reconcile-cash-calc />
     </v-window-item>
     <v-window-item>
@@ -27,6 +30,7 @@
 
 <script>
 import ReconcileCashCalc from '@/components/reconcile/ReconcileCashCalc.vue'
+import ReconcileInstructions from '@/components/reconcile/ReconcileInstructions.vue'
 import ReconcileSummary from '@/components/reconcile/ReconcileSummary.vue'
 import ReconcileInvestigation from '@/components/reconcile/ReconcileInvestigation.vue'
 import ButtonWrapper from '@/components/reconcile/ButtonWrapper.vue'
@@ -37,6 +41,7 @@ import Windows from '@/common/enums/ReconcileWindows.js'
 
 export default {
   components: {
+    ReconcileInstructions,
     ReconcileCashCalc,
     ReconcileSummary,
     ReconcileInvestigation,
@@ -57,7 +62,17 @@ export default {
   },
   computed: {
     reconcileWindowId() {
-      return this.$store.state.Reconcile.reconcileWindowId
+      let windowId = this.$store.state.Reconcile.reconcileWindowId
+
+      if (
+        windowId === Windows.instructions &&
+        !this.$store.state.User.preferences.ShowReconcileInstructions
+      ) {
+        this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.cashCalc)
+        return Windows.cashCalc
+      } else {
+        return windowId
+      }
     }
   }
 }
