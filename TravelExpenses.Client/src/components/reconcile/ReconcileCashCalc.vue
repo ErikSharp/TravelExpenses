@@ -52,7 +52,6 @@
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
       <enter-amount
-        :currency="currency"
         :buttonText="getAmountButtonText"
         @amountEntered="onAmountEntered($event)"
       />

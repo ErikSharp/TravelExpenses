@@ -8,20 +8,7 @@
       >{{ buttonText }}</v-btn
     >
     <v-card>
-      <v-card-title>
-        <p
-          v-html="
-            `Use the calculator below to enter the amount${
-              currency
-                ? ` of <strong>${currency.isoCode}</strong> - ${
-                    currency.currencyName
-                  } on-hand`
-                : ''
-            }`
-          "
-        ></p>
-      </v-card-title>
-      <v-container grid-list-md class="pt-0 pb-2">
+      <v-container grid-list-md>
         <v-text-field
           class="readout font-weight-bold"
           readonly
@@ -63,7 +50,6 @@ import round from 'lodash/round'
 
 export default {
   props: {
-    currency: Object,
     buttonText: String
   },
   data() {
