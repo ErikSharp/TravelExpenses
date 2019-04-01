@@ -50,67 +50,65 @@
               :buttonText="getAmountButtonText"
               @amountEntered="onAmountEntered($event)"
             />
-            <!-- <v-text-field
-              v-model.number="amount"
-              :error-messages="amountErrors"
-              label="Amount"
-              box
-              background-color="white"
-              color="primary"
-              @input="$v.amount.$touch()"
-              @blur="$v.amount.$touch()"
-            ></v-text-field> -->
           </v-flex>
         </v-layout>
       </v-container>
-      <v-select
-        :items="currencies"
-        v-model="currency"
-        return-object
-        :error-messages="currencyErrors"
-        box
-        background-color="white"
-        color="primary"
-        label="Currency"
-        @input="$v.currency.$touch()"
-        @blur="$v.currency.$touch()"
-      >
-        <template slot="selection" slot-scope="data">
-          <div>
-            <span>
-              <strong>{{ data.item.isoCode }}</strong>
-              - {{ data.item.currencyName }}
-            </span>
-          </div>
-        </template>
-        <template slot="item" slot-scope="data">
-          <div>
-            <span>
-              <strong>{{ data.item.isoCode }}</strong>
-              - {{ data.item.currencyName }}
-            </span>
-          </div>
-        </template>
-      </v-select>
-      <v-select
-        :items="categories"
-        v-model="category"
-        return-object
-        :error-messages="categoryErrors"
-        box
-        background-color="white"
-        color="primary"
-        label="Category"
-        @input="$v.category.$touch()"
-        @blur="$v.category.$touch()"
-      >
-        <template slot="selection" slot-scope="data">{{
-          data.item.categoryName
-        }}</template>
-        <template slot="item" slot-scope="data">{{
-          data.item.categoryName
-        }}</template>
-      </v-select>
+      <v-container fluid grid-list-md class="pa-0">
+        <v-layout align-center>
+          <v-flex>
+            <v-select
+              :items="currencies"
+              v-model="currency"
+              return-object
+              :error-messages="currencyErrors"
+              box
+              background-color="white"
+              color="primary"
+              label="Currency"
+              @input="$v.currency.$touch()"
+              @blur="$v.currency.$touch()"
+            >
+              <template slot="selection" slot-scope="data">
+                <div>
+                  <span>
+                    <strong>{{ data.item.isoCode }}</strong>
+                    - {{ data.item.currencyName }}
+                  </span>
+                </div>
+              </template>
+              <template slot="item" slot-scope="data">
+                <div>
+                  <span>
+                    <strong>{{ data.item.isoCode }}</strong>
+                    - {{ data.item.currencyName }}
+                  </span>
+                </div>
+              </template>
+            </v-select>
+          </v-flex>
+          <v-flex>
+            <v-select
+              :items="categories"
+              v-model="category"
+              return-object
+              :error-messages="categoryErrors"
+              box
+              background-color="white"
+              color="primary"
+              label="Category"
+              @input="$v.category.$touch()"
+              @blur="$v.category.$touch()"
+            >
+              <template slot="selection" slot-scope="data">{{
+                data.item.categoryName
+              }}</template>
+              <template slot="item" slot-scope="data">{{
+                data.item.categoryName
+              }}</template>
+            </v-select>
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-select
         :items="locations"
         v-model="location"
@@ -538,5 +536,10 @@ export default {
 
 >>> .date-field.v-text-field input {
   width: 0px;
+}
+
+>>> .v-select__selections input {
+  height: 4px;
+  padding: 0;
 }
 </style>
