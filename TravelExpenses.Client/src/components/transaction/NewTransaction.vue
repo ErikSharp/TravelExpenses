@@ -70,7 +70,10 @@
             >
               <template slot="selection" slot-scope="data">
                 <div>
-                  <span>{{ data.item.isoCode }}</span>
+                  <span>
+                    <strong>{{ data.item.isoCode }}</strong>
+                    - {{ data.item.currencyName }}
+                  </span>
                 </div>
               </template>
               <template slot="item" slot-scope="data">
