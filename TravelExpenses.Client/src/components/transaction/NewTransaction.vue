@@ -11,40 +11,58 @@
         @input="$v.title.$touch()"
         @blur="$v.title.$touch()"
       ></v-text-field>
-      <v-menu
-        :close-on-content-click="false"
-        v-model="dateMenu"
-        :nudge-right="40"
-        lazy
-        transition="scale-transition"
-        offset-y
-        full-width
-        min-width="290px"
-      >
-        <v-text-field
-          slot="activator"
-          v-model="date"
-          :error-messages="dateErrors"
-          box
-          background-color="white"
-          color="primary"
-          label="Date"
-          readonly
-          @input="$v.date.$touch()"
-          @blur="$v.date.$touch()"
-        ></v-text-field>
-        <v-date-picker v-model="date" @input="dateMenu = false"></v-date-picker>
-      </v-menu>
-      <v-text-field
-        v-model.number="amount"
-        :error-messages="amountErrors"
-        label="Amount"
-        box
-        background-color="white"
-        color="primary"
-        @input="$v.amount.$touch()"
-        @blur="$v.amount.$touch()"
-      ></v-text-field>
+      <v-container grid-list-md class="pa-0">
+        <v-layout>
+          <v-flex grow>
+            <v-menu
+              :close-on-content-click="false"
+              v-model="dateMenu"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+              <v-text-field
+                class="date-field"
+                slot="activator"
+                v-model="date"
+                :error-messages="dateErrors"
+                box
+                background-color="white"
+                color="primary"
+                label="Date"
+                readonly
+                @input="$v.date.$touch()"
+                @blur="$v.date.$touch()"
+              ></v-text-field>
+              <v-date-picker
+                v-model="date"
+                @input="dateMenu = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex shrink>
+            <enter-amount
+              class="pt-2"
+              :amountButtonColor="amountButtonColor"
+              :buttonText="getAmountButtonText"
+              @amountEntered="onAmountEntered($event)"
+            />
+            <!-- <v-text-field
+              v-model.number="amount"
+              :error-messages="amountErrors"
+              label="Amount"
+              box
+              background-color="white"
+              color="primary"
+              @input="$v.amount.$touch()"
+              @blur="$v.amount.$touch()"
+            ></v-text-field> -->
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-select
         :items="currencies"
         v-model="currency"
@@ -219,8 +237,13 @@ import {
 
 import sortBy from 'lodash/sortBy'
 import { mapGetters } from 'vuex'
+import EnterAmount from '@/components/EnterAmount.vue'
+import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 
 export default {
+  components: {
+    EnterAmount
+  },
   props: {
     edit: Boolean
   },
@@ -292,6 +315,10 @@ export default {
     return result
   },
   methods: {
+    onAmountEntered(amount) {
+      this.amount = amount
+      this.$v.amount.$touch()
+    },
     getLocationString(locationObj) {
       const country = this.$store.getters['Country/findCountry'](
         locationObj.countryId
@@ -373,6 +400,14 @@ export default {
   },
   computed: {
     ...mapGetters('Authentication', ['userId']),
+    getAmountButtonText() {
+      return this.amount
+        ? toLocaleStringWithEndingZero(this.amount)
+        : 'ENTER AMOUNT'
+    },
+    amountButtonColor() {
+      return this.$v.amount.$error ? 'error' : 'primary'
+    },
     currencies() {
       return sortBy(this.$store.state.Currency.currencies, c => c.isoCode)
     },
@@ -499,5 +534,9 @@ export default {
 <style scoped>
 .bottom-spacer {
   height: 10px;
+}
+
+>>> .date-field.v-text-field input {
+  width: 0px;
 }
 </style>

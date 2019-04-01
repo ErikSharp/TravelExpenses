@@ -1,16 +1,17 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
     <v-btn
+      :color="amountButtonColor"
       slot="activator"
-      flat
-      class="primary my-0"
+      class="my-0 mr-0 white--text"
       :class="{ title: buttonText !== 'ENTER AMOUNT' }"
       >{{ buttonText }}</v-btn
     >
     <v-card>
       <v-container grid-list-md>
         <v-text-field
-          class="readout font-weight-bold"
+          hide-details
+          class="readout font-weight-bold mb-2"
           readonly
           solo
           :value="readout"
@@ -50,7 +51,11 @@ import round from 'lodash/round'
 
 export default {
   props: {
-    buttonText: String
+    buttonText: String,
+    amountButtonColor: {
+      type: String,
+      default: 'primary'
+    }
   },
   data() {
     return {
@@ -64,6 +69,8 @@ export default {
     enter() {
       if (this.readout) {
         this.evaluateAndEmitResult()
+      } else {
+        this.$emit('amountEntered', '')
       }
 
       this.dialog = false
