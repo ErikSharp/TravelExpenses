@@ -15,7 +15,7 @@
           <li>Highlights if you lost or gained any cash unexpectedly</li>
           <li>
             Confirms that all transactions have been entered and that no cash
-            witdrawals have been forgotten
+            withdrawals have been forgotten
           </li>
         </ol>
         <p class="mb-0">
