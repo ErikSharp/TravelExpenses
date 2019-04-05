@@ -17,10 +17,8 @@
             <v-menu
               :close-on-content-click="false"
               v-model="dateMenu"
-              :nudge-right="40"
               lazy
               transition="scale-transition"
-              offset-y
               full-width
               min-width="290px"
             >
@@ -53,39 +51,56 @@
           </v-flex>
         </v-layout>
       </v-container>
+      <v-select
+        :items="currencies"
+        v-model="currency"
+        return-object
+        :error-messages="currencyErrors"
+        box
+        background-color="white"
+        color="primary"
+        label="Currency"
+        @input="$v.currency.$touch()"
+        @blur="$v.currency.$touch()"
+      >
+        <template slot="selection" slot-scope="data">
+          <div>
+            <span>
+              <strong>{{ data.item.isoCode }}</strong>
+              - {{ data.item.currencyName }}
+            </span>
+          </div>
+        </template>
+        <template slot="item" slot-scope="data">
+          <div>
+            <span>
+              <strong>{{ data.item.isoCode }}</strong>
+              - {{ data.item.currencyName }}
+            </span>
+          </div>
+        </template>
+      </v-select>
+      <v-select
+        :items="locations"
+        v-model="location"
+        return-object
+        :error-messages="locationErrors"
+        box
+        background-color="white"
+        color="primary"
+        label="Location"
+        @input="$v.location.$touch()"
+        @blur="$v.location.$touch()"
+      >
+        <template slot="selection" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          getLocationString(data.item)
+        }}</template>
+      </v-select>
       <v-container fluid grid-list-md class="pa-0">
-        <v-layout align-center>
-          <v-flex>
-            <v-select
-              :items="currencies"
-              v-model="currency"
-              return-object
-              :error-messages="currencyErrors"
-              box
-              background-color="white"
-              color="primary"
-              label="Currency"
-              @input="$v.currency.$touch()"
-              @blur="$v.currency.$touch()"
-            >
-              <template slot="selection" slot-scope="data">
-                <div>
-                  <span>
-                    <strong>{{ data.item.isoCode }}</strong>
-                    - {{ data.item.currencyName }}
-                  </span>
-                </div>
-              </template>
-              <template slot="item" slot-scope="data">
-                <div>
-                  <span>
-                    <strong>{{ data.item.isoCode }}</strong>
-                    - {{ data.item.currencyName }}
-                  </span>
-                </div>
-              </template>
-            </v-select>
-          </v-flex>
+        <v-layout>
           <v-flex>
             <v-select
               :items="categories"
@@ -107,28 +122,40 @@
               }}</template>
             </v-select>
           </v-flex>
+          <v-flex class="pt-2">
+            <v-dialog v-model="keywordsDialog" scrollable>
+              <template v-slot:activator="{ on }">
+                <v-btn class="mr-0" color="primary" v-on="on">Keywords</v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="title pb-0"
+                  >Select the keywords that you wish to apply</v-card-title
+                >
+                <v-card-text style="height: 50vh">
+                  <v-checkbox
+                    hide-details
+                    color="primary"
+                    class="mx-3 mb-3 mt-0"
+                    v-for="keyword in keywords"
+                    :label="keyword.keyword.keywordName"
+                    @change="selectKeyword(keyword)"
+                  ></v-checkbox>
+                </v-card-text>
+                <v-card-actions>
+                  <v-layout justify-center>
+                    <v-btn
+                      class="text-xs-center"
+                      @click="keywordsDialogDoneClick"
+                      >Done</v-btn
+                    >
+                  </v-layout>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-flex>
         </v-layout>
       </v-container>
-      <v-select
-        :items="locations"
-        v-model="location"
-        return-object
-        :error-messages="locationErrors"
-        box
-        background-color="white"
-        color="primary"
-        label="Location"
-        @input="$v.location.$touch()"
-        @blur="$v.location.$touch()"
-      >
-        <template slot="selection" slot-scope="data">{{
-          getLocationString(data.item)
-        }}</template>
-        <template slot="item" slot-scope="data">{{
-          getLocationString(data.item)
-        }}</template>
-      </v-select>
-      <v-select
+      <!-- <v-select
         :items="keywords"
         v-model="chosenKeywords"
         label="Keywords"
@@ -155,15 +182,22 @@
             :label="data.item.keywordName"
           />
         </template>
-      </v-select>
+      </v-select> -->
+      <v-card v-if="this.chosenKeywords.length" class="mb-4 pa-1">
+        <v-chip
+          close
+          v-for="keyword in chosenKeywords"
+          :key="keyword.id"
+          @input="removeKeyword(keyword)"
+          >{{ keyword.keywordName }}</v-chip
+        >
+      </v-card>
       <v-textarea
         hide-details
         solo
-        label="Description"
+        label="Description (optional)"
         auto-grow
         v-model="memo"
-        @input="$v.memo.$touch()"
-        @blur="$v.memo.$touch()"
       ></v-textarea>
       <v-flex xs10 offset-xs1>
         <v-layout justify-center justify-space-between>
@@ -174,7 +208,6 @@
             color="white"
             v-model="gpsLocation"
             validate-on-blur
-            @change="$v.gpsLocation.$touch()"
           >
             <div
               slot="label"
@@ -191,7 +224,6 @@
             class="my-2 justify-center"
             dark
             v-model="paidWithCash"
-            @change="$v.paidWithCash.$touch()"
           >
             <div slot="label" class="white--text">Paid With Cash</div>
           </v-checkbox>
@@ -199,7 +231,17 @@
       </v-flex>
     </v-container>
     <v-flex xs12 sm10 offset-sm1>
-      <v-layout justify-center justify-space-between>
+      <v-layout justify-center v-if="edit">
+        <v-btn
+          dark
+          :loading="busy && !usingSaveAndNew"
+          :disabled="$v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty"
+          @click="save"
+          >Save</v-btn
+        >
+        <v-btn dark @click="cancel">Cancel</v-btn>
+      </v-layout>
+      <v-layout justify-center justify-space-between v-else>
         <v-btn
           dark
           :loading="busy && !usingSaveAndNew"
@@ -276,7 +318,8 @@ export default {
       memo: '',
       gpsLocation: false,
       paidWithCash: true,
-      usingSaveAndNew: false
+      usingSaveAndNew: false,
+      keywordsDialog: false
     }
   },
   validations() {
@@ -303,11 +346,7 @@ export default {
       },
       location: {
         required
-      },
-      chosenKeywords: {},
-      memo: {},
-      gpsLocation: {},
-      paidWithCash: {}
+      }
     }
 
     return result
@@ -316,6 +355,20 @@ export default {
     onAmountEntered(amount) {
       this.amount = amount
       this.$v.amount.$touch()
+    },
+    selectKeyword(keyword) {
+      keyword.selected = !keyword.selected
+    },
+    keywordsDialogDoneClick() {
+      this.chosenKeywords = []
+
+      this.keywords.forEach(element => {
+        if (element.selected) {
+          this.chosenKeywords.push(element.keyword)
+        }
+      })
+
+      this.keywordsDialog = false
     },
     getLocationString(locationObj) {
       const country = this.$store.getters['Country/findCountry'](
@@ -416,7 +469,11 @@ export default {
       return sortBy(this.$store.state.Location.locations, l => l.locationName)
     },
     keywords() {
-      return sortBy(this.$store.state.Keyword.keywords, k => k.keywordName)
+      return sortBy(this.$store.state.Keyword.keywords, k =>
+        k.keywordName.toLowerCase()
+      ).map(k => {
+        return { selected: false, keyword: k }
+      })
     },
     titleErrors() {
       const errors = []
