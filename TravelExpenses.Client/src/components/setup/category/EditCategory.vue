@@ -24,7 +24,7 @@
           :disabled="!$v.$anyDirty || $v.$invalid"
           :loading="busy"
           @click="edit"
-          >Edit</v-btn
+          >Save</v-btn
         >
         <v-btn dark color="primary" @click="cancel">Cancel</v-btn>
       </v-layout>
