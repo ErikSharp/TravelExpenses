@@ -51,9 +51,10 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-select
+      <v-autocomplete
         :items="currencies"
         v-model="currency"
+        :filter="filterCurrency"
         return-object
         :error-messages="currencyErrors"
         box
@@ -79,7 +80,7 @@
             </span>
           </div>
         </template>
-      </v-select>
+      </v-autocomplete>
       <v-select
         :items="locations"
         v-model="location"
@@ -137,6 +138,7 @@
                     color="primary"
                     class="mx-3 mb-3 mt-0"
                     v-for="keyword in keywords"
+                    :key="keyword.id"
                     :label="keyword.keyword.keywordName"
                     @change="selectKeyword(keyword)"
                   ></v-checkbox>
@@ -352,6 +354,13 @@ export default {
     return result
   },
   methods: {
+    filterCurrency(item, queryText) {
+      if (queryText.trim() === '') {
+        return true
+      } else {
+        return item.isoCode.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+      }
+    },
     onAmountEntered(amount) {
       this.amount = amount
       this.$v.amount.$touch()
@@ -570,10 +579,5 @@ export default {
 
 >>> .date-field.v-text-field input {
   width: 0px;
-}
-
->>> .v-select__selections input {
-  height: 4px;
-  padding: 0;
 }
 </style>

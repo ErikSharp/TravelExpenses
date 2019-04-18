@@ -52,9 +52,10 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-select
+      <v-autocomplete
         :items="currencies"
         v-model="currency"
+        :filter="filterCurrency"
         return-object
         :error-messages="currencyErrors"
         box
@@ -80,7 +81,7 @@
             </span>
           </div>
         </template>
-      </v-select>
+      </v-autocomplete>
       <v-select
         :items="locations"
         v-model="location"
@@ -193,6 +194,13 @@ export default {
     return result
   },
   methods: {
+    filterCurrency(item, queryText) {
+      if (queryText.trim() === '') {
+        return true
+      } else {
+        return item.isoCode.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+      }
+    },
     onAmountEntered(amount) {
       this.amount = amount
       this.$v.amount.$touch()
