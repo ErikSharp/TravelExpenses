@@ -503,29 +503,6 @@ export default {
       !this.$v.date.required && errors.push('A date is required')
       return errors
     },
-    amountErrors() {
-      const errors = []
-
-      if (!this.$v.amount.$dirty) return errors
-
-      !this.$v.amount.decimal && errors.push('The amount must numeric')
-
-      !this.$v.amount.maxValue &&
-        errors.push(
-          `The amount can be a maximum of ${
-            this.$v.amount.$params.maxValue.max
-          }`
-        )
-      !this.$v.amount.minValue &&
-        errors.push(
-          `The amount must be a minimum of ${
-            this.$v.amount.$params.minValue.min
-          }`
-        )
-
-      !this.$v.amount.required && errors.push('An amount is required')
-      return errors
-    },
     currencyErrors() {
       const errors = []
 
