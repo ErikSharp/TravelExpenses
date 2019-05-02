@@ -313,7 +313,6 @@ export default {
       date: '',
       dateMenu: false,
       amount: '',
-      currency: {},
       category: {},
       location: {},
       chosenKeywords: [],
@@ -460,6 +459,14 @@ export default {
   },
   computed: {
     ...mapGetters('Authentication', ['userId']),
+    currency: {
+      get() {
+        return this.$store.state.Currency.defaultCurrency
+      },
+      set(val) {
+        this.$store.dispatch('Currency/setDefaultCurrency', val)
+      }
+    },
     getAmountButtonText() {
       return this.amount
         ? toLocaleStringWithEndingZero(this.amount)

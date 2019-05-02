@@ -2,7 +2,8 @@ import AxiosService from '@/services/AxiosService.js'
 
 function initialState() {
   return {
-    currencies: []
+    currencies: [],
+    defaultCurrency: {}
   }
 }
 
@@ -18,6 +19,9 @@ export default {
     },
     SET_CURRENCIES(state, currencies) {
       state.currencies = currencies
+    },
+    SET_DEFAULT_CURRENCY(state, currency) {
+      state.defaultCurrency = currency
     }
   },
   actions: {
@@ -34,6 +38,9 @@ export default {
         .catch(error => {
           dispatch('showAxiosErrorMessage', error, { root: true })
         })
+    },
+    setDefaultCurrency({ commit }, currency) {
+      commit('SET_DEFAULT_CURRENCY', currency)
     }
   },
   getters: {
