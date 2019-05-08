@@ -4,6 +4,7 @@ export function firstLetterUpper(inputString) {
 }
 
 export function toLocaleStringWithEndingZero(numValue) {
+  numValue += 0 //used to remove the negative zero
   let result = numValue.toLocaleString()
 
   if (result.substring(result.length - 2, result.length - 1) === '.') {
