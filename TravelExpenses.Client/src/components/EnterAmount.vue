@@ -5,6 +5,7 @@
       slot="activator"
       class="my-0 mr-0 white--text"
       :class="{ title: buttonText !== 'ENTER AMOUNT' }"
+      @click="activatorClick"
       >{{ buttonText }}</v-btn
     >
     <v-card>
@@ -66,6 +67,11 @@ export default {
     }
   },
   methods: {
+    activatorClick() {
+      this.readout = ''
+      this.dialog = true
+      this.enter()
+    },
     enter() {
       if (this.readout) {
         this.evaluateAndEmitResult()
