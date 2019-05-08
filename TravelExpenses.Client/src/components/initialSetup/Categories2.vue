@@ -36,7 +36,7 @@
         <v-checkbox
           v-model="chosenCategories"
           color="primary"
-          :value="data.item.categoryName"
+          :value="data.item"
           :label="data.item.categoryName"
         />
       </template>
