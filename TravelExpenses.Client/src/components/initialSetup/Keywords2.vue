@@ -20,24 +20,8 @@
       chips
       solo
       multiple
+      deletable-chips
     >
-      <template slot="selection" slot-scope="data">
-        <v-chip
-          :selected="data.selected"
-          close
-          @input="removeKeyword(data.item)"
-        >
-          <span>{{ data.item }}</span>
-        </v-chip>
-      </template>
-      <template slot="item" slot-scope="data">
-        <v-checkbox
-          v-model="chosenKeywords"
-          color="primary"
-          :value="data.item"
-          :label="data.item"
-        />
-      </template>
     </v-select>
     <p>
       <strong>Note:</strong> You will be able to add additional Keywords by
@@ -76,10 +60,6 @@ export default {
         .then(() => {
           this.$store.dispatch('InitialSetup/nextWindow')
         })
-    },
-    removeKeyword(item) {
-      this.chosenKeywords.splice(this.chosenKeywords.indexOf(item), 1)
-      this.chosenKeywords = [...this.chosenKeywords]
     }
   },
   computed: {

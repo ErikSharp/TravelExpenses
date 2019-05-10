@@ -19,27 +19,13 @@
       :items="categories"
       v-model="chosenCategories"
       label="Categories"
+      item-text="categoryName"
       chips
       solo
       multiple
+      return-object
+      deletable-chips
     >
-      <template slot="selection" slot-scope="data">
-        <v-chip
-          :selected="data.selected"
-          close
-          @input="removeCategory(data.item)"
-        >
-          <span>{{ data.item.categoryName }}</span>
-        </v-chip>
-      </template>
-      <template slot="item" slot-scope="data">
-        <v-checkbox
-          v-model="chosenCategories"
-          color="primary"
-          :value="data.item"
-          :label="data.item.categoryName"
-        />
-      </template>
     </v-select>
     <p>
       <strong>Note:</strong> You will be able to add additional Categories by
@@ -83,10 +69,6 @@ export default {
         .then(() => {
           this.$store.dispatch('InitialSetup/nextWindow')
         })
-    },
-    removeCategory(item) {
-      this.chosenCategories.splice(this.chosenCategories.indexOf(item), 1)
-      this.chosenCategories = [...this.chosenCategories]
     }
   },
   computed: {
