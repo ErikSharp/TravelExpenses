@@ -9,6 +9,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-container v-show="!cashWithdrawalsBusy" class="pt-2 pl-2 pr-2 pb-1">
+      <global-location @onChange="onlocationFilterChanged" />
+    </v-container>
     <div
       class="helper-text"
       v-if="!Object.keys(cashWithdrawals).length && !cashWithdrawalsBusy"
@@ -30,12 +33,6 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
-    <v-container
-      v-if="Object.keys(cashWithdrawals).length && !cashWithdrawalsBusy"
-      class="pt-2 pl-2 pr-2 pb-1"
-    >
-      <global-location @onChange="onlocationFilterChanged" />
-    </v-container>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
         class="primary mt-1"
