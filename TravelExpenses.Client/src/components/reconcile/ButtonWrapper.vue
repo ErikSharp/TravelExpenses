@@ -3,8 +3,9 @@
     <slot />
     <v-btn
       :loading="reconcileBusy"
-      class="summary-btn elevation-10"
+      class="summary-btn"
       small
+      outline
       fixed
       @click="returnToSummary"
       >{{ buttonText }}</v-btn

@@ -34,6 +34,8 @@
               {{ getLocationString(cashWithdrawal.locationId) }}
             </p>
             <v-btn
+              small
+              outline
               class="primary"
               v-if="cashWithdrawal.memo"
               @click.stop="showMemo"
