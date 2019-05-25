@@ -9,7 +9,13 @@
           <div class="ml-1">
             <h3>Reconcile summary for:</h3>
             <h4>{{ getLocationString() }}</h4>
-            <h4>{{ `${currency.isoCode} - ${currency.currencyName}` }}</h4>
+            <h4>
+              {{
+                `${currency ? currency.isoCode : ''} - ${
+                  currency ? currency.currencyName : ''
+                }`
+              }}
+            </h4>
           </div>
         </v-layout>
       </v-card-title>
@@ -17,7 +23,7 @@
         <v-divider class="mb-3"></v-divider>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `${currency.isoCode} withdrawn:` }}</h3>
+            <h3>{{ `${currency ? currency.isoCode : ''} withdrawn:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3 class="text-xs-right">
@@ -31,7 +37,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>{{ `${currency.isoCode} spent:` }}</h3>
+            <h3>{{ `${currency ? currency.isoCode : ''} spent:` }}</h3>
           </v-flex>
           <v-flex shrink>
             <h3>
@@ -130,6 +136,10 @@ export default {
       return toLocaleStringWithEndingZero(numValue)
     },
     getLocationString() {
+      if (!this.location) {
+        return ''
+      }
+
       const country = this.findCountry(this.location.countryId)
       let countryName = ''
       if (country) {

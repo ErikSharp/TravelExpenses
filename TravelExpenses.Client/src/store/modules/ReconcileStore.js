@@ -7,13 +7,8 @@ function initialState() {
     reconcileWindowId: 0,
     cashOnHand: 0,
     reconcileBusy: false,
-    currency: {
-      isoCode: '',
-      currencyName: ''
-    },
-    location: {
-      locationName: ''
-    },
+    currency: null,
+    location: null,
     reconcileSummary: {
       totalSpent: 0,
       totalWithdrawn: 0,
@@ -66,6 +61,10 @@ export default {
       commit('SET_CASH_ON_HAND', amount)
     },
     getReconcileSummary({ dispatch, commit, state }) {
+      if (!state.location || !state.currency) {
+        return
+      }
+
       commit('SET_RECONCILE_BUSY', true)
 
       return AxiosService.getReconcileSummary(
@@ -122,6 +121,10 @@ export default {
       )
     },
     resultString: (state, getters) => {
+      if (!state.currency) {
+        return ''
+      }
+
       return `You ${getters.haveNetGain ? 'have' : 'are'} ${
         getters.amountOutString
       } ${state.currency.isoCode} ${getters.haveNetGain ? 'too much' : 'short'}`
