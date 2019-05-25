@@ -70,7 +70,7 @@
             <v-btn
               slot="activator"
               flat
-              :disabled="!transactionSelected || lossGainSelected"
+              :disabled="!transactionSelected"
               class="primary mb-2 mt-0"
             >
               <v-icon dark>delete</v-icon>Delete
