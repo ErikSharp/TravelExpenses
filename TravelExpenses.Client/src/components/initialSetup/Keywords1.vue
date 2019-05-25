@@ -18,7 +18,7 @@
     <p>
       In this example,
       <strong>Transportation</strong> would be the chosen Category, and
-      <strong>'User'</strong> and <strong>'Expensive'</strong> could be the
+      <strong>'Uber'</strong> and <strong>'Expensive'</strong> could be the
       chosen Keywords.
     </p>
     <p>Keywords also allow you to query associated data.</p>
