@@ -11,9 +11,20 @@
     <v-flex>
       <v-layout align-center justify-start row fill-height>
         <v-flex shrink>
-          <v-avatar size="70" class="mx-2 elevation-5" :color="getColor()">
-            <v-icon size="45" class="white--text">{{ getIcon() }}</v-icon>
-          </v-avatar>
+          <div id="icons">
+            <v-avatar size="70" class="mx-2 elevation-5" :color="getColor()">
+              <v-icon size="45" class="white--text">{{ getIcon() }}</v-icon>
+            </v-avatar>
+            <v-avatar
+              v-if="transaction.paidWithCash"
+              id="cash-icon"
+              class="elevation-5"
+              size="25"
+              color="green"
+            >
+              <v-icon size="20" class="white--text">money</v-icon>
+            </v-avatar>
+          </div>
         </v-flex>
         <v-flex>
           <v-card-text class="white py-1 px-0 border-right">
@@ -171,6 +182,17 @@ export default {
 .v-card p {
   margin: 0;
   overflow: hidden;
+}
+
+#icons {
+  position: relative;
+}
+
+#cash-icon {
+  position: absolute;
+  top: -8px;
+  left: 4px;
+  z-index: 0;
 }
 
 .v-chip {
