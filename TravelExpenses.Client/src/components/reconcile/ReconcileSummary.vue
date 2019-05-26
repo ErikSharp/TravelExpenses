@@ -75,7 +75,7 @@
         </v-layout>
         <v-layout row>
           <v-flex grow>
-            <h3>Accounted for:</h3>
+            <h3>Previous loss/gain:</h3>
           </v-flex>
           <v-flex shrink>
             <h3>{{ formatNumber(reconcileSummary.totalLossGain * -1) }}</h3>
