@@ -56,7 +56,7 @@ export default {
         { divider: true, inset: true },
         {
           window: SetupWindow.keywords,
-          icon: 'my_location',
+          icon: 'vpn_key',
           title: 'Keywords',
           subtitle:
             'Add keywords that can be used to enable querying of transactions'
