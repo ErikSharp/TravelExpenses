@@ -235,31 +235,38 @@
     <v-flex xs12 sm10 offset-sm1>
       <v-layout justify-center v-if="edit">
         <v-btn
-          dark
+          class="primary"
+          flat
           :loading="busy && !usingSaveAndNew"
           :disabled="$v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty"
           @click="save"
           >Save</v-btn
         >
-        <v-btn dark @click="cancel">Cancel</v-btn>
+        <v-btn :disabled="busy" class="primary" flat @click="cancel"
+          >Cancel</v-btn
+        >
       </v-layout>
       <v-layout justify-center justify-space-between v-else>
         <v-btn
-          dark
+          class="primary"
+          flat
           :loading="busy && !usingSaveAndNew"
-          :disabled="$v.$invalid || (busy && !usingSaveAndNew) || !$v.$anyDirty"
+          :disabled="$v.$invalid || busy || !$v.$anyDirty"
           @click="save"
           >Save</v-btn
         >
         <v-btn
+          class="primary"
+          flat
           v-if="!edit"
-          dark
           :loading="busy && usingSaveAndNew"
-          :disabled="$v.$invalid || (busy && usingSaveAndNew)"
+          :disabled="$v.$invalid || busy"
           @click="saveAndNew"
           >Save & New</v-btn
         >
-        <v-btn dark @click="cancel">Cancel</v-btn>
+        <v-btn class="primary" flat :disabled="busy" @click="cancel"
+          >Cancel</v-btn
+        >
       </v-layout>
     </v-flex>
     <div class="bottom-spacer"></div>

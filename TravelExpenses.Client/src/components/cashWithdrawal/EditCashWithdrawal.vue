@@ -112,13 +112,16 @@
       <v-flex xs10 offset-xs1 class="mt-2">
         <v-layout justify-center justify-space-between>
           <v-btn
-            dark
+            class="primary"
+            flat
             :loading="busy"
             :disabled="$v.$invalid || busy || !$v.$anyDirty"
             @click="save"
             >Save</v-btn
           >
-          <v-btn dark @click="cancel">Cancel</v-btn>
+          <v-btn :disabled="busy" class="primary" flat @click="cancel"
+            >Cancel</v-btn
+          >
         </v-layout>
       </v-flex>
     </v-container>
