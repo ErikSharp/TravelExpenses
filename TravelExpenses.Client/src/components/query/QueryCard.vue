@@ -8,14 +8,14 @@
       <v-layout align-center justify-start row fill-height>
         <v-flex shrink>
           <v-avatar
-            size="70"
+            size="60"
             class="mx-3 my-2 elevation-5"
             :color="active ? color : 'grey'"
           >
-            <v-icon size="45" class="white--text">{{ icon }}</v-icon>
+            <v-icon size="40" class="white--text">{{ icon }}</v-icon>
           </v-avatar>
         </v-flex>
-        <v-flex class="mr-3">
+        <v-flex class="mr-3 mt-2 mb-2">
           <div class="subheading font-weight-bold mb-1">{{ title }}</div>
           <span>
             <slot />
@@ -31,7 +31,7 @@ export default {
   props: {
     color: {
       type: String,
-      required: true
+      default: 'primary'
     },
     icon: {
       type: String,
@@ -43,7 +43,7 @@ export default {
     },
     active: {
       type: Boolean,
-      required: true
+      default: true
     }
   },
   methods: {

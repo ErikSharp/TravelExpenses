@@ -1,72 +1,47 @@
 <template>
   <div>
-    <v-card>
-      <v-list class="pa-0" three-line>
-        <template v-for="(item, index) in items">
-          <v-divider
-            v-if="item.divider"
-            :inset="item.inset"
-            :key="index"
-          ></v-divider>
-          <v-list-tile
-            v-else
-            :key="item.title"
-            avatar
-            @click="navigate(item.window)"
-          >
-            <v-list-tile-avatar size="55" class="mr-3 mt-1">
-              <v-icon large class="primary white--text elevation-5">{{
-                item.icon
-              }}</v-icon>
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.title"></v-list-tile-title>
-              <v-list-tile-sub-title
-                v-html="item.subtitle"
-              ></v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-      </v-list>
-    </v-card>
+    <query-card
+      icon="add_location"
+      title="Locations"
+      class="mb-2"
+      @click="navLocations"
+    >
+      Add the locations you will be travelling to
+    </query-card>
+    <query-card
+      icon="collections_bookmark"
+      title="Categories"
+      class="mb-2"
+      @click="navCategories"
+    >
+      Add categories that will be used to group transactions
+    </query-card>
+    <query-card icon="vpn_key" title="Keywords" @click="navKeywords">
+      Add keywords that can be used to enable querying of transactions
+    </query-card>
   </div>
 </template>
 
 <script>
 import SetupWindow from '@/common/enums/SetupWindows.js'
+import QueryCard from '@/components/query/QueryCard.vue'
 
 export default {
-  data() {
-    return {
-      items: [
-        {
-          window: SetupWindow.locations,
-          icon: 'add_location',
-          title: 'Locations',
-          subtitle: 'Add the locations you will be travelling to'
-        },
-        { divider: true, inset: true },
-        {
-          window: SetupWindow.categories,
-          icon: 'collections_bookmark',
-          title: 'Categories',
-          subtitle: 'Add categories that will be used to group transactions'
-        },
-        { divider: true, inset: true },
-        {
-          window: SetupWindow.keywords,
-          icon: 'vpn_key',
-          title: 'Keywords',
-          subtitle:
-            'Add keywords that can be used to enable querying of transactions'
-        }
-      ]
-    }
+  components: {
+    QueryCard
   },
   methods: {
     navigate(window) {
       this.$store.dispatch('SetupData/setSetupWindow', window)
+    },
+    navLocations() {
+      this.navigate(SetupWindow.locations)
+    },
+    navCategories() {
+      this.navigate(SetupWindow.categories)
+    },
+    navKeywords() {
+      this.navigate(SetupWindow.keywords)
     }
   }
 }
