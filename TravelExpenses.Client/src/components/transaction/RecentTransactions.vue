@@ -20,7 +20,7 @@
         class="mt-5"
         size="70"
         width="7"
-        color="secondary"
+        color="accent"
         indeterminate
       ></v-progress-circular>
     </v-layout>
