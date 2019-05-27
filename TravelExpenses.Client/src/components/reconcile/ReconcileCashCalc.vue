@@ -62,8 +62,8 @@
         @click="beginReconcile"
         :loading="reconcileBusy"
         :disabled="$v.$invalid"
-        dark
-        class="primary mt-5"
+        flat
+        class="primary mt-4"
         >RECONCILE</v-btn
       >
     </v-layout>
