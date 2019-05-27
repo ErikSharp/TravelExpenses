@@ -40,7 +40,7 @@
         :key="date"
       >
         <div slot="header">{{ getDateString(date) }}</div>
-        <div style="background: #261136" class="py-1 px-2">
+        <div style="background: var(--v-secondary-base)" class="py-1 px-2">
           <cash-withdrawal-card
             v-for="(cashWithdrawal, i) in dateGroup"
             :key="i"

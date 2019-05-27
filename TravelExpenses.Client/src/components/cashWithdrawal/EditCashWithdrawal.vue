@@ -7,7 +7,6 @@
         label="Title"
         box
         background-color="white"
-        color="primary"
         @input="$v.title.$touch()"
         @blur="$v.title.$touch()"
       ></v-text-field>

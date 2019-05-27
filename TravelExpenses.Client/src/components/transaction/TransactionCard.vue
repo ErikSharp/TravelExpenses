@@ -98,9 +98,9 @@ export default {
       if (category) {
         if (category === this.$store.state.Category.lossGainCategory) {
           if (this.transaction.amount > 0) {
-            return '#FF0000'
+            return this.$vuetify.theme.error
           } else {
-            return '#00CC00'
+            return this.$vuetify.theme.success
           }
         }
 
@@ -208,7 +208,7 @@ export default {
 }
 
 .selected {
-  border: solid #7b1fa2 5px;
+  border: solid var(--v-accent-base) 5px;
 }
 
 /* chip text was going over add edit delete buttons */

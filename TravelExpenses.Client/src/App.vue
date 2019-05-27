@@ -77,7 +77,10 @@ export default {
 }
 
 #app {
-  background: linear-gradient(#174e82, #0f3457);
+  background: linear-gradient(
+    var(--v-secondary-lighten1),
+    var(--v-secondary-darken4)
+  );
 }
 
 .v-text-field--box .v-input__slot {

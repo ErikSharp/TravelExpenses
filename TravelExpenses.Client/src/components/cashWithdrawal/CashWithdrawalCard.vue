@@ -124,7 +124,7 @@ export default {
 }
 
 .selected {
-  border: solid #7b1fa2 5px;
+  border: solid var(--v-accent-base) 5px;
 }
 
 /* chip text was going over add edit delete buttons */
