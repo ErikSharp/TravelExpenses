@@ -88,6 +88,11 @@ export default {
   border-bottom-right-radius: 4px;
 }
 
+.v-input__slot::after,
+.v-input__slot::before {
+  display: none !important;
+}
+
 .v-list {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
