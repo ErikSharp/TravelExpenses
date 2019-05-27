@@ -26,7 +26,7 @@
         </div>
       </template>
     </v-select>
-    <query-card
+    <icon-text-card
       color="blue"
       icon="assessment"
       title="Locations total comparison"
@@ -35,8 +35,8 @@
       @click="navLocTotalComp"
     >
       Compares the total amount spent in each location
-    </query-card>
-    <query-card
+    </icon-text-card>
+    <icon-text-card
       color="purple"
       icon="assessment"
       title="Locations categories comparison"
@@ -44,18 +44,18 @@
       @click="navLocCatComp"
     >
       Compares categories in each location
-    </query-card>
+    </icon-text-card>
   </div>
 </template>
 
 <script>
-import QueryCard from '@/components/query/QueryCard.vue'
+import IconTextCard from '@/components/common/IconTextCard.vue'
 import QueryWindows from '@/common/enums/QueryWindows.js'
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    QueryCard
+    IconTextCard
   },
   methods: {
     navLocTotalComp() {
