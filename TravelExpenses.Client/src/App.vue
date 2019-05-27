@@ -77,7 +77,7 @@ export default {
 }
 
 #app {
-  background: #261136;
+  background: linear-gradient(#174e82, #0f3457);
 }
 
 .v-text-field--box .v-input__slot {
