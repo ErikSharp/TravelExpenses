@@ -104,7 +104,7 @@ export default {
 
       return AxiosService.getTransactions(
         skip,
-        rootState.Location.selectedLocation.id
+        rootState.Location.selectedFilterLocation.id
       )
         .then(response => {
           commit('SET_PAGE_SIZE', +response.headers['page-size'])
