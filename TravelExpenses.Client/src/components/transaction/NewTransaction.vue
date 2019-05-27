@@ -139,6 +139,8 @@
         label="Description (optional)"
         auto-grow
         v-model="memo"
+        @input="$v.memo.$touch()"
+        @blur="$v.memo.$touch()"
       ></v-textarea>
       <v-flex xs10 offset-xs1>
         <v-layout justify-center justify-space-between>
@@ -149,6 +151,7 @@
             color="white"
             v-model="gpsLocation"
             validate-on-blur
+            @change="$v.gpsLocation.$touch()"
           >
             <div
               slot="label"
@@ -165,6 +168,7 @@
             class="my-2 justify-center"
             dark
             v-model="paidWithCash"
+            @change="$v.paidWithCash.$touch()"
           >
             <div slot="label" class="white--text">Paid With Cash</div>
           </v-checkbox>
@@ -293,13 +297,18 @@ export default {
       },
       location: {
         required
-      }
+      },
+      chosenKeywords: {},
+      memo: {},
+      gpsLocation: {},
+      paidWithCash: {}
     }
 
     return result
   },
   methods: {
     toggleKeywords(val) {
+      this.$v.chosenKeywords.$touch()
       if (val.length) this.$refs['keywords'].blur()
     },
     filterCurrency(item, queryText) {
@@ -313,20 +322,6 @@ export default {
       this.amount = amount
       this.$v.amount.$touch()
     },
-    selectKeyword(keyword) {
-      keyword.selected = !keyword.selected
-    },
-    keywordsDialogDoneClick() {
-      this.chosenKeywords = []
-
-      this.keywords.forEach(element => {
-        if (element.selected) {
-          this.chosenKeywords.push(element.keyword)
-        }
-      })
-
-      this.keywordsDialog = false
-    },
     getLocationString(locationObj) {
       const country = this.$store.getters['Country/findCountry'](
         locationObj.countryId
@@ -337,10 +332,6 @@ export default {
       } else {
         return locationObj.locationName
       }
-    },
-    removeKeyword(item) {
-      this.chosenKeywords.splice(this.chosenKeywords.indexOf(item), 1)
-      this.chosenKeywords = [...this.chosenKeywords]
     },
     saveInternal() {
       let transactionToSave = {
