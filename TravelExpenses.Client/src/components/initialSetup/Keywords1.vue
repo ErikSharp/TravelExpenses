@@ -17,7 +17,7 @@
     </p>
     <p>
       In this example,
-      <strong>Transportation</strong> would be the chosen Category, and
+      <strong>Transportation</strong> would be the chosen Category.
       <strong>'Uber'</strong> and <strong>'Expensive'</strong> could be the
       chosen Keywords.
     </p>
