@@ -12,8 +12,8 @@ if (env === 'Development') {
 
 Vue.use(Vuetify, {
   theme: {
-    primary: env === 'Development' ? colors.blue.lighten2 : '#4527A0',
-    secondary: env === 'Development' ? colors.blue.darken3 : '#7B1FA2',
+    primary: env === 'Development' ? '#e2b383' : '#83b3e2',
+    secondary: env === 'Development' ? '#faf2ea' : '#eaf2fa',
     accent: '#efefef'
   }
 })
