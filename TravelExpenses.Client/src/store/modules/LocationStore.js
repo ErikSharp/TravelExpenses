@@ -6,7 +6,8 @@ function initialState() {
     addLocationBusy: false,
     editLocationBusy: false,
     locations: [],
-    selectedLocation: {
+    selectedLocation: {},
+    selectedFilterLocation: {
       locationName: 'All Locations',
       id: 0
     }
@@ -35,6 +36,9 @@ export default {
     SET_LOCATIONS(state, locations) {
       state.locations = locations
     },
+    SET_SELECTED_FILTER_LOCATION(state, location) {
+      state.selectedFilterLocation = location
+    },
     SET_SELECTED_LOCATION(state, location) {
       state.selectedLocation = location
     }
@@ -42,6 +46,9 @@ export default {
   actions: {
     setLocations({ commit }, locations) {
       commit('SET_LOCATIONS', locations)
+    },
+    setSelectedFilterLocation({ commit }, location) {
+      commit('SET_SELECTED_FILTER_LOCATION', location)
     },
     setSelectedLocation({ commit }, location) {
       commit('SET_SELECTED_LOCATION', location)

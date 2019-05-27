@@ -48,9 +48,11 @@ export default {
         return this.$store.state.Location.selectedLocation
       },
       set(val) {
-        this.$store.dispatch('Location/setSelectedLocation', val).then(() => {
-          this.$emit('onChange')
-        })
+        this.$store
+          .dispatch('Location/setSelectedFilterLocation', val)
+          .then(() => {
+            this.$emit('onChange')
+          })
       }
     }
   }

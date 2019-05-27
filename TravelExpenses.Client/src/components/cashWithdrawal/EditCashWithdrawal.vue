@@ -163,7 +163,6 @@ export default {
       date: '',
       dateMenu: false,
       amount: '',
-      location: {},
       memo: ''
     }
   },
@@ -331,6 +330,14 @@ export default {
     },
     cashWithdrawalToEdit() {
       return this.$store.state.CashWithdrawal.selectedCashWithdrawal
+    },
+    location: {
+      get() {
+        return this.$store.state.Location.selectedLocation
+      },
+      set(val) {
+        this.$store.dispatch('Location/setSelectedLocation', val)
+      }
     }
   },
   watch: {

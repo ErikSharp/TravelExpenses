@@ -264,7 +264,6 @@ export default {
       dateMenu: false,
       amount: '',
       category: {},
-      location: {},
       chosenKeywords: [],
       memo: '',
       gpsLocation: false,
@@ -492,6 +491,14 @@ export default {
     },
     transactionToEdit() {
       return this.$store.state.Transaction.selectedTransaction
+    },
+    location: {
+      get() {
+        return this.$store.state.Location.selectedLocation
+      },
+      set(val) {
+        this.$store.dispatch('Location/setSelectedLocation', val)
+      }
     }
   },
   watch: {
