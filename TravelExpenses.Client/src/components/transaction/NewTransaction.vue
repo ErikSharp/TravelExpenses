@@ -308,7 +308,7 @@ export default {
   methods: {
     toggleKeywords(val) {
       this.$v.chosenKeywords.$touch()
-      if (val.length) this.$refs['keywords'].blur()
+      this.$refs['keywords'].blur()
     },
     filterCurrency(item, queryText) {
       if (queryText.trim() === '') {
