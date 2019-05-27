@@ -100,100 +100,39 @@
           getLocationString(data.item)
         }}</template>
       </v-select>
-      <v-container fluid grid-list-md class="pa-0">
-        <v-layout>
-          <v-flex>
-            <v-select
-              :items="categories"
-              v-model="category"
-              return-object
-              :error-messages="categoryErrors"
-              box
-              background-color="white"
-              color="primary"
-              label="Category"
-              @input="$v.category.$touch()"
-              @blur="$v.category.$touch()"
-            >
-              <template slot="selection" slot-scope="data">{{
-                data.item.categoryName
-              }}</template>
-              <template slot="item" slot-scope="data">{{
-                data.item.categoryName
-              }}</template>
-            </v-select>
-          </v-flex>
-          <v-flex class="pt-2">
-            <v-dialog v-model="keywordsDialog" scrollable>
-              <template v-slot:activator="{ on }">
-                <v-btn class="mr-0" color="primary" v-on="on">Keywords</v-btn>
-              </template>
-              <v-card>
-                <v-card-title class="title pb-0"
-                  >Select the keywords that you wish to apply</v-card-title
-                >
-                <v-card-text style="height: 50vh">
-                  <v-checkbox
-                    hide-details
-                    color="primary"
-                    class="mx-3 mb-3 mt-0"
-                    v-for="keyword in keywords"
-                    :key="keyword.id"
-                    :label="keyword.keyword.keywordName"
-                    @change="selectKeyword(keyword)"
-                  ></v-checkbox>
-                </v-card-text>
-                <v-card-actions>
-                  <v-layout justify-center>
-                    <v-btn
-                      class="text-xs-center"
-                      @click="keywordsDialogDoneClick"
-                      >Done</v-btn
-                    >
-                  </v-layout>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <!-- <v-select
+      <v-select
+        :items="categories"
+        v-model="category"
+        return-object
+        :error-messages="categoryErrors"
+        box
+        background-color="white"
+        color="primary"
+        label="Category"
+        @input="$v.category.$touch()"
+        @blur="$v.category.$touch()"
+      >
+        <template slot="selection" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
+        <template slot="item" slot-scope="data">{{
+          data.item.categoryName
+        }}</template>
+      </v-select>
+      <v-select
         :items="keywords"
         v-model="chosenKeywords"
-        label="Keywords"
+        item-text="keywordName"
+        return-object
+        label="Keywords (optional)"
         chips
         solo
         multiple
-        @input="$v.chosenKeywords.$touch()"
-        @blur="$v.chosenKeywords.$touch()"
+        deletable-chips
+        ref="keywords"
+        @change="toggleKeywords"
       >
-        <template slot="selection" slot-scope="data">
-          <v-chip
-            :selected="data.selected"
-            close
-            @input="removeKeyword(data.item)"
-          >
-            <span>{{ data.item.keywordName }}</span>
-          </v-chip>
-        </template>
-        <template slot="item" slot-scope="data">
-          <v-checkbox
-            v-model="chosenKeywords"
-            color="primary"
-            :value="data.item"
-            :label="data.item.keywordName"
-          />
-        </template>
-      </v-select> -->
-      <v-card v-if="this.chosenKeywords.length" class="mb-4 pa-1">
-        <v-chip
-          close
-          v-for="keyword in chosenKeywords"
-          :key="keyword.id"
-          @input="removeKeyword(keyword)"
-          >{{ keyword.keywordName }}</v-chip
-        >
-      </v-card>
+      </v-select>
       <v-textarea
         hide-details
         solo
@@ -360,6 +299,9 @@ export default {
     return result
   },
   methods: {
+    toggleKeywords(val) {
+      if (val.length) this.$refs['keywords'].blur()
+    },
     filterCurrency(item, queryText) {
       if (queryText.trim() === '') {
         return true
@@ -494,9 +436,7 @@ export default {
     keywords() {
       return sortBy(this.$store.state.Keyword.keywords, k =>
         k.keywordName.toLowerCase()
-      ).map(k => {
-        return { selected: false, keyword: k }
-      })
+      )
     },
     titleErrors() {
       const errors = []
