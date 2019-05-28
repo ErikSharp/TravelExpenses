@@ -60,6 +60,17 @@
                   >{{ getKeywordName(id) }}</v-chip
                 >
               </div>
+              <v-layout>
+                <info-dialog
+                  v-if="transaction.memo"
+                  color="primary"
+                  title="Memo"
+                  icon="create"
+                >
+                  {{ transaction.memo }}
+                </info-dialog>
+                <v-btn v-if="false" color="primary" small outline>GPS</v-btn>
+              </v-layout>
             </v-layout>
           </v-card-text>
         </v-flex>
@@ -71,8 +82,12 @@
 <script>
 import { toLocaleStringWithEndingZero } from '@/common/StringUtilities.js'
 import { mapState, mapGetters } from 'vuex'
+import InfoDialog from '@/components/common/InfoDialog.vue'
 
 export default {
+  components: {
+    InfoDialog
+  },
   props: {
     transaction: Object
   },

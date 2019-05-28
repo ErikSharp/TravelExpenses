@@ -1,14 +1,5 @@
 <template>
   <div>
-    <v-dialog v-model="memoDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">Memo</v-card-title>
-        <v-card-text>{{ memo }}</v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="memoDialog = false">CLOSE</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-container v-show="!cashWithdrawalsBusy" class="pt-2 pl-2 pr-2 pb-1">
       <global-location @onChange="onlocationFilterChanged" />
     </v-container>
@@ -45,7 +36,6 @@
             v-for="(cashWithdrawal, i) in dateGroup"
             :key="i"
             :cashWithdrawal="cashWithdrawal"
-            @showMemo="showMemo($event)"
           />
         </div>
       </v-expansion-panel-content>
@@ -142,18 +132,12 @@ export default {
   data() {
     return {
       panels: [true],
-      deleteDialog: false,
-      memoDialog: false,
-      memo: ''
+      deleteDialog: false
     }
   },
   methods: {
     onlocationFilterChanged() {
       this.$store.dispatch('CashWithdrawal/getCashWithdrawals')
-    },
-    showMemo(memo) {
-      this.memo = memo
-      this.memoDialog = true
     },
     addCashWithdrawal() {
       this.$emit('addCashWithdrawal')

@@ -33,14 +33,14 @@
               <strong>Location:</strong>
               {{ getLocationString(cashWithdrawal.locationId) }}
             </p>
-            <v-btn
-              small
-              outline
-              class="primary"
+            <info-dialog
               v-if="cashWithdrawal.memo"
-              @click.stop="showMemo"
-              >Memo</v-btn
+              color="primary"
+              title="Memo"
+              icon="create"
             >
+              {{ cashWithdrawal.memo }}
+            </info-dialog>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -49,7 +49,12 @@
 </template>
 
 <script>
+import InfoDialog from '@/components/common/InfoDialog.vue'
+
 export default {
+  components: {
+    InfoDialog
+  },
   props: {
     cashWithdrawal: Object
   },
@@ -59,9 +64,6 @@ export default {
     }
   },
   methods: {
-    showMemo() {
-      this.$emit('showMemo', this.cashWithdrawal.memo)
-    },
     selectCashWithdrawal() {
       this.$store.dispatch(
         'CashWithdrawal/setSelectedCashWithdrawal',
