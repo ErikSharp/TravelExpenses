@@ -3,9 +3,7 @@
     <home-header></home-header>
     <div class="header-spacer" />
     <transition name="fade">
-      <transition name="fade">
-        <router-view class="mb-5" :key="$route.fullPath" />
-      </transition>
+      <router-view class="mb-5" :key="$route.fullPath" />
     </transition>
     <v-bottom-nav :active.sync="homeView" :value="true" fixed color="primary">
       <v-btn dark value="transactions">
