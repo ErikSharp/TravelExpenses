@@ -52,13 +52,13 @@ export default {
   },
   actions: {
     saveCashWithdrawal({ dispatch }, cashWithdrawal) {
-      dispatch('innerSaveCashWithdrawal', {
+      return dispatch('innerSaveCashWithdrawal', {
         cashWithdrawal: cashWithdrawal,
         editing: false
       })
     },
     editCashWithdrawal({ dispatch }, cashWithdrawal) {
-      dispatch('innerSaveCashWithdrawal', {
+      return dispatch('innerSaveCashWithdrawal', {
         cashWithdrawal: cashWithdrawal,
         editing: true
       })
