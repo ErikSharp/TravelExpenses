@@ -39,7 +39,9 @@
               title="Memo"
               icon="create"
             >
-              <pre style="font-family: inherit">{{ cashWithdrawal.memo }}</pre>
+              <pre style="font-family: inherit;white-space: pre-wrap">{{
+                cashWithdrawal.memo
+              }}</pre>
             </info-dialog>
           </v-card-text>
         </v-flex>

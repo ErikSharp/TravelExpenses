@@ -67,7 +67,9 @@
                   title="Memo"
                   icon="create"
                 >
-                  <pre style="font-family: inherit">{{ transaction.memo }}</pre>
+                  <pre style="font-family: inherit;white-space: pre-wrap">{{
+                    transaction.memo
+                  }}</pre>
                 </info-dialog>
                 <v-btn v-if="false" color="primary" small outline>GPS</v-btn>
               </v-layout>
