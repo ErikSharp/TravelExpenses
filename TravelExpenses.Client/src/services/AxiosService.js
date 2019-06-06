@@ -47,13 +47,9 @@ export default {
   deleteTransaction(transactionId) {
     return apiClient.delete(`api/transactions/${transactionId}`)
   },
-  getCashWithdrawals(skip, filterLocationId) {
+  getCashWithdrawals(skip) {
     let params = {
       skip: skip
-    }
-
-    if (filterLocationId) {
-      params['location'] = filterLocationId
     }
 
     return apiClient.get('api/cash-withdrawals', {
