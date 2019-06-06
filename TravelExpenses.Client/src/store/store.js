@@ -89,7 +89,10 @@ export default new Vuex.Store({
           })
           break
         case HomeViews.CashWithdrawals:
-          dispatch('CashWithdrawal/getCashWithdrawals')
+          dispatch('setTitle', firstLetterUpper(view)).then(() => {
+            dispatch('CashWithdrawal/getCashWithdrawals')
+          })
+          break
         default:
           dispatch('setTitle', firstLetterUpper(view))
           break

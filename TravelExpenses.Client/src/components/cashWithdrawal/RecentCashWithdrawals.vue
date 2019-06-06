@@ -31,7 +31,7 @@
         <div style="background: var(--v-secondary-base)" class="py-1 px-2">
           <cash-withdrawal-card
             v-for="(cashWithdrawal, i) in dateGroup"
-            :key="i"
+            :key="cashWithdrawal.id"
             :cashWithdrawal="cashWithdrawal"
           />
         </div>
@@ -40,7 +40,11 @@
     <div class="bottom-spacer"></div>
     <v-flex class="button-background" xs12 v-show="!cashWithdrawalsBusy">
       <div class="text-xs-center my-1">
-        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        <v-pagination
+          v-model="page"
+          total-visible="6"
+          :length="pageCount"
+        ></v-pagination>
       </div>
       <v-flex xs12 sm10 offset-sm1>
         <v-layout justify-center justify-space-between>
