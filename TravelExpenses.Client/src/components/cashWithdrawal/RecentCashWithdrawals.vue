@@ -23,7 +23,7 @@
     </v-layout>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
-        class="primary mt-1"
+        class="primary withdrawals"
         v-for="(dateGroup, date) in cashWithdrawals"
         :key="date"
       >
@@ -194,6 +194,14 @@ export default {
   width: 100%;
   bottom: 56px;
   background: rgba(0, 0, 0, 0.8);
+}
+
+.withdrawals:first-child {
+  margin-top: 0;
+}
+
+.withdrawals {
+  margin-top: 2px;
 }
 
 .bottom-spacer {

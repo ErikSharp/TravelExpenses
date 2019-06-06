@@ -23,7 +23,7 @@
     </v-layout>
     <v-expansion-panel dark v-model="panels" expand>
       <v-expansion-panel-content
-        class="primary mt-1"
+        class="primary transactions"
         v-for="(dateGroup, date) in transactions"
         :key="date"
       >
@@ -201,6 +201,10 @@ export default {
 
 .transactions:first-child {
   margin-top: 0;
+}
+
+.transactions {
+  margin-top: 2px;
 }
 
 .bottom-spacer {
