@@ -1,7 +1,6 @@
 <template>
   <div>
-    <home-header></home-header>
-    <div class="header-spacer" />
+    <home-header fixed app />
     <transition name="fade">
       <router-view class="mb-5" :key="$route.fullPath" />
     </transition>
@@ -57,10 +56,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.header-spacer {
-  height: 56px;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s;
