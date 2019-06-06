@@ -7,7 +7,7 @@
       class="helper-text"
       v-if="!Object.keys(transactions).length && !transactionsBusy"
     >
-      <h1 class="text-xs-center white--text">No transactions</h1>
+      <h1 class="text-xs-center white--text">No Transactions</h1>
       <p class="text-xs-center white--text">
         Press the Add button below to create your first.
       </p>
