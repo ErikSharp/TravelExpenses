@@ -1,6 +1,6 @@
 <template>
   <div>
-    <home-header fixed app />
+    <home-header />
     <transition name="fade">
       <router-view class="mb-5" :key="$route.fullPath" />
     </transition>
