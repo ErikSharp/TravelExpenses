@@ -58,12 +58,12 @@ namespace TravelExpenses.Application.Features.Transactions
                     .Include(t => t.TransactionKeywords)
                     .AsNoTracking()
                     .SingleOrDefaultAsync(t => 
-                        t.Id == request.TransactionIn.Id)
+                        t.Id == request.TransactionIn.Id && t.UserId == request.TokenUserId)
                     .ConfigureAwait(false);
 
                 if (dbTransaction == null)
                 {
-                    throw new NotFoundException($"Trying to update transaction {request.TransactionIn.Id} and it does not exist");
+                    throw new NotFoundException($"Trying to update transaction {request.TransactionIn.Id} for user {request.TokenUserId} and it does not exist");
                 }
 
                 var transaction = mapper.Map<Transaction>(request.TransactionIn);
