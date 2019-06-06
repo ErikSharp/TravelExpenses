@@ -13,12 +13,20 @@
       <reconcile-investigation />
     </v-window-item>
     <v-window-item>
-      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+      <button-wrapper
+        v-if="reconcileWindowId === windows.transactions"
+        :buttonText="buttonText"
+        @buttonClicked="navToSummary"
+      >
         <transactions />
       </button-wrapper>
     </v-window-item>
     <v-window-item>
-      <button-wrapper :buttonText="buttonText" @buttonClicked="navToSummary">
+      <button-wrapper
+        v-if="reconcileWindowId === windows.cashWithdrawals"
+        :buttonText="buttonText"
+        @buttonClicked="navToSummary"
+      >
         <cash-withdrawals />
       </button-wrapper>
     </v-window-item>
@@ -52,7 +60,8 @@ export default {
   },
   data() {
     return {
-      buttonText: 'Return to Summary'
+      buttonText: 'Return to Summary',
+      windows: Windows
     }
   },
   methods: {
