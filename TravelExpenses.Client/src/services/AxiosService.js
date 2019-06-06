@@ -29,13 +29,9 @@ export default {
   register(details) {
     return apiClient.post('api/users', details)
   },
-  getTransactions(skip, filterLocationId) {
+  getTransactions(skip) {
     let params = {
       skip: skip
-    }
-
-    if (filterLocationId) {
-      params['location'] = filterLocationId
     }
 
     return apiClient.get('api/transactions', {

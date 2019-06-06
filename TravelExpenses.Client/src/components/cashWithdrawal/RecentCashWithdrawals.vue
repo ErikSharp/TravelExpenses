@@ -1,8 +1,5 @@
 <template>
   <div>
-    <v-container v-show="!cashWithdrawalsBusy" class="pt-2 pl-2 pr-2 pb-1">
-      <global-location @onChange="onlocationFilterChanged" />
-    </v-container>
     <div
       class="helper-text"
       v-if="!Object.keys(cashWithdrawals).length && !cashWithdrawalsBusy"
@@ -110,7 +107,6 @@
 
 <script>
 /* eslint-disable no-console */
-import GlobalLocation from '@/components/GlobalLocation.vue'
 import groupBy from 'lodash/groupBy'
 import CashWithdrawalCard from '@/components/cashWithdrawal/CashWithdrawalCard.vue'
 import { mapState, mapGetters } from 'vuex'
@@ -126,8 +122,7 @@ const locale = navigator.language || 'en-US'
 
 export default {
   components: {
-    CashWithdrawalCard,
-    GlobalLocation
+    CashWithdrawalCard
   },
   data() {
     return {
@@ -136,9 +131,6 @@ export default {
     }
   },
   methods: {
-    onlocationFilterChanged() {
-      this.$store.dispatch('CashWithdrawal/getCashWithdrawals')
-    },
     addCashWithdrawal() {
       this.$emit('addCashWithdrawal')
     },

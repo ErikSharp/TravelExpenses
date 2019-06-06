@@ -1,8 +1,5 @@
 <template>
   <div>
-    <v-container v-show="!transactionsBusy" class="pt-2 pl-2 pr-2 pb-1">
-      <global-location @onChange="onlocationFilterChanged" />
-    </v-container>
     <div
       class="helper-text"
       v-if="!Object.keys(transactions).length && !transactionsBusy"
@@ -108,7 +105,6 @@
 
 <script>
 /* eslint-disable no-console */
-import GlobalLocation from '@/components/GlobalLocation.vue'
 import groupBy from 'lodash/groupBy'
 import TransactionCard from '@/components/transaction/TransactionCard.vue'
 import { mapState, mapGetters } from 'vuex'
@@ -124,8 +120,7 @@ const locale = navigator.language || 'en-US'
 
 export default {
   components: {
-    TransactionCard,
-    GlobalLocation
+    TransactionCard
   },
   data() {
     return {
@@ -134,9 +129,6 @@ export default {
     }
   },
   methods: {
-    onlocationFilterChanged() {
-      this.$store.dispatch('Transaction/getTransactions')
-    },
     addTransaction() {
       this.$emit('addTransaction')
     },
@@ -205,6 +197,10 @@ export default {
   width: 100%;
   bottom: 56px;
   background: rgba(0, 0, 0, 0.8);
+}
+
+.transactions:first-child {
+  margin-top: 0;
 }
 
 .bottom-spacer {

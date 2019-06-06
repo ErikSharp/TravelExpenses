@@ -102,10 +102,7 @@ export default {
 
       commit('SET_TRANSACTIONS_BUSY', true)
 
-      return AxiosService.getTransactions(
-        skip,
-        rootState.Location.selectedFilterLocation.id
-      )
+      return AxiosService.getTransactions(skip)
         .then(response => {
           commit('SET_PAGE_SIZE', +response.headers['page-size'])
           commit('SET_TOTAL_RECORDS', +response.headers['x-total-count'])
