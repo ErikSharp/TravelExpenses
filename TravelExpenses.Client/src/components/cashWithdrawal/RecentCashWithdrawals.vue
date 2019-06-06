@@ -153,6 +153,7 @@ export default {
     ...mapState('CashWithdrawal', [
       'cashWithdrawalsBusy',
       'saveCashWithdrawalBusy',
+      'selectedCashWithdrawal',
       'totalRecords',
       'pageSize'
     ]),
@@ -172,7 +173,7 @@ export default {
       )
     },
     cashWithdrawalSelected() {
-      return !!this.$store.state.CashWithdrawal.selectedCashWithdrawal.title
+      return !!this.selectedCashWithdrawal.title
     }
   },
   watch: {
@@ -205,7 +206,7 @@ export default {
 }
 
 .bottom-spacer {
-  height: 100px;
+  height: 95px;
 }
 
 .helper-text {

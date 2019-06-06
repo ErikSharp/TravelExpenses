@@ -208,7 +208,7 @@ export default {
 }
 
 .bottom-spacer {
-  height: 100px;
+  height: 95px;
 }
 
 .helper-text {
