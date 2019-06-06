@@ -2,9 +2,16 @@
   <div>
     <home-header />
     <transition name="fade">
-      <router-view class="mb-5" :key="$route.fullPath" />
+      <router-view :key="$route.fullPath" />
     </transition>
-    <v-bottom-nav :active.sync="homeView" :value="true" fixed color="primary">
+    <v-bottom-nav
+      :active.sync="homeView"
+      :value="true"
+      fixed
+      app
+      mandatory
+      color="primary"
+    >
       <v-btn dark value="transactions">
         <span>Home</span>
         <v-icon>home</v-icon>
