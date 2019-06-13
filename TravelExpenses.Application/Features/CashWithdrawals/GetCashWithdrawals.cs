@@ -18,16 +18,14 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
     {
         public class Query : IRequest<CashWithdrawalsOut>
         {
-            public Query(int userId, int skip, int filterLocationId)
+            public Query(int userId, int skip)
             {
                 UserId = userId;
                 Skip = skip;
-                FilterLocationId = filterLocationId;
             }
 
             public int UserId { get; private set; }
             public int Skip { get; private set; }
-            public int FilterLocationId { get; }
         }
 
         public class Handler : IRequestHandler<Query, CashWithdrawalsOut>
@@ -51,11 +49,6 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                 var totalQuery = context.CashWithdrawals
                     .Where(c => c.UserId == request.UserId);
 
-                if (request.FilterLocationId > 0)
-                {
-                    totalQuery = totalQuery.Where(t => t.LocationId == request.FilterLocationId);
-                }
-
                 var totalRecords = await totalQuery.CountAsync().ConfigureAwait(false);
 
                 var result = new CashWithdrawalsOut
@@ -68,11 +61,6 @@ namespace TravelExpenses.Application.Features.CashWithdrawals
                 {
                     var query = context.CashWithdrawals
                         .Where(c => c.UserId == request.UserId);
-
-                    if (request.FilterLocationId > 0)
-                    {
-                        query = query.Where(t => t.LocationId == request.FilterLocationId);
-                    }
 
                     var page = await query                     
                         .OrderByDescending(t => t.TransDate)

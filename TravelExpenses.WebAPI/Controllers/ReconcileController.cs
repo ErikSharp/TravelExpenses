@@ -23,13 +23,13 @@ namespace TravelExpenses.WebAPI.Controllers
             this.mediator = mediator;
         }
 
-        [HttpPut("currency-totals")]
+        [HttpGet("currency-totals/{currencyId}")]
         public async Task<IActionResult> GetCurrencyTotals(
             [FromHeader(Name = "Authorization")]string token,
-            [FromBody]CurrencyTotalsRequest request)
+            int currencyId)
         {
             var userId = User.Claims.GetUserId();
-            var totals = await mediator.Send(new GetCurrencyTotals.Query(request, userId)).ConfigureAwait(false);
+            var totals = await mediator.Send(new GetCurrencyTotals.Query(currencyId, userId)).ConfigureAwait(false);
 
             return Ok(totals);
         }

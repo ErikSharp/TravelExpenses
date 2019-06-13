@@ -8,7 +8,6 @@ function initialState() {
     cashOnHand: 0,
     reconcileBusy: false,
     currency: null,
-    location: null,
     reconcileSummary: {
       totalSpent: 0,
       totalWithdrawn: 0,
@@ -40,9 +39,6 @@ export default {
     SET_CURRENCY(state, currency) {
       state.currency = currency
     },
-    SET_LOCATION(state, location) {
-      state.location = location
-    },
     SET_RECONCILE_SUMMARY(state, summary) {
       state.reconcileSummary = summary
     }
@@ -54,31 +50,25 @@ export default {
     setCurrency({ commit }, currency) {
       commit('SET_CURRENCY', currency)
     },
-    setLocation({ commit }, location) {
-      commit('SET_LOCATION', location)
-    },
     setCashOnHand({ commit }, amount) {
       commit('SET_CASH_ON_HAND', amount)
     },
     getReconcileSummary({ dispatch, commit, state }) {
-      if (!state.location || !state.currency) {
+      if (!state.currency) {
         return
       }
 
       commit('SET_RECONCILE_BUSY', true)
 
-      return AxiosService.getReconcileSummary(
-        state.location.id,
-        state.currency.id
-      )
+      return AxiosService.getReconcileSummary(state.currency.id)
         .then(response => {
           if (!response.data.totalWithdrawn) {
             dispatch(
               'showSnackbar',
               {
                 message: `There are no cash withdrawal records for ${
-                  state.location.locationName
-                } (${state.currency.currencyName})`,
+                  state.currency.currencyName
+                }`,
                 color: 'red'
               },
               { root: true }

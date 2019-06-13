@@ -174,7 +174,6 @@ namespace TravelExpenses.Application.Features.Utilities
                         TransDate = cw.TransDate,
                         Amount = cw.Amount,
                         CurrencyId = ccyMap[cw.CurrencyId],
-                        LocationId = locationMap[cw.LocationId],
                         Memo = cw.Memo,
                         UserId = request.UserId
                     };

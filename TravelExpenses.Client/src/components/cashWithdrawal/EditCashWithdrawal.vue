@@ -81,25 +81,6 @@
           </div>
         </template>
       </v-autocomplete>
-      <v-select
-        :items="locations"
-        v-model="location"
-        return-object
-        :error-messages="locationErrors"
-        box
-        background-color="white"
-        color="primary"
-        label="Location"
-        @input="$v.location.$touch()"
-        @blur="$v.location.$touch()"
-      >
-        <template slot="selection" slot-scope="data">
-          {{ getLocationString(data.item) }}
-        </template>
-        <template slot="item" slot-scope="data">
-          {{ getLocationString(data.item) }}
-        </template>
-      </v-select>
       <v-textarea
         hide-details
         solo
@@ -185,9 +166,6 @@ export default {
       currency: {
         required
       },
-      location: {
-        required
-      },
       memo: {}
     }
 
@@ -205,17 +183,6 @@ export default {
       this.amount = amount
       this.$v.amount.$touch()
     },
-    getLocationString(locationObj) {
-      const country = this.$store.getters['Country/findCountry'](
-        locationObj.countryId
-      )
-
-      if (country) {
-        return `${locationObj.locationName}, ${country.countryName}`
-      } else {
-        return locationObj.locationName
-      }
-    },
     leave() {
       this.$emit('done')
     },
@@ -225,7 +192,6 @@ export default {
         transDate: this.date,
         amount: this.amount,
         currencyId: this.currency.id,
-        locationId: this.location.id,
         memo: this.memo,
         userId: this.userId
       }
@@ -278,9 +244,6 @@ export default {
     currencies() {
       return sortBy(this.$store.state.Currency.currencies, c => c.isoCode)
     },
-    locations() {
-      return sortBy(this.$store.state.Location.locations, l => l.locationName)
-    },
     titleErrors() {
       const errors = []
 
@@ -317,28 +280,12 @@ export default {
       !this.$v.currency.required && errors.push('A currency is required')
       return errors
     },
-    locationErrors() {
-      const errors = []
-
-      if (!this.$v.location.$dirty) return errors
-
-      !this.$v.location.required && errors.push('A location is required')
-      return errors
-    },
     busy() {
       return this.$store.state.CashWithdrawal.saveCashWithdrawalBusy
     },
     cashWithdrawalToEdit() {
       return this.$store.state.CashWithdrawal.selectedCashWithdrawal
     },
-    location: {
-      get() {
-        return this.$store.state.Location.selectedLocation
-      },
-      set(val) {
-        this.$store.dispatch('Location/setSelectedLocation', val)
-      }
-    }
   },
   watch: {
     cashWithdrawalToEdit(val) {
@@ -348,7 +295,6 @@ export default {
         this.date = val.transDate
         this.amount = val.amount
         this.currency = this.currencies.find(c => c.id === val.currencyId)
-        this.location = this.locations.find(l => l.id === val.locationId)
         this.memo = val.memo
         this.$v.$reset()
       }

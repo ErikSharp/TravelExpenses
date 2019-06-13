@@ -98,13 +98,8 @@ export default {
   editLocation(location) {
     return apiClient.put('api/locations', location)
   },
-  getReconcileSummary(locationId, currencyId) {
-    const payload = {
-      locationId,
-      currencyId
-    }
-
-    return apiClient.put('api/reconcile/currency-totals', payload)
+  getReconcileSummary(currencyId) {
+    return apiClient.get(`api/reconcile/currency-totals/${currencyId}`)
   },
   getUser() {
     return apiClient.get('api/users/me')

@@ -12,7 +12,6 @@ namespace TravelExpenses.Domain.Entities
         public decimal Amount { get; set; }
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
-        public int LocationId { get; set; }
         public Location Location { get; set; }
         public string Memo { get; set; }
         public int UserId { get; set; }

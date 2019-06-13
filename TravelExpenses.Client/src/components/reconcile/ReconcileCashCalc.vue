@@ -31,25 +31,6 @@
         </div>
       </template>
     </v-autocomplete>
-    <v-select
-      :items="locations"
-      v-model="location"
-      return-object
-      :error-messages="locationErrors"
-      box
-      background-color="white"
-      color="primary"
-      label="Location"
-      @input="$v.location.$touch()"
-      @blur="$v.location.$touch()"
-    >
-      <template slot="selection" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
-      <template slot="item" slot-scope="data">
-        {{ getLocationString(data.item) }}
-      </template>
-    </v-select>
     <v-layout justify-end align-center>
       <h3 class="white--text mb-0 mr-3">Cash on hand</h3>
       <enter-amount
@@ -87,9 +68,6 @@ export default {
       currency: {
         required
       },
-      location: {
-        required
-      },
       cashOnHand: {
         minValue: minValue(0.001)
       }
@@ -112,17 +90,6 @@ export default {
       this.$store.dispatch('Reconcile/getReconcileSummary').then(() => {
         this.$store.dispatch('Reconcile/setReconcileWindowId', Windows.summary)
       })
-    },
-    getLocationString(locationObj) {
-      const country = this.$store.getters['Country/findCountry'](
-        locationObj.countryId
-      )
-
-      if (country) {
-        return `${locationObj.locationName}, ${country.countryName}`
-      } else {
-        return locationObj.locationName
-      }
     }
   },
   computed: {
@@ -139,14 +106,6 @@ export default {
       if (!this.$v.currency.$dirty) return errors
 
       !this.$v.currency.required && errors.push('A currency is required')
-      return errors
-    },
-    locationErrors() {
-      const errors = []
-
-      if (!this.$v.location.$dirty) return errors
-
-      !this.$v.location.required && errors.push('A location is required')
       return errors
     },
     cashOnHandErrors() {
@@ -168,17 +127,6 @@ export default {
       set(value) {
         this.$store.dispatch('Reconcile/setCurrency', value)
       }
-    },
-    location: {
-      get() {
-        return this.$store.state.Reconcile.location
-      },
-      set(value) {
-        this.$store.dispatch('Reconcile/setLocation', value)
-      }
-    },
-    locations() {
-      return sortBy(this.$store.state.Location.locations, l => l.locationName)
     }
   }
 }

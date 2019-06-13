@@ -17,13 +17,13 @@ namespace TravelExpenses.Application.Features.Reconcile
 
         public class Query : IRequest<CurrencyTotals>
         {
-            public Query(CurrencyTotalsRequest request, int userId)
+            public Query(int currencyId, int userId)
             {
-                Request = request;
+                CurrencyId = currencyId;
                 UserId = userId;
             }
 
-            public CurrencyTotalsRequest Request { get; }
+            public int CurrencyId { get; }
             public int UserId { get; }
         }
 
@@ -38,14 +38,11 @@ namespace TravelExpenses.Application.Features.Reconcile
 
             public Task<CurrencyTotals> Handle(Query query, CancellationToken cancellationToken)
             {
-                var request = query.Request;
-
                 var totalSpent = context.Transactions
                     .Include(t => t.Category)
                     .Where(t => 
                         t.UserId == query.UserId && 
-                        t.LocationId == request.LocationId &&
-                        t.CurrencyId == request.CurrencyId &&
+                        t.CurrencyId == query.CurrencyId &&
                         t.Category.CategoryName.ToUpperInvariant() != "Loss/Gain".ToUpperInvariant() &&
                         t.PaidWithCash)
                     .Sum(t => t.Amount);
@@ -53,16 +50,14 @@ namespace TravelExpenses.Application.Features.Reconcile
                 var totalWithdrawn = context.CashWithdrawals
                     .Where(t =>
                         t.UserId == query.UserId &&
-                        t.LocationId == request.LocationId &&
-                        t.CurrencyId == request.CurrencyId)
+                        t.CurrencyId == query.CurrencyId)
                     .Sum(t => t.Amount);
 
                 var totalLossGain = context.Transactions
                     .Include(t => t.Category)
                     .Where(t =>
                         t.UserId == query.UserId &&
-                        t.LocationId == request.LocationId &&
-                        t.CurrencyId == request.CurrencyId &&
+                        t.CurrencyId == query.CurrencyId &&
                         t.Category.CategoryName.ToUpperInvariant() == "Loss/Gain".ToUpperInvariant() &&
                         t.PaidWithCash)
                     .Sum(t => t.Amount);
@@ -76,8 +71,7 @@ namespace TravelExpenses.Application.Features.Reconcile
                         lastTransactionDay = context.Transactions
                             .Where(t =>
                                 t.UserId == query.UserId &&
-                                t.LocationId == request.LocationId &&
-                                t.CurrencyId == request.CurrencyId)
+                                t.CurrencyId == query.CurrencyId)
                             .Max(t => t.TransDate).ToString(DateStringFormat);
                     }
                 }
