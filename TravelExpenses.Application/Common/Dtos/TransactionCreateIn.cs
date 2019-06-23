@@ -8,7 +8,7 @@ namespace TravelExpenses.Application.Common.Dtos
     {
         public string TransDate { get; set; }
         public decimal Amount { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public int CurrencyId { get; set; }
         public int CategoryId { get; set; }
         public string Title { get; set; }

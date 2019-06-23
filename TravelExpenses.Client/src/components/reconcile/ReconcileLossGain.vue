@@ -75,7 +75,6 @@ export default {
           ? this.reconcileSummary.lastTransactionDay
           : new Date().toISOString().substring(0, 10),
         amount: this.haveNetGain ? this.amountOut * -1 : this.amountOut,
-        locationId: this.location.id,
         currencyId: this.currency.id,
         categoryId: this.lossGainCategory.id,
         memo: this.memo,

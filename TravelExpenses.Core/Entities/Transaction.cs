@@ -9,7 +9,7 @@ namespace TravelExpenses.Domain.Entities
         public int Id { get; set; }
         public DateTime TransDate { get; set; }
         public decimal Amount { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public Location Location { get; set; }
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
