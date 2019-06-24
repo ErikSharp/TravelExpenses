@@ -48,7 +48,10 @@ export default {
       return this.$store.state.Category.categories
     },
     busy() {
-      return this.$store.state.Category.addCategoryBusy
+      return (
+        this.$store.state.Category.addCategoryBusy ||
+        this.$store.state.Category.editCategoryBusy
+      )
     }
   },
   watch: {
