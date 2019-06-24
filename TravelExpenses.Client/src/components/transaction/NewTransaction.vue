@@ -377,7 +377,7 @@ export default {
       this.$v.$reset()
 
       this.title = ''
-      //this.date = ''
+      this.date = ''
       this.amount = ''
       //this.currency = {}
       this.category = {}
