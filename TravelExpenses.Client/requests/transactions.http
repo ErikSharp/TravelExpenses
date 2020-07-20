@@ -1,9 +1,0 @@
-@baseUrl = https://localhost:5001
-
-GET {{baseUrl}}/api/transactions
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMDM0IiwibmJmIjoxNTUxMjc2MDQwLCJleHAiOjE1NTEyNzk2NDAsImlhdCI6MTU1MTI3NjA0MH0.0vBmM595qeaxGFGncPQPIC3nUuLllMfagRtxu4Rcwn4
-
-###
-
-GET {{baseUrl}}/api/transactions?location=1222
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMDM0IiwibmJmIjoxNTUxMjc2MDQwLCJleHAiOjE1NTEyNzk2NDAsImlhdCI6MTU1MTI3NjA0MH0.0vBmM595qeaxGFGncPQPIC3nUuLllMfagRtxu4Rcwn4
